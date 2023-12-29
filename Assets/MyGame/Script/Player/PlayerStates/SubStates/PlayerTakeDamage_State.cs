@@ -5,6 +5,7 @@ using UnityEngine;
 public class PlayerTakeDamage_State : PlayerState
 {
     private bool _isKnock;
+    private bool _isDeath;
     public PlayerTakeDamage_State(Player player, PlayerStateMachine stateMachine, PlayerData playerData, string animBoolName) : base(player, stateMachine, playerData, animBoolName)
     {
 
@@ -24,14 +25,16 @@ public class PlayerTakeDamage_State : PlayerState
     {
         base.DoChecks();
         _isKnock = player.GetBool_IsKnock();
+        _isDeath = player.GetBool_IsDeath();
     }
 
     public override void Enter()
     {
         base.Enter();
         player.couroutine_Invulnerability = player.StartCoroutine(player.Invulnerability());
-        player.KnockBack();
-
+        player.KnockBack(playerData.knockOutX,playerData.knockOutY);
+        player.SetBool_IsHurt(false);
+        Debug.Log("Enter takedamage");
     }
 
     public override void Exit()
@@ -42,7 +45,11 @@ public class PlayerTakeDamage_State : PlayerState
     public override void LogicUpdate()
     {
         base.LogicUpdate();
-        if (_isKnock)
+        if (_isDeath)
+        {
+            stateMachine.ChangeState(player.playerDeathState);
+        }
+        else if (_isKnock)
         {
             if (Time.time >= startTime + playerData.knockDuration)
             {
@@ -50,7 +57,7 @@ public class PlayerTakeDamage_State : PlayerState
                 player.SetVelocityX(0);
             }
         }
-        if (isAnimationFinished)
+        else if (isAnimationFinished)
         {
             Debug.Log("idle");
             stateMachine.ChangeState(player.playerIdleState);

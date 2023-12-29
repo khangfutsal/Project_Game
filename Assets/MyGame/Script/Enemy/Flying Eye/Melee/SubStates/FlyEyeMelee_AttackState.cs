@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class FlyEyeMelee_AttackState : FlyingEye_AbilityState
+public class FlyEyeMelee_AttackState : FlyingEyeMelee_AbilityState
 {
     private bool isBound;
     private bool canAttack;

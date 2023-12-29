@@ -1,8 +1,9 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
-public class Player : MonoBehaviour
+public class Player : MonoBehaviour, IDmgable
 {
     #region Player Animation
     public PlayerStateMachine playerStateMachine;
@@ -18,6 +19,10 @@ public class Player : MonoBehaviour
     public PlayerMeditateState playerMeditateState;
 
     public PlayerTakeDamage_State playerTakeDamageState;
+
+    public PlayerDeathState playerDeathState;
+
+    public PlayerDefState playerDefState;
 
     public PlayerAttackFirst playerAttackFirstState;
     public PlayerAttackSecond playerAttackSecondState;
@@ -44,7 +49,10 @@ public class Player : MonoBehaviour
     [SerializeField] private float iFramesDuration;
     [SerializeField] private int numberOfFlashes;
     public int facingDirection { get; private set; }
-    public int attackDmg;
+    [field: SerializeField] public float maxHealth { get; set; }
+    [field: SerializeField] public float health { get; set; }
+
+    private int attackDmg;
 
     private float time;
 
@@ -52,11 +60,15 @@ public class Player : MonoBehaviour
     private bool _isHurt;
     private bool _isKnock;
     private bool _isInvulnerability;
-    private bool _test;
+    private bool _isDeath;
+    private bool _isHitAttackSecond;
+    private bool _isHitAttackFinal;
 
     private static Player _ins;
 
     [SerializeField] private CameraShake cameraShake;
+    [SerializeField] public Transform vfx_defense;
+    [SerializeField] public Transform pointSpawnVFX;
     #endregion
 
     #region Variable Component
@@ -81,6 +93,8 @@ public class Player : MonoBehaviour
         playerInAirState = new PlayerInAirState(this, playerStateMachine, playerData, "inAir");
         playerMeditateState = new PlayerMeditateState(this, playerStateMachine, playerData, "meditate");
         playerTakeDamageState = new PlayerTakeDamage_State(this, playerStateMachine, playerData, "takedamage");
+        playerDeathState = new PlayerDeathState(this, playerStateMachine, playerData, "Death");
+        playerDefState = new PlayerDefState(this, playerStateMachine, playerData, "def");
         playerAttackFirstState = new PlayerAttackFirst(this, playerStateMachine, playerData, "attack1");
         playerAttackSecondState = new PlayerAttackSecond(this, playerStateMachine, playerData, "attack2");
         playerAttackThirdState = new PlayerAttackThird(this, playerStateMachine, playerData, "attack3");
@@ -94,8 +108,12 @@ public class Player : MonoBehaviour
         playerInputHandler = GetComponent<PlayerInputHandler>();
         RgBody2D = GetComponent<Rigidbody2D>();
         spriteRerender = GetComponent<SpriteRenderer>();
+
         playerStateMachine.Initialize(playerIdleState);
+        
+        health = maxHealth;
         facingDirection = 1;
+        _isDeath = false;
     }
 
 
@@ -103,12 +121,15 @@ public class Player : MonoBehaviour
     {
         if (Input.GetKeyDown(KeyCode.B))
         {
-            
+            SetVelocityX(0);
+            //SceneManager.LoadScene("Khang");
+            //Time.timeScale = 1;
 
         }
         currentVelocity = RgBody2D.velocity;
         playerStateMachine.currentState.LogicUpdate();
     }
+
 
     private void FixedUpdate()
     {
@@ -119,6 +140,9 @@ public class Player : MonoBehaviour
 
     #region Get Functions
     public static Player GetInstance() => _ins;
+    public bool GetBool_IsHitAttackSecond() => _isHitAttackSecond;
+    public bool GetBool_IsHitAttackFinal() => _isHitAttackFinal;
+    public bool GetBool_IsDeath() => _isDeath;
     public bool GetBool_IsKnock() => _isKnock;
     public bool GetBool_IsInvulnerability() => _isInvulnerability;
     public bool GetBool_Hurt() => _isHurt;
@@ -127,9 +151,12 @@ public class Player : MonoBehaviour
     #endregion
 
     #region Set Functions
+    public bool SetBool_IsHitAttackSecond(bool _bool) => _isHitAttackSecond = _bool;
+    public bool SetBool_IsHitAttackFinal(bool _bool) => _isHitAttackFinal = _bool;
+    public bool SetBool_IsDeath(bool _bool) => _isDeath = _bool;
     public bool SetBool__IsVulnerability(bool _bool) => _isInvulnerability = _bool;
     public bool SetBool_IsKnock(bool _bool) => _isKnock = _bool;
-    public bool SetBool_Hurt(bool _bool) => _isHurt = _bool;
+    public bool SetBool_IsHurt(bool _bool) => _isHurt = _bool;
     public bool SetBool_AttackEnemy(bool _bool) => _isAttackEnemy = _bool;
     public int SetInt_AttackDmg(int dmg) => attackDmg = dmg;
 
@@ -186,9 +213,9 @@ public class Player : MonoBehaviour
             yield return new WaitForSeconds(iFramesDuration / (numberOfFlashes * 2));
             spriteRerender.color = Color.white;
             yield return new WaitForSeconds(iFramesDuration / (numberOfFlashes * 2));
-            Debug.Log("aa");
         }
         Physics2D.IgnoreLayerCollision(6, 8, false);
+
 
     }
 
@@ -196,18 +223,56 @@ public class Player : MonoBehaviour
     {
         if (couroutine_Invulnerability == null) return;
         StopCoroutine(couroutine_Invulnerability);
+        Debug.Log("Stop");  
         spriteRerender.color = Color.white;
         Physics2D.IgnoreLayerCollision(6, 8, false);
     }
     #endregion
 
     #region Hurt State Functions
-    public void KnockBack()
+    public void KnockBack(int KnockOutX, int KnockOutY)
     {
-        RgBody2D.velocity = new Vector2(playerData.knockOutX * -facingDirection, playerData.knockOutY);
+        RgBody2D.velocity = new Vector2(KnockOutX * -facingDirection, KnockOutY);
         _isKnock = true;
-        time = Time.time;
     }
+
+    public void TakeDamage(float dmg)
+    {
+        health -= dmg;
+        if (health <= 0) { Die(); health = 0; }
+    }
+
+    public void Die()
+    {
+        SetBool_IsDeath(true);
+        SetVelocityX(0);
+        StartCoroutine(DelayEnd());
+        IEnumerator DelayEnd()
+        {
+            yield return new WaitForSeconds(2f);
+            Time.timeScale = 0;
+        }
+    }
+
+    public IEnumerator DeleteVfX(Transform vfxDefense)
+    {
+        yield return new WaitForSeconds(1f);
+        Destroy(vfxDefense.gameObject);
+    }
+
+
+
     #endregion
 
+    #region Function Animation Trigger
+    public void AttackSecondAlready()
+    {
+        _isHitAttackSecond = true;
+    }
+
+    public void AttackFinalAlready()
+    {
+        _isHitAttackFinal = true;
+    }
+    #endregion
 }

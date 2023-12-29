@@ -16,11 +16,14 @@ public class PlayerData : ScriptableObject
     public int attackTimes = 3;
     public int knockOutX;
     public int knockOutY;
-    public int knockDuration;
+
+    public float knockDuration;
+
 
     [Header("Check Variables")]
     public float groundCheckRadius = .3f;
     public LayerMask whatIsGround;
+
 
     
 }

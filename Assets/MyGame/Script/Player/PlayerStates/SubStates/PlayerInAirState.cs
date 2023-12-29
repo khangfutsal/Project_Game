@@ -55,7 +55,6 @@ public class PlayerInAirState : PlayerState
         }
         else if (isHurt)
         {
-            player.SetBool_Hurt(false);
             stateMachine.ChangeState(player.playerTakeDamageState);
         }
         else

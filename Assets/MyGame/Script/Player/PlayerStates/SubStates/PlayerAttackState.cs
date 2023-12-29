@@ -4,25 +4,17 @@ using UnityEngine;
 
 public class PlayerAttackState : PlayerState
 {
-
+    private bool _isHurt;
     public bool attackInput;
     public PlayerAttackState(Player player, PlayerStateMachine stateMachine, PlayerData playerData, string animBoolName) : base(player, stateMachine, playerData, animBoolName)
     {
     }
 
-    public override void AnimationFinishTrigger()
-    {
-        base.AnimationFinishTrigger();
-    }
-
-    public override void AnimationTrigger()
-    {
-        base.AnimationTrigger();
-    }
 
     public override void DoChecks()
     {
         base.DoChecks();
+        _isHurt = player.GetBool_Hurt();
     }
 
     public override void Enter()
@@ -42,7 +34,11 @@ public class PlayerAttackState : PlayerState
         player.SetVelocityX(0);
         attackInput = player.playerInputHandler.attackInput;
 
-        if (isAnimationFinished)
+        if (_isHurt)
+        {
+            stateMachine.ChangeState(player.playerTakeDamageState);
+        }
+        else if (isAnimationFinished)
         {
             stateMachine.ChangeState(player.playerIdleState);
         }   

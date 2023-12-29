@@ -3,7 +3,16 @@ guid: 3456af93637d5794b92c35dfa20afec7
 MonoImporter:
   externalObjects: {}
   serializedVersion: 2
-  defaultReferences: []
+  defaultReferences:
+  - groundCheck: {instanceID: 0}
+  - playerData: {fileID: 11400000, guid: fffdc16ceb0d2944bbcceefa09dbfd17, type: 2}
+  - playerInputHandler: {instanceID: 0}
+  - cameraShake: {instanceID: 0}
+  - vfx_defense: {instanceID: 0}
+  - pointSpawnVFX: {instanceID: 0}
+  - anim: {instanceID: 0}
+  - spriteRerender: {instanceID: 0}
+  - RgBody2D: {instanceID: 0}
   executionOrder: 0
   icon: {instanceID: 0}
   userData: 

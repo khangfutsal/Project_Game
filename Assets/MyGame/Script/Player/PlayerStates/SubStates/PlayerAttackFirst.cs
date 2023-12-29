@@ -30,7 +30,11 @@ public class PlayerAttackFirst : PlayerAttackState
         base.Enter();
         dmg = UnityEngine.Random.Range(1, 3);
         GameController.GetInstance().player.SetInt_AttackDmg(dmg);
+
         player.StopInvulnerability();
+
+        player.SetBool_IsHitAttackSecond(false);
+        player.SetBool_IsHitAttackFinal(false);
     }
 
     public override void Exit()

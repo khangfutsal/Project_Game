@@ -13,8 +13,8 @@ public class PlayerInputHandler : MonoBehaviour
     private float jumpInputStartTime;
 
     public bool meditateInput;
-
     public bool attackInput;
+    public bool defenseInput;
     
 
     private void Update()
@@ -23,6 +23,7 @@ public class PlayerInputHandler : MonoBehaviour
         OnJumpInput();
         OnMeditateInput();
         OnAttackInput();
+        OnDefenseInput();
 
         CheckJumpInputHoldTime();
     }
@@ -35,7 +36,21 @@ public class PlayerInputHandler : MonoBehaviour
         }
     }
     
-    public void UseAttackInput() => attackInput = false; 
+    public void UseAttackInput() => attackInput = false;
+    #endregion
+
+    #region Defense Function
+    public void OnDefenseInput()
+    {
+        if (Input.GetMouseButton(1))
+        {
+            defenseInput = true;
+        }
+        else if (Input.GetMouseButtonUp(1))
+        {
+            defenseInput = false;
+        }
+    }
     #endregion
 
     #region Meditate Function

@@ -11,4 +11,9 @@ public class FlyingEyeData : EnemyData
     public float radAttack;
     [Range(0, 10)]
     public float moveSpeed;
+
+    [Header("Take Damage")]
+    public float knockDuration;
+
+
 }

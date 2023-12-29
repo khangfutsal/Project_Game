@@ -5,17 +5,18 @@ using UnityEngine;
 public class CircleBound_FlyingEYe : MonoBehaviour
 {
     [SerializeField] private GameObject playerObj;
-    [SerializeField] private FlyingEye flyingEye;
+    [SerializeField] private FlyingEye_Melee flyingEye_Melee;
 
     private void Awake()
     {
         playerObj = GameObject.Find("BonzePlayer");
+        flyingEye_Melee = transform.GetComponentInParent<FlyingEye_Melee>();
     }
     private void OnTriggerEnter2D(Collider2D collision)
     {
         if(collision.gameObject == playerObj)
         {
-            flyingEye.SetBound(true);
+            flyingEye_Melee.SetBound(true);
         }
     }
     //private void OnTriggerStay2D(Collider2D collision)
@@ -26,7 +27,7 @@ public class CircleBound_FlyingEYe : MonoBehaviour
     {
         if (collision.gameObject == playerObj)
         {
-            flyingEye.SetBound(false);
+            flyingEye_Melee.SetBound(false);
         }
     }
 }

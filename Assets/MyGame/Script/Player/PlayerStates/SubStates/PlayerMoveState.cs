@@ -3,7 +3,9 @@ using System.Collections.Generic;
 using UnityEngine;
 
 public class PlayerMoveState : PlayerGroundedState
-{
+{ 
+    private bool _isDeath;
+    private bool defenseInput;
     public PlayerMoveState(Player player, PlayerStateMachine stateMachine, PlayerData playerData, string animBoolName) : base(player, stateMachine, playerData, animBoolName)
     {
 
@@ -12,6 +14,7 @@ public class PlayerMoveState : PlayerGroundedState
     public override void DoChecks()
     {
         base.DoChecks();
+        _isDeath = player.GetBool_Hurt();
     }
 
     public override void Enter()
@@ -27,7 +30,9 @@ public class PlayerMoveState : PlayerGroundedState
     public override void LogicUpdate()
     {
         base.LogicUpdate();
-        if (!isHurt)
+        defenseInput = player.playerInputHandler.defenseInput;
+
+        if (!_isHurt && !_isDeath && !defenseInput)
         {
             player.CheckIfShouldFlip((int)input.x);
             player.SetVelocityX(playerData.movementVelocity * input.x);

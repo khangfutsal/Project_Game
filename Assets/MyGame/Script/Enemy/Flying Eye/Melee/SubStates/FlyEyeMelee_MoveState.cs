@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class FlyEyeMelee_MoveState : FlyingEye_AbilityState
+public class FlyEyeMelee_MoveState : FlyingEyeMelee_AbilityState
 {
     private bool isBound;
     private bool canAttack;
@@ -25,11 +25,13 @@ public class FlyEyeMelee_MoveState : FlyingEye_AbilityState
     {
         base.DoChecks();
         canAttack = flyingEye_Melee.CanAttack();
+        
     }
 
     public override void Enter()
     {
         base.Enter();
+        flyingEye_Melee.rgBody2D.constraints = RigidbodyConstraints2D.FreezePositionY | RigidbodyConstraints2D.FreezeRotation;
     }
 
     public override void Exit()

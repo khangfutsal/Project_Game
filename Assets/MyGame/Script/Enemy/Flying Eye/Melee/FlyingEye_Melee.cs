@@ -4,33 +4,40 @@ using UnityEngine;
 
 public class FlyingEye_Melee : FlyingEye, IDmgable
 {
-    public EnemyStateMachine enemyStateMachine;
+    public EnemyStateMachine enemyStateMachine = new EnemyStateMachine();
 
     public FlyEyeMelee_AttackState flyEyeMelee_AttackState;
     public FlyEyeMelee_MoveState flyEyeMelee_MoveState;
     public FlyEyeMelee_TakeDamageState flyEyeMelee_TakeDamageState;
+    public FlyEyeMelee_DeathState flyEyeMelee_DeathState;
 
     public FlyingEyeMelee_Data flyingEyeMelee_Data;
 
-    private bool isFlip;
-    private bool isReturn;
-    [field: SerializeField] public float maxHealth { get; set; }
-    [field: SerializeField] public float health { get; set; }
 
-    private static FlyingEye_Melee _ins;
-    
 
     #region Variable Component
-    private Rigidbody2D rg2d;
+    [SerializeField] private Transform groundCheckTf;
+    [SerializeField] private BoxCollider2D boxCollider2D;
+    #endregion
 
+    #region Other Variables
+    [SerializeField] private bool _isTakeDamage;
+    [Header("Damage Attack FlyingEye Melee")]
+    [SerializeField] private float dmgAttack;
 
+    private bool _isFlip;
+    private bool _isReturn;
+    private bool _isDeath;
+    [field: SerializeField] public float maxHealth { get; set; }
+    [field: SerializeField] public float health { get; set; }
     #endregion
 
     #region Unity Method
 
     protected override void Awake()
     {
-        rg2d = GetComponent<Rigidbody2D>();
+        rgBody2D = transform.GetComponent<Rigidbody2D>();
+        boxCollider2D = transform.GetComponent<BoxCollider2D>();
         anim = gameObject.GetComponent<Animator>();
         playerTf = GameObject.Find("BonzePlayer").transform;
         enemyStateMachine = new EnemyStateMachine();
@@ -38,6 +45,7 @@ public class FlyingEye_Melee : FlyingEye, IDmgable
         flyEyeMelee_AttackState = new FlyEyeMelee_AttackState(this, enemyStateMachine, flyingEyeMelee_Data, "attack");
         flyEyeMelee_MoveState = new FlyEyeMelee_MoveState(this, enemyStateMachine, flyingEyeMelee_Data, "move");
         flyEyeMelee_TakeDamageState = new FlyEyeMelee_TakeDamageState(this, enemyStateMachine, flyingEyeMelee_Data, "takehit");
+        flyEyeMelee_DeathState = new FlyEyeMelee_DeathState(this, enemyStateMachine, flyingEyeMelee_Data, "death");
     }
 
     private void Start()
@@ -47,11 +55,15 @@ public class FlyingEye_Melee : FlyingEye, IDmgable
         facingDirection = 1;
         _target = 1;
         health = maxHealth;
-        isFlip = true;
+        _isFlip = true;
     }
 
     private void Update()
-    { 
+    {
+        if (Input.GetKeyDown(KeyCode.O))
+        {
+            Destroy(transform.parent.gameObject);
+        }
         enemyStateMachine.currentState.LogicUpdate();
     }
 
@@ -64,21 +76,39 @@ public class FlyingEye_Melee : FlyingEye, IDmgable
     {
         Gizmos.DrawWireSphere(transform.position, flyingEyeMelee_Data.radAttack);
     }
+
+    private void OnCollisionEnter2D(Collision2D collision)
+    {
+        if (collision.gameObject.CompareTag("Player"))
+        {
+            Debug.Log("Player is Attacked");
+            float dmg = GetFloat_DmgAttack();
+
+            Player player = collision.gameObject.GetComponent<Player>();
+            player.SetBool_IsHurt(true);
+            player.TakeDamage(dmg);
+        }
+    }
     #endregion
 
     #region Check Functions
-
-
+    public bool CheckIfGrounded()
+    {
+        return Physics2D.OverlapCircle(groundCheckTf.position, flyingEyeMelee_Data.groundCheckRadius, flyingEyeMelee_Data.whatIsGround);
+    }
     public bool CanAttack() => (Vector3.Distance(transform.position, playerTf.position) < .9f);
 
     #endregion
 
     #region Set Functions
+    public void SetBool_IsDeath(bool _bool) => _isDeath = _bool;
+    public void SetBool_IsTakeDamage(bool _bool) => _isTakeDamage = _bool;
+
     public override void SetDefault_Moving()
     {
         if (isBound) return;
 
-        if (isReturn && !isBound)
+        if (_isReturn && !isBound)
         {
             ReturnPosition();
         }
@@ -100,17 +130,17 @@ public class FlyingEye_Melee : FlyingEye, IDmgable
         void ReturnPosition()
         {
             CheckFlip(transform.position, startPos.position);
-            if (!isFlip)
+            if (!_isFlip)
             {
                 if (Mathf.Sign(startPos.position.x - transform.position.x) > 0)
                 {
                     Flip();
-                    isFlip = true;
+                    _isFlip = true;
                 }
                 else
                 {
                     Flip();
-                    isFlip = true;
+                    _isFlip = true;
                 }
             }
 
@@ -119,7 +149,7 @@ public class FlyingEye_Melee : FlyingEye, IDmgable
             {
                 _target = 1;
                 _current = 0;
-                isReturn = false;
+                _isReturn = false;
             }
 
         }
@@ -128,12 +158,14 @@ public class FlyingEye_Melee : FlyingEye, IDmgable
     public void TakeDamage(float dmg)
     {
         health -= dmg;
-        if (health <= 0) Die();
+        if (health <= 0) { Die(); health = 0; }
     }
     #endregion
 
     #region Get Functions
-    public static FlyingEye_Melee GetInstance() => _ins;
+    public float GetFloat_DmgAttack() => dmgAttack;
+    public bool GetBool_IsDeath() => _isDeath;
+    public bool GetBool_IsTakeDamage() => _isTakeDamage;
 
     #endregion
 
@@ -142,7 +174,7 @@ public class FlyingEye_Melee : FlyingEye, IDmgable
     public override void MoveToPlayer()
     {
         CheckFlip(transform.position, playerTf.position);
-        isReturn = true;
+        _isReturn = true;
         // ------- Case1
         //float distance = Vector3.Distance(transform.position, playerTf.position);
         //float finalSpeed = (distance / flyingEyeMelee_Data.moveSpeed);                    
@@ -151,17 +183,17 @@ public class FlyingEye_Melee : FlyingEye, IDmgable
         // ------ Case2
         transform.position = Vector3.MoveTowards(transform.position, playerTf.position, Time.deltaTime * flyingEyeMelee_Data.moveSpeed * 5f);
 
-        if (!isFlip)
+        if (!_isFlip)
         {
             if (Mathf.Sign(transform.position.x - playerTf.position.x) > 0)
             {
                 Flip();
-                isFlip = true;
+                _isFlip = true;
             }
             else
             {
                 Flip();
-                isFlip = true;
+                _isFlip = true;
             }
         }
     }
@@ -173,25 +205,35 @@ public class FlyingEye_Melee : FlyingEye, IDmgable
         }
         else
         {
-            isFlip = false;
+            _isFlip = false;
         }
     }
-
-    public void Die()
-    {
-        Debug.Log("Die");
-    }
-
 
     #endregion
-    private void OnCollisionEnter2D(Collision2D collision)
+
+    #region Death State
+    public void Die()
     {
-        if (collision.gameObject.CompareTag("Player"))
-        {
-            Debug.Log("Player is Attacked");
-            GameController.GetInstance().player.SetBool_Hurt(true);
-        }
+        rgBody2D.constraints &= ~RigidbodyConstraints2D.FreezePositionY;
+
+        _isDeath = true;
     }
+
+    public IEnumerator DestroyObject()
+    {
+        if (!_isDeath) yield break;
+        _isDeath = false;
+
+        rgBody2D.bodyType = RigidbodyType2D.Static;
+        boxCollider2D.enabled = false;
+        Debug.Log("Test");
+
+        yield return new WaitForSeconds(2);
+        Destroy(transform.parent.gameObject);
+    }
+
+    #endregion
+
     #region Animation Trigger
     private void AnimationTrigger() => enemyStateMachine.currentState.AnimationTrigger();
 
@@ -200,5 +242,5 @@ public class FlyingEye_Melee : FlyingEye, IDmgable
 
     #endregion
 
-    
+
 }

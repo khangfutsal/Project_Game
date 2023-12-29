@@ -6,5 +6,7 @@ using UnityEngine;
 [Serializable]
 public class FlyingEyeMelee_Data : FlyingEyeData
 {
-
+    [Header("Check Variables")]
+    public float groundCheckRadius = .3f;
+    public LayerMask whatIsGround;
 }

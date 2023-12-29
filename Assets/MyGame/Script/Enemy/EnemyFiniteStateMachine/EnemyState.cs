@@ -33,7 +33,7 @@ public class EnemyState
         enemy.anim.SetBool(animName, true);
         startTime = Time.time;
         isAnimationFinished = false;
-        GameController.GetInstance().player.SetBool_AttackEnemy(false);
+        
     }
 
     public virtual void Exit()

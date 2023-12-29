@@ -9,7 +9,9 @@ public class PlayerGroundedState : PlayerState
     private bool jumpInput;
     private bool meditateInput;
     private bool attackInput;
-    protected bool isHurt;
+    private bool defenseInput;
+
+    protected bool _isHurt;
     public PlayerGroundedState(Player player, PlayerStateMachine stateMachine, PlayerData playerData, string animBoolName) : base(player, stateMachine, playerData, animBoolName)
     {
 
@@ -18,7 +20,7 @@ public class PlayerGroundedState : PlayerState
     public override void DoChecks()
     {
         base.DoChecks();
-        isHurt = player.GetBool_Hurt();
+        _isHurt = player.GetBool_Hurt();
     }
 
     public override void Enter()
@@ -41,6 +43,7 @@ public class PlayerGroundedState : PlayerState
         jumpInput = player.playerInputHandler.jumpInput;
         meditateInput = player.playerInputHandler.meditateInput;
         attackInput = player.playerInputHandler.attackInput;
+        defenseInput = player.playerInputHandler.defenseInput;
 
         if (jumpInput && player.playerJumpState.canJump() && !attackInput)
         {
@@ -58,13 +61,16 @@ public class PlayerGroundedState : PlayerState
             player.playerInputHandler.UseAttackInput();
             stateMachine.ChangeState(player.playerAttackFirstState);
         }
-        else if (isHurt)
+        else if (defenseInput)
         {
-            Debug.Log("Hurt");
-            player.SetBool_Hurt(false);
+            stateMachine.ChangeState(player.playerDefState);
+        }
+        else if (_isHurt)
+        {
             player.SetVelocityX(0);
             stateMachine.ChangeState(player.playerTakeDamageState);
         }
+        
 
     }
 

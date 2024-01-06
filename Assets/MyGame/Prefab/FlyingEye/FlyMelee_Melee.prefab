@@ -84,6 +84,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   circleCollider2D: {fileID: 0}
+  tf: {fileID: 9073250769105632186}
+  enemy: {fileID: 0}
 --- !u!1 &9073250768796106972
 GameObject:
   m_ObjectHideFlags: 0
@@ -107,7 +109,7 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 9073250768796106972}
-  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 6.56, y: -0.15, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
@@ -224,15 +226,15 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   anim: {fileID: 0}
   playerTf: {fileID: 0}
-  curPos: {x: 0, y: 0, z: 0}
-  startPos: {fileID: 9073250770100274668}
-  endPos: {fileID: 9073250770703209361}
   facingDirection: 0
   isBound: 0
   _isKnock: 0
   _isKnockAlready: 0
   workspace: {x: 0, y: 0}
   rgBody2D: {fileID: 0}
+  curPos: {x: 0, y: 0, z: 0}
+  startPos: {fileID: 9073250770100274668}
+  endPos: {fileID: 9073250770703209361}
   flyingEyeMelee_Data:
     radAttack: 3
     moveSpeed: 0.2
@@ -245,8 +247,9 @@ MonoBehaviour:
   boxCollider2D: {fileID: 0}
   _isTakeDamage: 0
   dmgAttack: 5
-  <maxHealth>k__BackingField: 15
+  <maxHealth>k__BackingField: 100
   <health>k__BackingField: 0
+  test: 0
 --- !u!61 &9073250769105632182
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -293,7 +296,7 @@ Rigidbody2D:
   m_Interpolate: 0
   m_SleepingMode: 1
   m_CollisionDetection: 0
-  m_Constraints: 6
+  m_Constraints: 7
 --- !u!66 &9073250769105632184
 CompositeCollider2D:
   m_ObjectHideFlags: 0
@@ -304,7 +307,7 @@ CompositeCollider2D:
   m_Enabled: 1
   m_Density: 1
   m_Material: {fileID: 0}
-  m_IsTrigger: 0
+  m_IsTrigger: 1
   m_UsedByEffector: 0
   m_UsedByComposite: 0
   m_Offset: {x: 0, y: 0}
@@ -466,7 +469,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   playerObj: {fileID: 0}
-  flyingEye_Melee: {fileID: 0}
+  enemyTf: {fileID: 9073250769105632186}
+  enemy: {fileID: 9073250769105632186}
 --- !u!1 &9073250770530516307
 GameObject:
   m_ObjectHideFlags: 0

@@ -30,6 +30,7 @@ public class FlyingEye_Melee : FlyingEye, IDmgable
     private bool _isDeath;
     [field: SerializeField] public float maxHealth { get; set; }
     [field: SerializeField] public float health { get; set; }
+    public float test;
     #endregion
 
     #region Unity Method
@@ -62,8 +63,10 @@ public class FlyingEye_Melee : FlyingEye, IDmgable
     {
         if (Input.GetKeyDown(KeyCode.O))
         {
-            Destroy(transform.parent.gameObject);
+            anim.speed = test;
         }
+        float timeElapsed = anim.GetCurrentAnimatorStateInfo(0).length;
+        Debug.Log(timeElapsed);
         enemyStateMachine.currentState.LogicUpdate();
     }
 
@@ -77,18 +80,6 @@ public class FlyingEye_Melee : FlyingEye, IDmgable
         Gizmos.DrawWireSphere(transform.position, flyingEyeMelee_Data.radAttack);
     }
 
-    private void OnCollisionEnter2D(Collision2D collision)
-    {
-        if (collision.gameObject.CompareTag("Player"))
-        {
-            Debug.Log("Player is Attacked");
-            float dmg = GetFloat_DmgAttack();
-
-            Player player = collision.gameObject.GetComponent<Player>();
-            player.SetBool_IsHurt(true);
-            player.TakeDamage(dmg);
-        }
-    }
     #endregion
 
     #region Check Functions
@@ -104,7 +95,7 @@ public class FlyingEye_Melee : FlyingEye, IDmgable
     public void SetBool_IsDeath(bool _bool) => _isDeath = _bool;
     public void SetBool_IsTakeDamage(bool _bool) => _isTakeDamage = _bool;
 
-    public override void SetDefault_Moving()
+    public void SetDefault_Moving()
     {
         if (isBound) return;
 
@@ -127,7 +118,9 @@ public class FlyingEye_Melee : FlyingEye, IDmgable
             transform.position = Vector3.Lerp((Vector2)startPos.position, (Vector2)endPos.position, _current);
         }
 
-        void ReturnPosition()
+        #region  
+        void ReturnPosition() 
+            #endregion
         {
             CheckFlip(transform.position, startPos.position);
             if (!_isFlip)
@@ -155,9 +148,31 @@ public class FlyingEye_Melee : FlyingEye, IDmgable
         }
     }
 
-    public void TakeDamage(float dmg)
+    public void TakeDamage(float dmg,Transform tf)
     {
         health -= dmg;
+        _isTakeDamage = true;
+
+        Player player = tf.GetComponentInParent<Player>();
+        bool attackSecondAlready = player.GetBool_IsHitAttackSecond();
+        bool attackFinalAlready = player.GetBool_IsHitAttackFinal();
+        if (attackSecondAlready && player.GetComponent<SpriteRenderer>().sprite.name == "3_atk_9")
+        {
+            KnockBack(10, 0);
+            rgBody2D.constraints &= ~RigidbodyConstraints2D.FreezePositionX;
+            if (health <= 0) { Die(); health = 0; }
+            return;
+        }
+        if (attackFinalAlready && player.GetComponent<SpriteRenderer>().sprite.name == "3_atk_18")
+        {
+            rgBody2D.constraints &= ~RigidbodyConstraints2D.FreezePositionY;
+            KnockBack(0, 5);
+            StartCoroutine(player.AttackTimeScale());
+            if (health <= 0) { Die(); health = 0; }
+            return;
+        }
+        rgBody2D.constraints &= ~RigidbodyConstraints2D.FreezePositionX;
+        KnockBack(.5f, 0);
         if (health <= 0) { Die(); health = 0; }
     }
     #endregion
@@ -215,7 +230,7 @@ public class FlyingEye_Melee : FlyingEye, IDmgable
     public void Die()
     {
         rgBody2D.constraints &= ~RigidbodyConstraints2D.FreezePositionY;
-
+        boxCollider2D.enabled = false;
         _isDeath = true;
     }
 
@@ -225,7 +240,7 @@ public class FlyingEye_Melee : FlyingEye, IDmgable
         _isDeath = false;
 
         rgBody2D.bodyType = RigidbodyType2D.Static;
-        boxCollider2D.enabled = false;
+        
         Debug.Log("Test");
 
         yield return new WaitForSeconds(2);
@@ -238,6 +253,8 @@ public class FlyingEye_Melee : FlyingEye, IDmgable
     private void AnimationTrigger() => enemyStateMachine.currentState.AnimationTrigger();
 
     private void AnimationFinishedTrigger() => enemyStateMachine.currentState.AnimationTriggerFinished();
+
+
 
 
     #endregion

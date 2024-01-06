@@ -8,5 +8,6 @@ public interface IDmgable
     public float maxHealth { get; set; }
     public float health { get; set; }
 
+    public void TakeDamage(float dmg,Transform tf);
     public void Die();
 }

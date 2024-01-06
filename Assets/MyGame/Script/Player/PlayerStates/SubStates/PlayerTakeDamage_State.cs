@@ -34,7 +34,6 @@ public class PlayerTakeDamage_State : PlayerState
         player.couroutine_Invulnerability = player.StartCoroutine(player.Invulnerability());
         player.KnockBack(playerData.knockOutX,playerData.knockOutY);
         player.SetBool_IsHurt(false);
-        Debug.Log("Enter takedamage");
     }
 
     public override void Exit()
@@ -59,7 +58,6 @@ public class PlayerTakeDamage_State : PlayerState
         }
         else if (isAnimationFinished)
         {
-            Debug.Log("idle");
             stateMachine.ChangeState(player.playerIdleState);
         }
     }

@@ -71,6 +71,8 @@ public class Player : MonoBehaviour, IDmgable
     [SerializeField] public Transform pointSpawnVFX;
     #endregion
 
+    [SerializeField] private GameObject test_vfx;
+
     #region Variable Component
 
     public Animator anim;
@@ -110,7 +112,7 @@ public class Player : MonoBehaviour, IDmgable
         spriteRerender = GetComponent<SpriteRenderer>();
 
         playerStateMachine.Initialize(playerIdleState);
-        
+
         health = maxHealth;
         facingDirection = 1;
         _isDeath = false;
@@ -223,7 +225,6 @@ public class Player : MonoBehaviour, IDmgable
     {
         if (couroutine_Invulnerability == null) return;
         StopCoroutine(couroutine_Invulnerability);
-        Debug.Log("Stop");  
         spriteRerender.color = Color.white;
         Physics2D.IgnoreLayerCollision(6, 8, false);
     }
@@ -236,10 +237,46 @@ public class Player : MonoBehaviour, IDmgable
         _isKnock = true;
     }
 
-    public void TakeDamage(float dmg)
+    public void TakeDamage(float dmg,Transform tf)
     {
-        health -= dmg;
+        bool defenseInput = playerInputHandler.defenseInput;
+
+        int playerFaceDirection = facingDirection;
+        Enemy enemy = tf.GetComponentInParent<Enemy>();
+        if(enemy == null)
+        {
+            enemy = tf.parent.parent.GetComponentInChildren<Enemy>();
+        }
+        int enemyFaceDirection = enemy.facingDirection;
+
+        float totalDamage;
+        if (defenseInput)
+        {
+            if (playerFaceDirection != enemyFaceDirection)
+            {
+                totalDamage = dmg * .8f;
+                SetBool_IsHurt(true);
+                health -= totalDamage;
+                if (health <= 0) { Die(); health = 0; }
+                return;
+            }
+            else
+            {
+                totalDamage = dmg;
+                SetBool_IsHurt(true);
+                health -= totalDamage;
+                if (health <= 0) { Die(); health = 0; }
+
+                playerStateMachine.ChangeState(playerTakeDamageState);
+                return;
+            }
+        }
+        totalDamage = dmg;
+        SetBool_IsHurt(true);
+        health -= totalDamage;
         if (health <= 0) { Die(); health = 0; }
+
+        Debug.Log("Hit Player Enter : " + enemy.gameObject.name);
     }
 
     public void Die()
@@ -262,6 +299,38 @@ public class Player : MonoBehaviour, IDmgable
 
 
 
+    #endregion
+
+    #region Attack State Functions
+    public IEnumerator AttackTimeScale()
+    {
+        float timeDelta = 0.1f;
+
+        while (timeDelta <= 1)
+        {
+
+
+            Time.timeScale = timeDelta;
+            timeDelta += Time.deltaTime * 4f;
+
+            yield return null;
+        }
+
+        Time.timeScale = 1;
+
+
+    }
+
+    public void VfxHitAttackFirst(Transform tf)
+    {
+        GameObject a = Instantiate(test_vfx, tf.position, Quaternion.identity);
+        StartCoroutine(DestroyObj(a));
+        IEnumerator DestroyObj(GameObject obj)
+        {
+            yield return new WaitForSeconds(1f);
+            Destroy(obj);
+        }
+    }
     #endregion
 
     #region Function Animation Trigger

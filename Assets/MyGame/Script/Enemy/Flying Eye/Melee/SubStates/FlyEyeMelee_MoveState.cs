@@ -31,7 +31,9 @@ public class FlyEyeMelee_MoveState : FlyingEyeMelee_AbilityState
     public override void Enter()
     {
         base.Enter();
-        flyingEye_Melee.rgBody2D.constraints = RigidbodyConstraints2D.FreezePositionY | RigidbodyConstraints2D.FreezeRotation;
+        flyingEye_Melee.rgBody2D.constraints = RigidbodyConstraints2D.FreezePositionY 
+            | RigidbodyConstraints2D.FreezeRotation
+            | RigidbodyConstraints2D.FreezePositionX;
     }
 
     public override void Exit()

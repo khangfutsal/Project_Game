@@ -37,8 +37,8 @@ public class FlyEyeMelee_TakeDamageState : EnemyState
         base.Enter();
 
         //dmg = GameController.GetInstance().player.GetInt_AttackDmg();
-        dmg = flyingEye_Melee.playerTf.GetComponent<Player>().GetInt_AttackDmg();
-        flyingEye_Melee.TakeDamage(dmg);
+        //dmg = flyingEye_Melee.playerTf.GetComponent<Player>().GetInt_AttackDmg();
+        //flyingEye_Melee.TakeDamage(dmg);
         flyingEye_Melee.SetBool_IsKnock(true);
 
     }
@@ -54,7 +54,6 @@ public class FlyEyeMelee_TakeDamageState : EnemyState
         _isKnock = flyingEye_Melee.GetBool_IsKnock();
         _isKnockAlready = flyingEye_Melee.GetBool_IsKnockAlready();
         _isDeath = flyingEye_Melee.GetBool_IsDeath();
-        Debug.Log("Death : " + _isDeath);
         if (_isDeath) stateMachine.ChangeState(flyingEye_Melee.flyEyeMelee_DeathState);
 
         if (_isKnock)

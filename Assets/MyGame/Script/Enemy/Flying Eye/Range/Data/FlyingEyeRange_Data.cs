@@ -6,8 +6,14 @@ using UnityEngine;
 public class FlyingEyeRange_Data : FlyingEyeData
 {
     [Range(0, 5)]
-    public float groundCheckRadius;
+    public float attackRadius;
 
     public LayerMask whatIsPlayer;
 
+    [Header("Attack State")]
+    public float delayAttack;
+
+    [Header("Grounded")]
+    public float groundCheckRadius = .3f;
+    public LayerMask whatIsGround;
 }

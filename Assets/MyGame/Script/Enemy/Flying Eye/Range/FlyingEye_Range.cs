@@ -4,6 +4,7 @@ using UnityEngine;
 
 public class FlyingEye_Range : FlyingEye, IDmgable
 {
+    #region State FlyingEye
     public EnemyStateMachine enemyStateMachine = new EnemyStateMachine();
 
     public FlyEyeRange_AttackState flyEyeRange_AttackState;
@@ -13,13 +14,16 @@ public class FlyingEye_Range : FlyingEye, IDmgable
 
     public FlyingEyeRange_Data flyingEyeRange_Data;
 
-
+    #endregion
 
     #region Variable Component
+
     [SerializeField] private Transform groundCheckTf;
     [SerializeField] private BoxCollider2D boxCollider2D;
-
     [SerializeField] private Transform hitboxTf;
+
+    public FlyEyeRange_Bullet bullet;
+
     private Object_Pool objPool;
     #endregion
 
@@ -29,16 +33,19 @@ public class FlyingEye_Range : FlyingEye, IDmgable
     [SerializeField] private float dmgAttack;
 
     private bool _isFlip;
-    private bool _isReturn;
     private bool _isDeath;
+    private bool _isFired;
     [field: SerializeField] public float maxHealth { get; set; }
     [field: SerializeField] public float health { get; set; }
+
+    public float test;
     #endregion
 
     #region Unity Method
 
     protected override void Awake()
     {
+
         rgBody2D = transform.GetComponent<Rigidbody2D>();
         boxCollider2D = transform.GetComponent<BoxCollider2D>();
         anim = gameObject.GetComponent<Animator>();
@@ -66,8 +73,10 @@ public class FlyingEye_Range : FlyingEye, IDmgable
     {
         if (Input.GetKeyDown(KeyCode.O))
         {
-            Destroy(transform.parent.gameObject);
+            anim.speed = test;
         }
+        float timeElapsed = anim.GetCurrentAnimatorStateInfo(0).length;
+        Debug.Log("timeElapsed : "+ timeElapsed);
         enemyStateMachine.currentState.LogicUpdate();
     }
 
@@ -81,28 +90,28 @@ public class FlyingEye_Range : FlyingEye, IDmgable
     //    Gizmos.DrawWireSphere(transform.position, flyingEyeMelee_Data.radAttack);
     //}
 
-    private void OnCollisionEnter2D(Collision2D collision)
-    {
-        if (collision.gameObject.CompareTag("Player"))
-        {
-            Debug.Log("Player is Attacked");
-            float dmg = GetFloat_DmgAttack();
+    //private void OnCollisionEnter2D(Collision2D collision)
+    //{
+    //    if (collision.gameObject.CompareTag("Player"))
+    //    {
+    //        Debug.Log("Player is Attacked");
+    //        float dmg = GetFloat_DmgAttack();
 
-            Player player = collision.gameObject.GetComponent<Player>();
-            player.SetBool_IsHurt(true);
-            player.TakeDamage(dmg);
-        }
-    }
+    //        Player player = collision.gameObject.GetComponent<Player>();
+    //        player.SetBool_IsHurt(true);
+    //        player.TakeDamage(dmg);
+    //    }
+    //}
     #endregion
 
     #region Check Functions
-    //public bool CheckIfGrounded()
-    //{
-    //    return Physics2D.OverlapCircle(groundCheckTf.position, flyingEyeMelee_Data.groundCheckRadius, flyingEyeMelee_Data.whatIsGround);
-    //}
+    public bool CheckIfGrounded()
+    {
+        return Physics2D.OverlapCircle(groundCheckTf.position, flyingEyeRange_Data.groundCheckRadius, flyingEyeRange_Data.whatIsGround);
+    }
     public bool CanAttack()
     {
-        Collider2D collider = Physics2D.OverlapCircle(transform.position, flyingEyeRange_Data.groundCheckRadius, flyingEyeRange_Data.whatIsPlayer);
+        Collider2D collider = Physics2D.OverlapCircle(transform.position, flyingEyeRange_Data.attackRadius, flyingEyeRange_Data.whatIsPlayer);
         if (collider != null)
         {
             return true;
@@ -116,61 +125,35 @@ public class FlyingEye_Range : FlyingEye, IDmgable
     public void SetBool_IsDeath(bool _bool) => _isDeath = _bool;
     public void SetBool_IsTakeDamage(bool _bool) => _isTakeDamage = _bool;
 
-    //public override void SetDefault_Moving()
-    //{
-    //    if (isBound) return;
+    public void SetBool_IsFired(bool _bool) => _isFired = _bool;
 
-    //    if (_isReturn && !isBound)
-    //    {
-    //        ReturnPosition();
-    //    }
-    //    else
-    //    {
-    //        if (Vector3.Distance(transform.position, endPos.position) < 0.001f)
-    //        {
-    //            Flip();
-    //        }
-    //        else if (Vector3.Distance(transform.position, startPos.position) < 0.001f)
-    //        {
-    //            Flip();
-    //        }
-    //        _target = _target == 1 ? 1 : 0;
-    //        _current = Mathf.MoveTowards(_current, _target, flyingEyeRange_Data.moveSpeed * Time.deltaTime);
-    //        transform.position = Vector3.Lerp((Vector2)startPos.position, (Vector2)endPos.position, _current);
-    //    }
 
-    //    void ReturnPosition()
-    //    {
-    //        CheckFlip(transform.position, startPos.position);
-    //        if (!_isFlip)
-    //        {
-    //            if (Mathf.Sign(startPos.position.x - transform.position.x) > 0)
-    //            {
-    //                Flip();
-    //                _isFlip = true;
-    //            }
-    //            else
-    //            {
-    //                Flip();
-    //                _isFlip = true;
-    //            }
-    //        }
-
-    //        transform.position = Vector3.MoveTowards(transform.position, startPos.position, Time.deltaTime * flyingEyeMelee_Data.moveSpeed * 5f);
-    //        if (Vector3.Distance(transform.position, startPos.position) < 0.001f)
-    //        {
-    //            _target = 1;
-    //            _current = 0;
-    //            _isReturn = false;
-    //        }
-
-    //    }
-    //}
-
-    public void TakeDamage(float dmg)
+    public void TakeDamage(float dmg,Transform tf)
     {
         health -= dmg;
+        _isTakeDamage = true;
+
+        Player player = tf.GetComponentInParent<Player>();
+        bool attackSecondAlready = player.GetBool_IsHitAttackSecond();
+        bool attackFinalAlready = player.GetBool_IsHitAttackFinal();
+        if (attackSecondAlready && player.GetComponent<SpriteRenderer>().sprite.name == "3_atk_9")
+        {
+            rgBody2D.constraints &= ~RigidbodyConstraints2D.FreezePositionX;
+            KnockBack(10, 0);
+            if (health <= 0) { Die(); health = 0; }
+            return;
+        }
+        if (attackFinalAlready && player.GetComponent<SpriteRenderer>().sprite.name == "3_atk_18")
+        {
+            rgBody2D.constraints &= ~RigidbodyConstraints2D.FreezePositionY;
+            KnockBack(0, 5);
+            StartCoroutine(player.AttackTimeScale());
+            if (health <= 0) { Die(); health = 0; }
+            return;
+        }
+        KnockBack(.5f, 0);
         if (health <= 0) { Die(); health = 0; }
+
     }
     #endregion
 
@@ -178,6 +161,7 @@ public class FlyingEye_Range : FlyingEye, IDmgable
     public float GetFloat_DmgAttack() => dmgAttack;
     public bool GetBool_IsDeath() => _isDeath;
     public bool GetBool_IsTakeDamage() => _isTakeDamage;
+    public bool GetBool_IsFired() => _isFired;
 
     #endregion
 
@@ -186,7 +170,6 @@ public class FlyingEye_Range : FlyingEye, IDmgable
     public override void MoveToPlayer()
     {
         CheckFlip(transform.position, playerTf.position);
-        _isReturn = true;
         // ------- Case1
         //float distance = Vector3.Distance(transform.position, playerTf.position);
         //float finalSpeed = (distance / flyingEyeMelee_Data.moveSpeed);                    
@@ -227,7 +210,7 @@ public class FlyingEye_Range : FlyingEye, IDmgable
     public void Die()
     {
         rgBody2D.constraints &= ~RigidbodyConstraints2D.FreezePositionY;
-
+        boxCollider2D.enabled = false;
         _isDeath = true;
     }
 
@@ -237,7 +220,6 @@ public class FlyingEye_Range : FlyingEye, IDmgable
         _isDeath = false;
 
         rgBody2D.bodyType = RigidbodyType2D.Static;
-        boxCollider2D.enabled = false;
         Debug.Log("Test");
 
         yield return new WaitForSeconds(2);
@@ -247,9 +229,21 @@ public class FlyingEye_Range : FlyingEye, IDmgable
     #endregion
 
     #region Attack State
+
+    public void StopFireBullet()
+    {
+        if (bullet == null) return;
+        else
+        {
+            bullet.StopFireBullet();
+            bullet.gameObject.SetActive(false);
+        }
+
+    }
     public void FireBullet()
     {
-        FlyEyeRange_Bullet bullet = objPool.GetBulletFromPool().GetComponent<FlyEyeRange_Bullet>();
+        bullet = objPool.GetBulletFromPool().GetComponent<FlyEyeRange_Bullet>();
+        Debug.Log(bullet.name);
         bullet.transform.position = hitboxTf.position;
         bullet.gameObject.SetActive(true);
         bullet.FireBullet();

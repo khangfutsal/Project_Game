@@ -19,8 +19,9 @@ public class FlyEyeRange_MoveState : FlyingEyeRange_AbilityState
     public override void Enter()
     {
         base.Enter();
-        Debug.Log("Range move");
-        flyingEye_Range.rgBody2D.constraints = RigidbodyConstraints2D.FreezePositionY | RigidbodyConstraints2D.FreezeRotation;
+        flyingEye_Range.rgBody2D.constraints = RigidbodyConstraints2D.FreezePositionY 
+            | RigidbodyConstraints2D.FreezeRotation 
+            | RigidbodyConstraints2D.FreezePositionX;
     }
 
     public override void LogicUpdate()

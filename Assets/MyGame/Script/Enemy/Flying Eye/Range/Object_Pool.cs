@@ -8,7 +8,7 @@ public class Object_Pool : MonoBehaviour
     [SerializeField] private Transform holderTf;
     private void Awake()
     {
-        holderTf = transform.Find("Holder");
+        holderTf = transform.parent.Find("Holder");
     }
     private void Start()
     {

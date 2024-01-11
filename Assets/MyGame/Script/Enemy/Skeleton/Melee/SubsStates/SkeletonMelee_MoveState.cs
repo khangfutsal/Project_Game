@@ -5,6 +5,7 @@ using UnityEngine;
 public class SkeletonMelee_MoveState : SkeletonMelee_AbilityState
 {
     private bool canAttack;
+    private bool useDecisionNextState;
     public SkeletonMelee_MoveState(Enemy enemy, EnemyStateMachine stateMachine, EnemyData enemyData, string animName) : base(enemy, stateMachine, enemyData, animName)
     {
     }
@@ -13,19 +14,26 @@ public class SkeletonMelee_MoveState : SkeletonMelee_AbilityState
     {
         base.DoChecks();
         canAttack = skeleton_Melee.CanAttack();
+
+        useDecisionNextState = skeleton_Melee.useDecisionNextState;
     }
 
     public override void Enter()
     {
         base.Enter();
+
     }
 
     public override void LogicUpdate()
     {
         base.LogicUpdate();
+
         if (canAttack)
         {
-            stateMachine.ChangeState(skeleton_Melee.skeletonMelee_Attack);
+            if (!useDecisionNextState)
+            {
+                skeleton_Melee.DecisionNextState();
+            }
         }
     }
 

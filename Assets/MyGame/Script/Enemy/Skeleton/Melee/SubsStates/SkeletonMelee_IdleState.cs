@@ -5,7 +5,6 @@ using UnityEngine;
 public class SkeletonMelee_IdleState : SkeletonMelee_AbilityState
 {
     private bool isBound;
-    private bool canAttack;
     private float timeDelay = 1f;
     public SkeletonMelee_IdleState(Enemy enemy, EnemyStateMachine stateMachine, EnemyData enemyData, string animName) : base(enemy, stateMachine, enemyData, animName)
     {
@@ -19,13 +18,14 @@ public class SkeletonMelee_IdleState : SkeletonMelee_AbilityState
     public override void Enter()
     {
         base.Enter();
+        skeleton_Melee.rgBody2D.constraints &= ~RigidbodyConstraints2D.FreezePositionY;
+        skeleton_Melee.transform.tag = "Enemy";
     }
 
     public override void LogicUpdate()
     {
         base.LogicUpdate();
         isBound = skeleton_Melee.isBound;
-
         if (isBound && Time.time >= startTime + timeDelay)
         {
             stateMachine.ChangeState(skeleton_Melee.skeletonMelee_Move);

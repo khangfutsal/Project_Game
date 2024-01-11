@@ -40,7 +40,6 @@ public class FlyEyeMelee_TakeDamageState : EnemyState
         //dmg = flyingEye_Melee.playerTf.GetComponent<Player>().GetInt_AttackDmg();
         //flyingEye_Melee.TakeDamage(dmg);
         flyingEye_Melee.SetBool_IsKnock(true);
-
     }
 
     public override void Exit()

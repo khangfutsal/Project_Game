@@ -72,12 +72,14 @@ public class Player : MonoBehaviour, IDmgable
     #endregion
 
     [SerializeField] private GameObject test_vfx;
+    [SerializeField] private GameObject GroundedCracks;
 
     #region Variable Component
 
     public Animator anim;
     [SerializeField] public SpriteRenderer spriteRerender;
     [SerializeField] private Rigidbody2D RgBody2D;
+    private Collider2D playerCollider;
     #endregion
 
     #region Attack Variable
@@ -102,6 +104,8 @@ public class Player : MonoBehaviour, IDmgable
         playerAttackThirdState = new PlayerAttackThird(this, playerStateMachine, playerData, "attack3");
         playerAttackInAirState = new PlayerAttackInAirState(this, playerStateMachine, playerData, "attackAir");
 
+        playerCollider = GetComponent<Collider2D>();
+
         _ins = this;
     }
     private void Start()
@@ -112,7 +116,7 @@ public class Player : MonoBehaviour, IDmgable
         spriteRerender = GetComponent<SpriteRenderer>();
 
         playerStateMachine.Initialize(playerIdleState);
-
+        Physics2D.IgnoreLayerCollision(LayerMask.NameToLayer("PlayerGhost"), 8, true);
         health = maxHealth;
         facingDirection = 1;
         _isDeath = false;
@@ -121,11 +125,10 @@ public class Player : MonoBehaviour, IDmgable
 
     private void Update()
     {
+        
         if (Input.GetKeyDown(KeyCode.B))
         {
-            SetVelocityX(0);
-            //SceneManager.LoadScene("Khang");
-            //Time.timeScale = 1;
+
 
         }
         currentVelocity = RgBody2D.velocity;
@@ -137,6 +140,19 @@ public class Player : MonoBehaviour, IDmgable
     {
         playerStateMachine.currentState.PhysicsUpdate();
     }
+
+    //private void OnCollisionStay2D(Collision2D collision)
+    //{
+    //    if (collision.collider.CompareTag("Enemy"))
+    //    {
+    //        Debug.Log("stay : " + collision.gameObject.name);
+
+    //        playerCollider.gameObject.layer = LayerMask.NameToLayer("PlayerGhost");
+    //    }
+    //}
+
+
+   
 
     #endregion
 
@@ -237,13 +253,13 @@ public class Player : MonoBehaviour, IDmgable
         _isKnock = true;
     }
 
-    public void TakeDamage(float dmg,Transform tf)
+    public void TakeDamage(float dmg, Transform tf)
     {
         bool defenseInput = playerInputHandler.defenseInput;
 
         int playerFaceDirection = facingDirection;
         Enemy enemy = tf.GetComponentInParent<Enemy>();
-        if(enemy == null)
+        if (enemy == null)
         {
             enemy = tf.parent.parent.GetComponentInChildren<Enemy>();
         }
@@ -276,7 +292,7 @@ public class Player : MonoBehaviour, IDmgable
         health -= totalDamage;
         if (health <= 0) { Die(); health = 0; }
 
-        Debug.Log("Hit Player Enter : " + enemy.gameObject.name);
+        //Debug.Log("Hit Player Enter : " + enemy.gameObject.name);
     }
 
     public void Die()

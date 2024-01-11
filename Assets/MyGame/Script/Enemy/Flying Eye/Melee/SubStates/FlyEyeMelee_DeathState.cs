@@ -33,8 +33,7 @@ public class FlyEyeMelee_DeathState : EnemyState
     public override void LogicUpdate()
     {
         base.LogicUpdate();
-        if (isGrounded) {
-            Debug.Log("Grounded");
+        if (isAnimationFinished) {
             flyingEyeMelee.StartCoroutine(flyingEyeMelee.DestroyObject());
         }
         

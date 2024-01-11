@@ -26,7 +26,7 @@ public class EnemyMelee_HitBox : MonoBehaviour
             {
                 dmg = skeleton.GetFloat_DmgAttack();
             }
-            Debug.Log("type : " + enemy.GetType());
+            //Debug.Log("type : " + enemy.GetType());
             IDmgable damageable = collision.GetComponent<IDmgable>();
             
             if (damageable != null)

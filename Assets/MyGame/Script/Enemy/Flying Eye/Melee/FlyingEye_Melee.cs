@@ -230,7 +230,7 @@ public class FlyingEye_Melee : FlyingEye, IDmgable
     public void Die()
     {
         rgBody2D.constraints &= ~RigidbodyConstraints2D.FreezePositionY;
-        boxCollider2D.enabled = false;
+        transform.tag = "Untagged";
         _isDeath = true;
     }
 
@@ -238,10 +238,6 @@ public class FlyingEye_Melee : FlyingEye, IDmgable
     {
         if (!_isDeath) yield break;
         _isDeath = false;
-
-        rgBody2D.bodyType = RigidbodyType2D.Static;
-        
-        Debug.Log("Test");
 
         yield return new WaitForSeconds(2);
         Destroy(transform.parent.gameObject);

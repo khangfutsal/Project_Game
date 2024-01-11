@@ -24,6 +24,8 @@ public class PlayerData : ScriptableObject
     public float groundCheckRadius = .3f;
     public LayerMask whatIsGround;
 
+    [Header("LayerMask Player")]
+    public LayerMask playerDefaultLayer;
+    public LayerMask playerGhostLayer;
 
-    
 }

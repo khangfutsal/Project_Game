@@ -14,6 +14,7 @@ public class Skeleton_Melee : Skeleton, IDmgable
     public SkeletonMelee_TakeDamageState skeletonMelee_TakeDamage;
     public SkeletonMelee_DeathState skeletonMelee_Death;
     public SkeletonMelee_Defense skeletonMelee_Defense;
+    public SkeletonMelee_ReviveState skeletonMelee_Revive;
 
     public SkeletonMelee_Data skeletonMelee_Data;
 
@@ -21,6 +22,7 @@ public class Skeleton_Melee : Skeleton, IDmgable
     #region Variable Component
     [SerializeField] private Transform groundCheckTf;
     [SerializeField] private BoxCollider2D boxCollider2D;
+
     #endregion
 
     #region Other Variables
@@ -29,10 +31,13 @@ public class Skeleton_Melee : Skeleton, IDmgable
     [SerializeField] private float dmgAttack;
 
     private bool _isFlip;
-    private bool _isReturn;
+    private bool _isDefense;
     private bool _isDeath;
+
+    public bool useDecisionNextState;
     [field: SerializeField] public float maxHealth { get; set; }
     [field: SerializeField] public float health { get; set; }
+    [SerializeField] private GameObject groundedCracks;
     #endregion
 
 
@@ -50,12 +55,13 @@ public class Skeleton_Melee : Skeleton, IDmgable
         skeletonMelee_TakeDamage = new SkeletonMelee_TakeDamageState(this, enemyStateMachine, skeletonMelee_Data, "takedamage");
         skeletonMelee_Death = new SkeletonMelee_DeathState(this, enemyStateMachine, skeletonMelee_Data, "death");
         skeletonMelee_Defense = new SkeletonMelee_Defense(this, enemyStateMachine, skeletonMelee_Data, "defense");
+        skeletonMelee_Revive = new SkeletonMelee_ReviveState(this, enemyStateMachine, skeletonMelee_Data, "revive");
 
     }
 
     private void Start()
     {
-        enemyStateMachine.Initialize(skeletonMelee_Idle);
+        enemyStateMachine.Initialize(skeletonMelee_Revive);
 
         facingDirection = 1;
         _target = 1;
@@ -67,17 +73,30 @@ public class Skeleton_Melee : Skeleton, IDmgable
     {
         if (Input.GetKeyDown(KeyCode.O))
         {
-            Destroy(transform.parent.gameObject);
+            Debug.Log("1");
+            //Instantiate(transform, groundedCracks.transform.position, Quaternion.identity);
+            enemyStateMachine.Initialize(skeletonMelee_Revive);
         }
+        if (Input.GetKeyDown(KeyCode.P))
+        {
+            Debug.Log("1");
+            //Instantiate(transform, groundedCracks.transform.position, Quaternion.identity);
+            enemyStateMachine.Initialize(skeletonMelee_Idle);
+        }
+        if (enemyStateMachine.currentState == null) return;
+
         enemyStateMachine.currentState.LogicUpdate();
     }
 
     private void FixedUpdate()
     {
+        if (enemyStateMachine.currentState == null) return;
         enemyStateMachine.currentState.PhysicsUpdate();
     }
 
-#endregion
+
+
+    #endregion
 
     #region Check Functions
     public bool CheckIfGrounded()
@@ -89,15 +108,36 @@ public class Skeleton_Melee : Skeleton, IDmgable
     #endregion
 
     #region Set Functions
+    public void SetBool_IsDefense(bool _bool) => _isDefense = _bool;
     public void SetBool_IsDeath(bool _bool) => _isDeath = _bool;
     public void SetBool_IsTakeDamage(bool _bool) => _isTakeDamage = _bool;
-
-    public void TakeDamage(float dmg,Transform tf)
+    #endregion
+    public void TakeDamage(float dmg, Transform tf)
     {
-        health -= dmg;
         _isTakeDamage = true;
 
-        Player player = tf.GetComponent<Player>();
+        //----
+        float totalDamage = dmg;
+        Player player = tf.GetComponentInParent<Player>();
+
+        float playerFacingDirection = player.facingDirection;
+        if (_isDefense)
+        {
+            if (facingDirection != playerFacingDirection)
+            {
+                totalDamage = dmg * .8f;
+                health -= totalDamage;
+            }
+            else
+            {
+                health -= totalDamage;
+                enemyStateMachine.ChangeState(skeletonMelee_TakeDamage);
+            }
+        }
+        else
+        {
+            health -= totalDamage;
+        }
         bool attackSecondAlready = player.GetBool_IsHitAttackSecond();
         bool attackFinalAlready = player.GetBool_IsHitAttackFinal();
         if (attackSecondAlready && player.GetComponent<SpriteRenderer>().sprite.name == "3_atk_9")
@@ -119,10 +159,11 @@ public class Skeleton_Melee : Skeleton, IDmgable
         KnockBack(.5f, 0);
         if (health <= 0) { Die(); health = 0; }
     }
-    #endregion
+
 
     #region Get Functions
     public float GetFloat_DmgAttack() => dmgAttack;
+    public bool GetBool_IsDefense() => _isDefense;
     public bool GetBool_IsDeath() => _isDeath;
     public bool GetBool_IsTakeDamage() => _isTakeDamage;
 
@@ -130,10 +171,36 @@ public class Skeleton_Melee : Skeleton, IDmgable
 
     #region Other Functions
 
+    public void DecisionNextState()
+    {
+        useDecisionNextState = true;
+
+        float randomValue = Random.value;
+        if (randomValue < 0.3f)
+        {
+            SwitchDef_State();
+        }
+        else
+        {
+            SwitchAttack_State();
+        }
+    }
+
+    public void SwitchDef_State()
+    {
+        useDecisionNextState = false;
+        enemyStateMachine.ChangeState(skeletonMelee_Defense);
+    }
+
+    public void SwitchAttack_State()
+    {
+        useDecisionNextState = false;
+        enemyStateMachine.ChangeState(skeletonMelee_Attack);
+    }
+
     public override void MoveToPlayer()
     {
         CheckFlip(transform.position, playerTf.position);
-        _isReturn = true;
 
         transform.position = Vector3.MoveTowards(transform.position, playerTf.position, Time.deltaTime * skeletonMelee_Data.moveSpeed * 5f);
 
@@ -162,15 +229,19 @@ public class Skeleton_Melee : Skeleton, IDmgable
             }
         }
     }
-    
 
+    public IEnumerator DelayToIdleState()
+    {
+        yield return new WaitForSeconds(1);
+        enemyStateMachine.ChangeState(skeletonMelee_Idle);
+    }
     #endregion
 
     #region Death State
     public void Die()
     {
         rgBody2D.constraints &= ~RigidbodyConstraints2D.FreezePositionY;
-        boxCollider2D.enabled = false;
+        transform.tag = "Untagged";
         _isDeath = true;
     }
 
@@ -179,14 +250,17 @@ public class Skeleton_Melee : Skeleton, IDmgable
         if (!_isDeath) yield break;
         _isDeath = false;
 
-        rgBody2D.bodyType = RigidbodyType2D.Static;
-
-        Debug.Log("Test");
-
         yield return new WaitForSeconds(2);
         Destroy(transform.parent.gameObject);
     }
 
+    #endregion
+
+    #region Defense State
+    public float DefenseHoldTime(float from, float to)
+    {
+        return UnityEngine.Random.Range(from, to);
+    }
     #endregion
 
     #region Animation Trigger

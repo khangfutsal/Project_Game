@@ -58,6 +58,7 @@ public abstract class Enemy : MonoBehaviour
     {
         Player player = playerTf.GetComponent<Player>();
         int facing = player.facingDirection;
+        _isKnock = true;
         rgBody2D.velocity = new Vector2(KnockOutX * facing, KnockOutY);
     }
 

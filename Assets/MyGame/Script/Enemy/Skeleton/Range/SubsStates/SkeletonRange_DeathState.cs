@@ -2,17 +2,44 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class SkeletonRange_DeathState : MonoBehaviour
+public class SkeletonRange_DeathState : EnemyState
 {
-    // Start is called before the first frame update
-    void Start()
+    private Skeleton_Range skeleton_Range;
+    private bool _isGrounded;
+    public SkeletonRange_DeathState(Enemy enemy, EnemyStateMachine stateMachine, EnemyData enemyData, string animName) : base(enemy, stateMachine, enemyData, animName)
     {
-        
+        skeleton_Range = (Skeleton_Range)enemy;
     }
 
-    // Update is called once per frame
-    void Update()
+    public override void DoChecks()
     {
-        
+        base.DoChecks();
+        _isGrounded = skeleton_Range.CheckIfGrounded();
+    }
+
+    public override void Enter()
+    {
+        base.Enter();
+        skeleton_Range.SetVelocityX(0);
+    }
+
+    public override void Exit()
+    {
+        base.Exit();
+    }
+
+    public override void LogicUpdate()
+    {
+        base.LogicUpdate();
+        if (_isGrounded)
+        {
+            Debug.Log("Grounded");
+            skeleton_Range.StartCoroutine(skeleton_Range.DestroyObject());
+        }
+    }
+
+    public override void PhysicsUpdate()
+    {
+        base.PhysicsUpdate();
     }
 }

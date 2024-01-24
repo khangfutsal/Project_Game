@@ -9,7 +9,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 449249046}
-  m_Layer: 3
+  m_Layer: 8
   m_Name: GroundCheck
   m_TagString: Untagged
   m_Icon: {fileID: 3306451490063965843, guid: 0000000000000000d000000000000000, type: 0}
@@ -162,7 +162,6 @@ GameObject:
   - component: {fileID: 7059878366342089858}
   - component: {fileID: 7059878366342089869}
   - component: {fileID: 7059878366342089868}
-  - component: {fileID: 7059878366342089859}
   m_Layer: 8
   m_Name: HitBox
   m_TagString: Untagged
@@ -222,19 +221,6 @@ Rigidbody2D:
   m_SleepingMode: 0
   m_CollisionDetection: 1
   m_Constraints: 7
---- !u!114 &7059878366342089859
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 7059878366342089857}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 29e7aa91fe6568442a496de93b67884f, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  circleCollider2D: {fileID: 0}
 --- !u!1 &7059878366942639784
 GameObject:
   m_ObjectHideFlags: 0
@@ -246,11 +232,11 @@ GameObject:
   - component: {fileID: 7059878366942639785}
   m_Layer: 8
   m_Name: FlyRange
-  m_TagString: Enemy
+  m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &7059878366942639785
 Transform:
   m_ObjectHideFlags: 0
@@ -299,7 +285,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 7059878367595993207}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 11.85, y: 0.42, z: 0}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -398,12 +384,9 @@ MonoBehaviour:
       serializedVersion: 2
       m_Bits: 8
   groundCheckTf: {fileID: 449249046}
-  boxCollider2D: {fileID: 0}
   hitboxTf: {fileID: 7059878366342089858}
-  bullet: {fileID: 0}
-  _isTakeDamage: 0
   dmgAttack: 5
-  <maxHealth>k__BackingField: 3
+  <maxHealth>k__BackingField: 100
   <health>k__BackingField: 0
   test: 0
 --- !u!114 &7059878367595993215
@@ -477,24 +460,14 @@ CompositeCollider2D:
   m_Enabled: 1
   m_Density: 1
   m_Material: {fileID: 0}
-  m_IsTrigger: 0
+  m_IsTrigger: 1
   m_UsedByEffector: 0
   m_UsedByComposite: 0
   m_Offset: {x: 0, y: 0}
   m_GeometryType: 0
   m_GenerationType: 0
   m_EdgeRadius: 0
-  m_ColliderPaths:
-  - m_Collider: {fileID: 7059878367595993202}
-    m_ColliderPaths:
-    - - X: 4150495
-        Y: 2774982
-      - X: -2468338
-        Y: 2774982
-      - X: -2468338
-        Y: -2124178
-      - X: 4150495
-        Y: -2124178
+  m_ColliderPaths: []
   m_CompositePaths:
     m_Paths:
     - - {x: 0.4150202, y: -0.2124178}

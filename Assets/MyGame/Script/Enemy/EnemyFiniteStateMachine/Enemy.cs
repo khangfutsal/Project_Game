@@ -4,28 +4,32 @@ using UnityEngine;
 
 public abstract class Enemy : MonoBehaviour
 {
-    public Animator anim;
+    [HideInInspector] public Animator anim;
     public EnemyData enemyData;
-    public Transform playerTf;
+    [HideInInspector] public Transform playerTf;
 
-    public int facingDirection;
+    [HideInInspector] public int facingDirection;
+
     protected float _target;
 
-    public bool isBound;
-    public bool _isKnock;
-    public bool _isKnockAlready;
+    [HideInInspector] public bool isBound;
+    [HideInInspector] public bool _isKnock;
+    [HideInInspector] public bool _isKnockAlready;
 
-    public Vector2 workspace;
+    [HideInInspector] public Vector2 workspace;
 
+   
 
+    
 
     #region Variable Component
+    [HideInInspector]
     [SerializeField] public Rigidbody2D rgBody2D;
     #endregion
 
     protected virtual void Awake()
     {
-        
+
     }
 
     #region Set Function
@@ -52,14 +56,15 @@ public abstract class Enemy : MonoBehaviour
         transform.Rotate(0.0f, 180f, 0.0f);
     }
 
-
-
     public void KnockBack(float KnockOutX, float KnockOutY)
     {
         Player player = playerTf.GetComponent<Player>();
         int facing = player.facingDirection;
+
         _isKnock = true;
+
         rgBody2D.velocity = new Vector2(KnockOutX * facing, KnockOutY);
+        Debug.Log("Function knock back : " + rgBody2D.velocity);
     }
 
     public void SetVelocityX(float velocity)
@@ -72,7 +77,7 @@ public abstract class Enemy : MonoBehaviour
     }
 
 
-    public abstract void MoveToPlayer();
+    public abstract void Chase();
 
     #endregion
 }

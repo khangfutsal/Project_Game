@@ -16,15 +16,21 @@ public class FlyingEye_Melee : FlyingEye, IDmgable
 
 
     #region Variable Component
-    [SerializeField] private Transform groundCheckTf;
-    [SerializeField] private BoxCollider2D boxCollider2D;
+
+    private BoxCollider2D boxCollider2D;
     #endregion
 
+    #region Transform Obj
+    [SerializeField] private Transform groundCheckTf;
+
+    #endregion
+
+
     #region Other Variables
-    [SerializeField] private bool _isTakeDamage;
     [Header("Damage Attack FlyingEye Melee")]
     [SerializeField] private float dmgAttack;
 
+    private bool _isTakeDamage;
     private bool _isFlip;
     private bool _isReturn;
     private bool _isDeath;
@@ -66,7 +72,6 @@ public class FlyingEye_Melee : FlyingEye, IDmgable
             anim.speed = test;
         }
         float timeElapsed = anim.GetCurrentAnimatorStateInfo(0).length;
-        Debug.Log(timeElapsed);
         enemyStateMachine.currentState.LogicUpdate();
     }
 
@@ -119,8 +124,8 @@ public class FlyingEye_Melee : FlyingEye, IDmgable
         }
 
         #region  
-        void ReturnPosition() 
-            #endregion
+        void ReturnPosition()
+        #endregion
         {
             CheckFlip(transform.position, startPos.position);
             if (!_isFlip)
@@ -148,7 +153,7 @@ public class FlyingEye_Melee : FlyingEye, IDmgable
         }
     }
 
-    public void TakeDamage(float dmg,Transform tf)
+    public void TakeDamage(float dmg, Transform tf = null)
     {
         health -= dmg;
         _isTakeDamage = true;
@@ -186,7 +191,7 @@ public class FlyingEye_Melee : FlyingEye, IDmgable
 
     #region Other Functions
 
-    public override void MoveToPlayer()
+    public override void Chase()
     {
         CheckFlip(transform.position, playerTf.position);
         _isReturn = true;
@@ -238,6 +243,9 @@ public class FlyingEye_Melee : FlyingEye, IDmgable
     {
         if (!_isDeath) yield break;
         _isDeath = false;
+
+        rgBody2D.bodyType = RigidbodyType2D.Static;
+        Debug.Log("Test");
 
         yield return new WaitForSeconds(2);
         Destroy(transform.parent.gameObject);

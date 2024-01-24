@@ -16,8 +16,8 @@ TagManager:
   - Player
   - BoundEnemy
   - Enemy
-  - PlayerGhost
-  - 
+  - ColliderEnvironment
+  - Raycast
   - 
   - 
   - 

@@ -32,7 +32,7 @@ public class FlyEyeRange_MoveState : FlyingEyeRange_AbilityState
 
         if (isBound && Time.time >= startTime + timeDelay)
         {
-            flyingEye_Range.MoveToPlayer();
+            flyingEye_Range.Chase();
             if (canAttack)
             {
                 stateMachine.ChangeState(flyingEye_Range.flyEyeRange_AttackState);

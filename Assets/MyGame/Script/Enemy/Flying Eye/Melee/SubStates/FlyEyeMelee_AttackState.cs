@@ -4,8 +4,7 @@ using UnityEngine;
 
 public class FlyEyeMelee_AttackState : FlyingEyeMelee_AbilityState
 {
-    private bool isBound;
-    private bool canAttack;
+
     public FlyEyeMelee_AttackState(Enemy enemy, EnemyStateMachine stateMachine, EnemyData enemyData, string animName) : base(enemy, stateMachine, enemyData, animName)
     {
         
@@ -24,7 +23,6 @@ public class FlyEyeMelee_AttackState : FlyingEyeMelee_AbilityState
     public override void DoChecks()
     {
         base.DoChecks();
-        canAttack = flyingEye_Melee.CanAttack();
 
     }
 
@@ -41,16 +39,8 @@ public class FlyEyeMelee_AttackState : FlyingEyeMelee_AbilityState
     public override void LogicUpdate()
     {
         base.LogicUpdate();
-        isBound = flyingEye_Melee.isBound;
-
-        if (!isBound)
-        {
-            stateMachine.ChangeState(flyingEye_Melee.flyEyeMelee_MoveState);
-        }
-        else if (!canAttack)
-        {
-            stateMachine.ChangeState(flyingEye_Melee.flyEyeMelee_MoveState);
-        }
+        if (isAnimationFinished) stateMachine.ChangeState(flyingEye_Melee.flyEyeMelee_MoveState);
+       
 
     }
 

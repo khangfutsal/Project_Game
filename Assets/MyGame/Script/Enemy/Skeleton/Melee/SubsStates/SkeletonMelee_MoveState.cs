@@ -15,7 +15,7 @@ public class SkeletonMelee_MoveState : SkeletonMelee_AbilityState
         base.DoChecks();
         canAttack = skeleton_Melee.CanAttack();
 
-        useDecisionNextState = skeleton_Melee.useDecisionNextState;
+        useDecisionNextState = skeleton_Melee.GetBool_DecisionNextState();
     }
 
     public override void Enter()
@@ -40,6 +40,6 @@ public class SkeletonMelee_MoveState : SkeletonMelee_AbilityState
     public override void PhysicsUpdate()
     {
         base.PhysicsUpdate();
-        skeleton_Melee.MoveToPlayer();
+        skeleton_Melee.Chase();
     }
 }

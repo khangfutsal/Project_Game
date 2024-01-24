@@ -4,7 +4,6 @@ using UnityEngine;
 
 public class Skeleton_Melee : Skeleton, IDmgable
 {
-
     #region State Skeleton
     public EnemyStateMachine enemyStateMachine = new EnemyStateMachine();
 
@@ -16,37 +15,43 @@ public class Skeleton_Melee : Skeleton, IDmgable
     public SkeletonMelee_Defense skeletonMelee_Defense;
     public SkeletonMelee_ReviveState skeletonMelee_Revive;
 
+    [Header("Properties")]
+    [Space()]
     public SkeletonMelee_Data skeletonMelee_Data;
+
+
+    #region Other Variables
+    [Header("Damage Attack FlyingEye Melee")]
+    [SerializeField] private float dmgAttack;
+
+    private bool _isTakeDamage;
+    private bool _isFlip;
+    private bool _isDefense;
+    private bool _isDeath;
+    private bool _useDecisionNextState;
+
+    
+    [field: SerializeField] public float maxHealth { get; set; }
+    [field: SerializeField] public float health { get; set; }
+    #endregion
+
 
     #endregion
     #region Variable Component
     [SerializeField] private Transform groundCheckTf;
-    [SerializeField] private BoxCollider2D boxCollider2D;
+    
+    private BoxCollider2D boxCollider2D;
 
     #endregion
 
-    #region Other Variables
-    [SerializeField] private bool _isTakeDamage;
-    [Header("Damage Attack FlyingEye Melee")]
-    [SerializeField] private float dmgAttack;
-
-    private bool _isFlip;
-    private bool _isDefense;
-    private bool _isDeath;
-
-    public bool useDecisionNextState;
-    [field: SerializeField] public float maxHealth { get; set; }
-    [field: SerializeField] public float health { get; set; }
-    [SerializeField] private GameObject groundedCracks;
-    #endregion
 
 
     #region Unity Method
     private void Awake()
     {
-        rgBody2D = transform.GetComponent<Rigidbody2D>();
+        rgBody2D = transform.parent.GetComponentInChildren<Rigidbody2D>();
         boxCollider2D = transform.GetComponent<BoxCollider2D>();
-        anim = gameObject.GetComponent<Animator>();
+        anim = transform.GetComponentInChildren<Animator>();
         playerTf = GameObject.Find("BonzePlayer").transform;
 
         skeletonMelee_Idle = new SkeletonMelee_IdleState(this, enemyStateMachine, skeletonMelee_Data, "idle");
@@ -73,24 +78,20 @@ public class Skeleton_Melee : Skeleton, IDmgable
     {
         if (Input.GetKeyDown(KeyCode.O))
         {
-            Debug.Log("1");
-            //Instantiate(transform, groundedCracks.transform.position, Quaternion.identity);
-            enemyStateMachine.Initialize(skeletonMelee_Revive);
+            KnockBack(10, 0);
         }
         if (Input.GetKeyDown(KeyCode.P))
         {
-            Debug.Log("1");
-            //Instantiate(transform, groundedCracks.transform.position, Quaternion.identity);
-            enemyStateMachine.Initialize(skeletonMelee_Idle);
+            KnockBack(0, 5);
         }
-        if (enemyStateMachine.currentState == null) return;
+        //if (enemyStateMachine.currentState == null) return;
 
         enemyStateMachine.currentState.LogicUpdate();
     }
 
     private void FixedUpdate()
     {
-        if (enemyStateMachine.currentState == null) return;
+        //if (enemyStateMachine.currentState == null) return;
         enemyStateMachine.currentState.PhysicsUpdate();
     }
 
@@ -108,15 +109,24 @@ public class Skeleton_Melee : Skeleton, IDmgable
     #endregion
 
     #region Set Functions
+    public void SetBool_DecisionNextState(bool _bool) => _useDecisionNextState = _bool;
     public void SetBool_IsDefense(bool _bool) => _isDefense = _bool;
     public void SetBool_IsDeath(bool _bool) => _isDeath = _bool;
     public void SetBool_IsTakeDamage(bool _bool) => _isTakeDamage = _bool;
     #endregion
-    public void TakeDamage(float dmg, Transform tf)
+
+    #region Get Functions
+    public bool GetBool_DecisionNextState() => _useDecisionNextState;
+    public float GetFloat_DmgAttack() => dmgAttack;
+    public bool GetBool_IsDefense() => _isDefense;
+    public bool GetBool_IsDeath() => _isDeath;
+    public bool GetBool_IsTakeDamage() => _isTakeDamage;
+
+    #endregion
+    public void TakeDamage(float dmg, Transform tf = null)
     {
         _isTakeDamage = true;
 
-        //----
         float totalDamage = dmg;
         Player player = tf.GetComponentInParent<Player>();
 
@@ -142,8 +152,8 @@ public class Skeleton_Melee : Skeleton, IDmgable
         bool attackFinalAlready = player.GetBool_IsHitAttackFinal();
         if (attackSecondAlready && player.GetComponent<SpriteRenderer>().sprite.name == "3_atk_9")
         {
-            KnockBack(10, 0);
             rgBody2D.constraints &= ~RigidbodyConstraints2D.FreezePositionX;
+            KnockBack(10, 0);
             if (health <= 0) { Die(); health = 0; }
             return;
         }
@@ -161,19 +171,13 @@ public class Skeleton_Melee : Skeleton, IDmgable
     }
 
 
-    #region Get Functions
-    public float GetFloat_DmgAttack() => dmgAttack;
-    public bool GetBool_IsDefense() => _isDefense;
-    public bool GetBool_IsDeath() => _isDeath;
-    public bool GetBool_IsTakeDamage() => _isTakeDamage;
 
-    #endregion
 
     #region Other Functions
 
     public void DecisionNextState()
     {
-        useDecisionNextState = true;
+        _useDecisionNextState = true;
 
         float randomValue = Random.value;
         if (randomValue < 0.3f)
@@ -188,25 +192,25 @@ public class Skeleton_Melee : Skeleton, IDmgable
 
     public void SwitchDef_State()
     {
-        useDecisionNextState = false;
+        _useDecisionNextState = false;
         enemyStateMachine.ChangeState(skeletonMelee_Defense);
     }
 
     public void SwitchAttack_State()
     {
-        useDecisionNextState = false;
+        _useDecisionNextState = false;
         enemyStateMachine.ChangeState(skeletonMelee_Attack);
     }
 
-    public override void MoveToPlayer()
+    public override void Chase()
     {
-        CheckFlip(transform.position, playerTf.position);
+        CheckFlip(transform.parent.position, playerTf.position);
 
-        transform.position = Vector3.MoveTowards(transform.position, playerTf.position, Time.deltaTime * skeletonMelee_Data.moveSpeed * 5f);
+        transform.parent.position = Vector3.MoveTowards(transform.parent.position, playerTf.position, Time.deltaTime * skeletonMelee_Data.moveSpeed * 5f);
 
         if (!_isFlip)
         {
-            if (Mathf.Sign(transform.position.x - playerTf.position.x) > 0)
+            if (Mathf.Sign(transform.parent.position.x - playerTf.position.x) > 0)
             {
                 Flip();
                 _isFlip = true;

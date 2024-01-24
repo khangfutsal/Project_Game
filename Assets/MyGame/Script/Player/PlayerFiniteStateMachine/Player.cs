@@ -116,7 +116,6 @@ public class Player : MonoBehaviour, IDmgable
         spriteRerender = GetComponent<SpriteRenderer>();
 
         playerStateMachine.Initialize(playerIdleState);
-        Physics2D.IgnoreLayerCollision(LayerMask.NameToLayer("PlayerGhost"), 8, true);
         health = maxHealth;
         facingDirection = 1;
         _isDeath = false;
@@ -140,19 +139,6 @@ public class Player : MonoBehaviour, IDmgable
     {
         playerStateMachine.currentState.PhysicsUpdate();
     }
-
-    //private void OnCollisionStay2D(Collision2D collision)
-    //{
-    //    if (collision.collider.CompareTag("Enemy"))
-    //    {
-    //        Debug.Log("stay : " + collision.gameObject.name);
-
-    //        playerCollider.gameObject.layer = LayerMask.NameToLayer("PlayerGhost");
-    //    }
-    //}
-
-
-   
 
     #endregion
 
@@ -253,8 +239,14 @@ public class Player : MonoBehaviour, IDmgable
         _isKnock = true;
     }
 
-    public void TakeDamage(float dmg, Transform tf)
+    public void TakeDamage(float dmg, Transform tf = null)
     {
+        if(tf == null)
+        {
+            health -= dmg;
+            SetBool_IsHurt(true);
+            return;
+        }
         bool defenseInput = playerInputHandler.defenseInput;
 
         int playerFaceDirection = facingDirection;

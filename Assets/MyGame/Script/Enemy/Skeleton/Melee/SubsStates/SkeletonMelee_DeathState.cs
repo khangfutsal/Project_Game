@@ -26,7 +26,7 @@ public class SkeletonMelee_DeathState : EnemyState
     public override void LogicUpdate()
     {
         base.LogicUpdate();
-        if (isAnimationFinished)
+        if (_isGrounded)
         {
             Debug.Log("Grounded");
             skeleton_Melee.StartCoroutine(skeleton_Melee.DestroyObject());

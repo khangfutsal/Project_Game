@@ -44,6 +44,7 @@ public class SkeletonMelee_TakeDamageState : EnemyState
             {
                 if (Time.time >= startTime + skeletonMeleeData.knockDuration)
                 {
+                    Debug.Log("123");
                     skeletonMelee.SetBool_IsKnock(false);
                     skeletonMelee.SetVelocityX(0);
                 }

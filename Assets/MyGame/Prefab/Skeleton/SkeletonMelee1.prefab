@@ -1,5 +1,63 @@
 %YAML 1.1
 %TAG !u! tag:unity3d.com,2011:
+--- !u!1 &1526488730
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1526488731}
+  - component: {fileID: 1526488732}
+  m_Layer: 9
+  m_Name: ColliderEnvironment
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1526488731
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1526488730}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 7685999096279321946}
+  m_RootOrder: 3
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!61 &1526488732
+BoxCollider2D:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1526488730}
+  m_Enabled: 1
+  m_Density: 1
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_UsedByEffector: 0
+  m_UsedByComposite: 0
+  m_Offset: {x: 0.020901442, y: 0}
+  m_SpriteTilingProperty:
+    border: {x: 0, y: 0, z: 0, w: 0}
+    pivot: {x: 0.5, y: 0.5}
+    oldSize: {x: 1.40625, y: 1.59375}
+    newSize: {x: 2.5, y: 1.65625}
+    adaptiveTilingThreshold: 0.5
+    drawMode: 0
+    adaptiveTiling: 0
+  m_AutoTiling: 0
+  serializedVersion: 2
+  m_Size: {x: 0.6259284, y: 1.59375}
+  m_EdgeRadius: 0
 --- !u!1 &7685999095603504092
 GameObject:
   m_ObjectHideFlags: 0
@@ -104,7 +162,8 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 7685999095664168130}
-  m_Layer: 0
+  - component: {fileID: 130438512}
+  m_Layer: 8
   m_Name: SkeletonMelee1
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -127,6 +186,27 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!50 &130438512
+Rigidbody2D:
+  serializedVersion: 4
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7685999095664168141}
+  m_BodyType: 0
+  m_Simulated: 1
+  m_UseFullKinematicContacts: 0
+  m_UseAutoMass: 0
+  m_Mass: 1
+  m_LinearDrag: 0
+  m_AngularDrag: 0.05
+  m_GravityScale: 1
+  m_Material: {fileID: 0}
+  m_Interpolate: 0
+  m_SleepingMode: 1
+  m_CollisionDetection: 0
+  m_Constraints: 5
 --- !u!1 &7685999096279321925
 GameObject:
   m_ObjectHideFlags: 0
@@ -139,7 +219,6 @@ GameObject:
   - component: {fileID: 7685999096279321947}
   - component: {fileID: 7685999096279321944}
   - component: {fileID: 7685999096279321950}
-  - component: {fileID: 7685999096279321945}
   - component: {fileID: 7685999096279321951}
   m_Layer: 8
   m_Name: SkeletonMelee
@@ -163,7 +242,7 @@ Transform:
   - {fileID: 7685999096464973682}
   - {fileID: 7685999096322763453}
   - {fileID: 7685999095603504093}
-  - {fileID: 7685999096496386186}
+  - {fileID: 1526488731}
   m_Father: {fileID: 7685999095664168130}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -232,7 +311,7 @@ Animator:
   m_Controller: {fileID: 9100000, guid: c6cb510a54fa75e478c3fa82b38988bc, type: 2}
   m_CullingMode: 0
   m_UpdateMode: 0
-  m_ApplyRootMotion: 1
+  m_ApplyRootMotion: 0
   m_LinearVelocityBlending: 0
   m_StabilizeFeet: 0
   m_WarningMessage: 
@@ -260,9 +339,6 @@ MonoBehaviour:
   _isKnockAlready: 0
   workspace: {x: 0, y: 0}
   rgBody2D: {fileID: 0}
-  curPos: {x: 0, y: 0, z: 0}
-  startPos: {fileID: 0}
-  endPos: {fileID: 0}
   skeletonMelee_Data:
     groundCheckRadius: 0.28
     whatIsGround:
@@ -270,35 +346,10 @@ MonoBehaviour:
       m_Bits: 8
     moveSpeed: 0.1
     knockDuration: 0.3
-  groundCheckTf: {fileID: 7685999096464973682}
-  boxCollider2D: {fileID: 0}
-  _isTakeDamage: 0
   dmgAttack: 0
-  useDecisionNextState: 0
-  <maxHealth>k__BackingField: 3
+  <maxHealth>k__BackingField: 15
   <health>k__BackingField: 0
-  groundedCracks: {fileID: 0}
---- !u!50 &7685999096279321945
-Rigidbody2D:
-  serializedVersion: 4
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 7685999096279321925}
-  m_BodyType: 0
-  m_Simulated: 1
-  m_UseFullKinematicContacts: 0
-  m_UseAutoMass: 0
-  m_Mass: 1
-  m_LinearDrag: 0
-  m_AngularDrag: 0.05
-  m_GravityScale: 1
-  m_Material: {fileID: 0}
-  m_Interpolate: 0
-  m_SleepingMode: 1
-  m_CollisionDetection: 0
-  m_Constraints: 5
+  groundCheckTf: {fileID: 7685999096464973682}
 --- !u!61 &7685999096279321951
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -309,7 +360,7 @@ BoxCollider2D:
   m_Enabled: 1
   m_Density: 1
   m_Material: {fileID: 0}
-  m_IsTrigger: 0
+  m_IsTrigger: 1
   m_UsedByEffector: 0
   m_UsedByComposite: 0
   m_Offset: {x: 0.020901442, y: 0}
@@ -338,7 +389,7 @@ GameObject:
   - component: {fileID: 7685999096322763443}
   - component: {fileID: 7685999096322763442}
   m_Layer: 8
-  m_Name: CircleBound (1)
+  m_Name: CircleBound
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -421,7 +472,7 @@ GameObject:
   m_Component:
   - component: {fileID: 7685999096464973682}
   m_Layer: 8
-  m_Name: GroundCheck (1)
+  m_Name: GroundCheck
   m_TagString: Untagged
   m_Icon: {fileID: 3306451490063965843, guid: 0000000000000000d000000000000000, type: 0}
   m_NavMeshLayer: 0
@@ -442,61 +493,3 @@ Transform:
   m_Father: {fileID: 7685999096279321946}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!1 &7685999096496386229
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 7685999096496386186}
-  - component: {fileID: 7685999096496386187}
-  m_Layer: 2
-  m_Name: BoxCollider2D
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 0
---- !u!4 &7685999096496386186
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 7685999096496386229}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: -0.81, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
-  m_Children: []
-  m_Father: {fileID: 7685999096279321946}
-  m_RootOrder: 3
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!61 &7685999096496386187
-BoxCollider2D:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 7685999096496386229}
-  m_Enabled: 1
-  m_Density: 1
-  m_Material: {fileID: 0}
-  m_IsTrigger: 0
-  m_UsedByEffector: 0
-  m_UsedByComposite: 0
-  m_Offset: {x: 0, y: 0}
-  m_SpriteTilingProperty:
-    border: {x: 0, y: 0, z: 0, w: 0}
-    pivot: {x: 0, y: 0}
-    oldSize: {x: 0, y: 0}
-    newSize: {x: 0, y: 0}
-    adaptiveTilingThreshold: 0
-    drawMode: 0
-    adaptiveTiling: 0
-  m_AutoTiling: 0
-  serializedVersion: 2
-  m_Size: {x: 0.75, y: 0.0025}
-  m_EdgeRadius: 0

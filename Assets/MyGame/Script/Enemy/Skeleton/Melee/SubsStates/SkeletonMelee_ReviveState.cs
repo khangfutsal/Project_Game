@@ -25,7 +25,6 @@ public class SkeletonMelee_ReviveState : EnemyState
         base.LogicUpdate();
         if (isAnimationFinished)
         {
-            
             skeleton_Melee.StartCoroutine(skeleton_Melee.DelayToIdleState());
         }
     }

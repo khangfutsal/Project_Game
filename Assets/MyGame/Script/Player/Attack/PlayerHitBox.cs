@@ -6,11 +6,11 @@ public class PlayerHitBox : MonoBehaviour
 {
 
     private void OnTriggerEnter2D(Collider2D collision)
-    {
-        
+    {   
         if (collision.CompareTag("Enemy"))
         {
             IDmgable damageable = collision.GetComponent<IDmgable>();
+            Debug.Log("test : " + collision.name);
             Player player = transform.GetComponentInParent<Player>();
 
             player.VfxHitAttackFirst(collision.transform);
@@ -18,6 +18,7 @@ public class PlayerHitBox : MonoBehaviour
             float dmg = player.GetInt_AttackDmg();
             if (damageable != null)
             {
+                Debug.Log("1");
                 damageable.TakeDamage(dmg,transform);
             }
            

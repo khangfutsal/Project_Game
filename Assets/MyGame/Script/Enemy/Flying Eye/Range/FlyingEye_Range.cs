@@ -14,24 +14,31 @@ public class FlyingEye_Range : FlyingEye, IDmgable
 
     public FlyingEyeRange_Data flyingEyeRange_Data;
 
-    #endregion
-
-    #region Variable Component
-
-    [SerializeField] private Transform groundCheckTf;
-    [SerializeField] private BoxCollider2D boxCollider2D;
-    [SerializeField] private Transform hitboxTf;
-
-    public FlyEyeRange_Bullet bullet;
+    private FlyEyeRange_Bullet bullet;
 
     private Object_Pool objPool;
     #endregion
 
+    #region Variable Component
+
+    private BoxCollider2D boxCollider2D;
+
+    #endregion
+
+    #region Transform Obj
+
+    [SerializeField] private Transform groundCheckTf;
+    [SerializeField] private Transform hitboxTf;
+
+    #endregion
+
+
+
     #region Other Variables
-    [SerializeField] private bool _isTakeDamage;
     [Header("Damage Attack FlyingEye Melee")]
     [SerializeField] private float dmgAttack;
 
+    private bool _isTakeDamage;
     private bool _isFlip;
     private bool _isDeath;
     private bool _isFired;
@@ -75,8 +82,6 @@ public class FlyingEye_Range : FlyingEye, IDmgable
         {
             anim.speed = test;
         }
-        float timeElapsed = anim.GetCurrentAnimatorStateInfo(0).length;
-        Debug.Log("timeElapsed : "+ timeElapsed);
         enemyStateMachine.currentState.LogicUpdate();
     }
 
@@ -128,7 +133,7 @@ public class FlyingEye_Range : FlyingEye, IDmgable
     public void SetBool_IsFired(bool _bool) => _isFired = _bool;
 
 
-    public void TakeDamage(float dmg,Transform tf)
+    public void TakeDamage(float dmg, Transform tf = null)
     {
         health -= dmg;
         _isTakeDamage = true;
@@ -167,7 +172,7 @@ public class FlyingEye_Range : FlyingEye, IDmgable
 
     #region Other Functions
 
-    public override void MoveToPlayer()
+    public override void Chase()
     {
         CheckFlip(transform.position, playerTf.position);
         // ------- Case1
@@ -243,7 +248,6 @@ public class FlyingEye_Range : FlyingEye, IDmgable
     public void FireBullet()
     {
         bullet = objPool.GetBulletFromPool().GetComponent<FlyEyeRange_Bullet>();
-        Debug.Log(bullet.name);
         bullet.transform.position = hitboxTf.position;
         bullet.gameObject.SetActive(true);
         bullet.FireBullet();

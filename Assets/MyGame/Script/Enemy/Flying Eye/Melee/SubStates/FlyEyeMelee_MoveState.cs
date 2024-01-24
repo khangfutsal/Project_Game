@@ -49,7 +49,7 @@ public class FlyEyeMelee_MoveState : FlyingEyeMelee_AbilityState
         
         if (isBound && Time.time >= startTime + timeDelay)
         {
-            flyingEye_Melee.MoveToPlayer();
+            flyingEye_Melee.Chase();
             if (canAttack)
             {
                 stateMachine.ChangeState(flyingEye_Melee.flyEyeMelee_AttackState);

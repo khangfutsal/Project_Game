@@ -21,7 +21,8 @@ public class FlyEyeMelee_DeathState : EnemyState
     {
         base.Enter();
         Debug.Log("Enter Death");
-        flyingEyeMelee.SetVelocityX(0);
+        flyingEyeMelee.rgBody2D.constraints &= ~RigidbodyConstraints2D.FreezePositionX;
+        flyingEyeMelee.KnockBack(25, 10);
 
     }
 
@@ -33,13 +34,10 @@ public class FlyEyeMelee_DeathState : EnemyState
     public override void LogicUpdate()
     {
         base.LogicUpdate();
-        if (isGrounded)
-        {
-            Debug.Log("Grounded");
-            flyingEyeMelee.StartCoroutine(flyingEyeMelee.DestroyObject());
-        }
-       
-        
+
+        flyingEyeMelee.StartCoroutine(flyingEyeMelee.DestroyObject());
+
+
     }
 
     public override void PhysicsUpdate()

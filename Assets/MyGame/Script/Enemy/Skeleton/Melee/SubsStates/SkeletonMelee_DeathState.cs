@@ -14,23 +14,29 @@ public class SkeletonMelee_DeathState : EnemyState
     public override void DoChecks()
     {
         base.DoChecks();
-        _isGrounded = skeleton_Melee.CheckIfGrounded();
     }
 
     public override void Enter()
     {
         base.Enter();
-        skeleton_Melee.SetVelocityX(0);
+        skeleton_Melee.colliderEnvironment.GetComponent<BoxCollider2D>().isTrigger = true;
+
+        skeleton_Melee.rgBody2D.constraints &= ~RigidbodyConstraints2D.FreezePositionX;
+
+        skeleton_Melee.KnockBack(25, 10);
+
+        
+
+
+
     }
 
     public override void LogicUpdate()
     {
         base.LogicUpdate();
-        if (_isGrounded)
-        {
-            Debug.Log("Grounded");
-            skeleton_Melee.StartCoroutine(skeleton_Melee.DestroyObject());
-        }
+
+        skeleton_Melee.StartCoroutine(skeleton_Melee.DestroyObject());
+
     }
 
     public override void PhysicsUpdate()

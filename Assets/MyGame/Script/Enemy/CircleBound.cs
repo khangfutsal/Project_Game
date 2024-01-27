@@ -18,7 +18,6 @@ public class CircleBound : MonoBehaviour
     {
         if (collision.gameObject == playerObj)
         {
-            Debug.Log("true");
             enemy.SetBound(true);
         }
     }

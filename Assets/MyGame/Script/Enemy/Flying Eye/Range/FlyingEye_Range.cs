@@ -181,7 +181,9 @@ public class FlyingEye_Range : FlyingEye, IDmgable
         //transform.position = Vector3.Lerp(transform.position, playerTf.position + new Vector3(1,1,1), Time.deltaTime / finalSpeed);
 
         // ------ Case2
-        transform.position = Vector3.MoveTowards(transform.position, playerTf.position, Time.deltaTime * flyingEyeRange_Data.moveSpeed * 5f);
+        Vector3 targetPlayer = new Vector3(playerTf.position.x, transform.position.y, transform.position.z);
+
+        transform.position = Vector3.MoveTowards(transform.position, targetPlayer, Time.deltaTime * flyingEyeRange_Data.moveSpeed * 5f);
 
         if (!_isFlip)
         {
@@ -214,6 +216,8 @@ public class FlyingEye_Range : FlyingEye, IDmgable
     #region Death State
     public void Die()
     {
+        VFX_Controller.GetInstance().SpawnBloodsVFX(transform);
+
         rgBody2D.constraints &= ~RigidbodyConstraints2D.FreezePositionY;
         boxCollider2D.enabled = false;
         _isDeath = true;
@@ -223,9 +227,6 @@ public class FlyingEye_Range : FlyingEye, IDmgable
     {
         if (!_isDeath) yield break;
         _isDeath = false;
-
-        rgBody2D.bodyType = RigidbodyType2D.Static;
-        Debug.Log("Test");
 
         yield return new WaitForSeconds(2);
         Destroy(transform.parent.gameObject);
@@ -247,7 +248,7 @@ public class FlyingEye_Range : FlyingEye, IDmgable
     }
     public void FireBullet()
     {
-        bullet = objPool.GetBulletFromPool().GetComponent<FlyEyeRange_Bullet>();
+        bullet = objPool.GetTransformFromPool().GetComponent<FlyEyeRange_Bullet>();
         bullet.transform.position = hitboxTf.position;
         bullet.gameObject.SetActive(true);
         bullet.FireBullet();

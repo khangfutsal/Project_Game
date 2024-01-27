@@ -10,7 +10,7 @@ public class FireTrap : Trap
     }
     private void Start()
     {
-        curTime = Time.time;
+        data.curTime = Time.time;
     }
 
     private void Update()
@@ -20,7 +20,7 @@ public class FireTrap : Trap
 
     public void AttackAnimation()
     {
-        if (Time.time >= (curTime + timeDelay))
+        if (Time.time >= (data.curTime + data.timeDelay))
         {
             anim.SetBool("Attack", true);
         }
@@ -29,7 +29,7 @@ public class FireTrap : Trap
         {
             if (anim.GetCurrentAnimatorStateInfo(0).normalizedTime > 1)
             {
-                curTime = Time.time;
+                data.curTime = Time.time;
                 anim.SetBool("Attack", false);
             }
         }

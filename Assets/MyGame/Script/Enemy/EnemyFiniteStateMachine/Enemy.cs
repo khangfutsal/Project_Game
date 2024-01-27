@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -80,4 +81,11 @@ public abstract class Enemy : MonoBehaviour
     public abstract void Chase();
 
     #endregion
+}
+
+[Serializable]
+public class EnemyPattern
+{
+    public GameObject enemyObj;
+    public GameObject spawnObj;
 }

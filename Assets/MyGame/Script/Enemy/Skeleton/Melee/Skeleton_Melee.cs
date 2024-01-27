@@ -38,9 +38,10 @@ public class Skeleton_Melee : Skeleton, IDmgable
 
     #endregion
     #region Variable Component
+
     [SerializeField] private Transform groundCheckTf;
     
-    private BoxCollider2D boxCollider2D;
+    [SerializeField] public GameObject colliderEnvironment;
 
     #endregion
 
@@ -50,7 +51,6 @@ public class Skeleton_Melee : Skeleton, IDmgable
     private void Awake()
     {
         rgBody2D = transform.parent.GetComponentInChildren<Rigidbody2D>();
-        boxCollider2D = transform.GetComponent<BoxCollider2D>();
         anim = transform.GetComponentInChildren<Animator>();
         playerTf = GameObject.Find("BonzePlayer").transform;
 
@@ -72,18 +72,11 @@ public class Skeleton_Melee : Skeleton, IDmgable
         _target = 1;
         health = maxHealth;
         _isFlip = true;
+        IgnoreLayerCollider();
     }
 
     private void Update()
     {
-        if (Input.GetKeyDown(KeyCode.O))
-        {
-            KnockBack(10, 0);
-        }
-        if (Input.GetKeyDown(KeyCode.P))
-        {
-            KnockBack(0, 5);
-        }
         //if (enemyStateMachine.currentState == null) return;
 
         enemyStateMachine.currentState.LogicUpdate();
@@ -205,8 +198,8 @@ public class Skeleton_Melee : Skeleton, IDmgable
     public override void Chase()
     {
         CheckFlip(transform.parent.position, playerTf.position);
-
-        transform.parent.position = Vector3.MoveTowards(transform.parent.position, playerTf.position, Time.deltaTime * skeletonMelee_Data.moveSpeed * 5f);
+        Vector3 targetPlayer = new Vector3(playerTf.position.x, transform.position.y, transform.position.z);
+        transform.parent.position = Vector3.MoveTowards(transform.parent.position, targetPlayer, Time.deltaTime * skeletonMelee_Data.moveSpeed * 5f);
 
         if (!_isFlip)
         {
@@ -244,6 +237,8 @@ public class Skeleton_Melee : Skeleton, IDmgable
     #region Death State
     public void Die()
     {
+        VFX_Controller.GetInstance().SpawnBloodsVFX(transform);
+
         rgBody2D.constraints &= ~RigidbodyConstraints2D.FreezePositionY;
         transform.tag = "Untagged";
         _isDeath = true;
@@ -254,8 +249,16 @@ public class Skeleton_Melee : Skeleton, IDmgable
         if (!_isDeath) yield break;
         _isDeath = false;
 
-        yield return new WaitForSeconds(2);
+        yield return new WaitForSeconds(2f);
+
         Destroy(transform.parent.gameObject);
+    }
+
+    public void IgnoreLayerCollider()
+    {
+        Physics2D.IgnoreLayerCollision(6, 9, true);
+        Physics2D.IgnoreLayerCollision(9, 9, true);
+
     }
 
     #endregion

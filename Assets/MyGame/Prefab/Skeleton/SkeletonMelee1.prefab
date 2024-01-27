@@ -217,9 +217,9 @@ GameObject:
   m_Component:
   - component: {fileID: 7685999096279321946}
   - component: {fileID: 7685999096279321947}
-  - component: {fileID: 7685999096279321944}
   - component: {fileID: 7685999096279321950}
   - component: {fileID: 7685999096279321951}
+  - component: {fileID: 7685999096279321944}
   m_Layer: 8
   m_Name: SkeletonMelee
   m_TagString: Untagged
@@ -298,27 +298,6 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
---- !u!95 &7685999096279321944
-Animator:
-  serializedVersion: 5
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 7685999096279321925}
-  m_Enabled: 1
-  m_Avatar: {fileID: 0}
-  m_Controller: {fileID: 9100000, guid: c6cb510a54fa75e478c3fa82b38988bc, type: 2}
-  m_CullingMode: 0
-  m_UpdateMode: 0
-  m_ApplyRootMotion: 0
-  m_LinearVelocityBlending: 0
-  m_StabilizeFeet: 0
-  m_WarningMessage: 
-  m_HasTransformHierarchy: 1
-  m_AllowConstantClipSamplingOptimization: 1
-  m_KeepAnimatorStateOnDisable: 0
-  m_WriteDefaultValuesOnDisable: 0
 --- !u!114 &7685999096279321950
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -344,12 +323,13 @@ MonoBehaviour:
     whatIsGround:
       serializedVersion: 2
       m_Bits: 8
-    moveSpeed: 0.1
+    moveSpeed: 0.5
     knockDuration: 0.3
   dmgAttack: 0
-  <maxHealth>k__BackingField: 15
-  <health>k__BackingField: 0
+  <maxHealth>k__BackingField: 1
+  <health>k__BackingField: 1
   groundCheckTf: {fileID: 7685999096464973682}
+  colliderEnvironment: {fileID: 1526488730}
 --- !u!61 &7685999096279321951
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -376,6 +356,27 @@ BoxCollider2D:
   serializedVersion: 2
   m_Size: {x: 0.6259284, y: 1.59375}
   m_EdgeRadius: 0
+--- !u!95 &7685999096279321944
+Animator:
+  serializedVersion: 5
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7685999096279321925}
+  m_Enabled: 1
+  m_Avatar: {fileID: 0}
+  m_Controller: {fileID: 9100000, guid: c6cb510a54fa75e478c3fa82b38988bc, type: 2}
+  m_CullingMode: 0
+  m_UpdateMode: 0
+  m_ApplyRootMotion: 0
+  m_LinearVelocityBlending: 0
+  m_StabilizeFeet: 0
+  m_WarningMessage: 
+  m_HasTransformHierarchy: 1
+  m_AllowConstantClipSamplingOptimization: 1
+  m_KeepAnimatorStateOnDisable: 0
+  m_WriteDefaultValuesOnDisable: 0
 --- !u!1 &7685999096322763452
 GameObject:
   m_ObjectHideFlags: 0
@@ -425,7 +426,7 @@ CircleCollider2D:
   m_UsedByComposite: 0
   m_Offset: {x: 0, y: 0}
   serializedVersion: 2
-  m_Radius: 4
+  m_Radius: 25
 --- !u!50 &7685999096322763443
 Rigidbody2D:
   serializedVersion: 4

@@ -71,7 +71,6 @@ public class Player : MonoBehaviour, IDmgable
     [SerializeField] public Transform pointSpawnVFX;
     #endregion
 
-    [SerializeField] private GameObject test_vfx;
     [SerializeField] private GameObject GroundedCracks;
 
     #region Variable Component
@@ -125,11 +124,7 @@ public class Player : MonoBehaviour, IDmgable
     private void Update()
     {
         
-        if (Input.GetKeyDown(KeyCode.B))
-        {
 
-
-        }
         currentVelocity = RgBody2D.velocity;
         playerStateMachine.currentState.LogicUpdate();
     }
@@ -211,6 +206,7 @@ public class Player : MonoBehaviour, IDmgable
     public IEnumerator Invulnerability()
     {
         Physics2D.IgnoreLayerCollision(6, 8, true);
+        Physics2D.IgnoreLayerCollision(6, 11, true);
         for (int i = 0; i < numberOfFlashes; i++)
         {
             spriteRerender.color = new Color(1, 1, 1, 0.5f);
@@ -219,6 +215,7 @@ public class Player : MonoBehaviour, IDmgable
             yield return new WaitForSeconds(iFramesDuration / (numberOfFlashes * 2));
         }
         Physics2D.IgnoreLayerCollision(6, 8, false);
+        Physics2D.IgnoreLayerCollision(6, 11, false);
 
 
     }
@@ -229,6 +226,7 @@ public class Player : MonoBehaviour, IDmgable
         StopCoroutine(couroutine_Invulnerability);
         spriteRerender.color = Color.white;
         Physics2D.IgnoreLayerCollision(6, 8, false);
+        Physics2D.IgnoreLayerCollision(6, 11, false);
     }
     #endregion
 
@@ -329,16 +327,7 @@ public class Player : MonoBehaviour, IDmgable
 
     }
 
-    public void VfxHitAttackFirst(Transform tf)
-    {
-        GameObject a = Instantiate(test_vfx, tf.position, Quaternion.identity);
-        StartCoroutine(DestroyObj(a));
-        IEnumerator DestroyObj(GameObject obj)
-        {
-            yield return new WaitForSeconds(1f);
-            Destroy(obj);
-        }
-    }
+
     #endregion
 
     #region Function Animation Trigger

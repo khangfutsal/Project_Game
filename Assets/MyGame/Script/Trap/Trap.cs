@@ -5,25 +5,11 @@ using UnityEngine;
 [Serializable]
 public class Trap : MonoBehaviour
 {
-    [SerializeField] protected GameObject trapObj;
-    [SerializeField] protected Transform spawnPos;
+    [ColorUsage(true, true)] public Color color;
+    [SerializeField] public TrapPatern data;
 
-    [SerializeField] protected float timeDelay;
-    [SerializeField] protected float curTime;
+    [SerializeField] public Animator anim;
 
-    [SerializeField] public float dmg;
-    [SerializeField] protected Animator anim;
-
-    private void Start()
-    {
-        Spawn();
-    }
-
-    public void Spawn()
-    {
-        if (spawnPos == null && trapObj == null) return;
-        GameObject obj = Instantiate(trapObj, spawnPos.position, Quaternion.identity);
-    }
 }
 
 public enum TrapType
@@ -33,3 +19,5 @@ public enum TrapType
     Fire,
     Arrow
 }
+
+

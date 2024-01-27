@@ -20,18 +20,17 @@ public class FlyEyeRange_DeathState : EnemyState
     public override void Enter()
     {
         base.Enter();
-        Debug.Log("Death");
-        flyingEyeRange.SetVelocityX(0);
+
+        flyingEyeRange.rgBody2D.constraints &= ~RigidbodyConstraints2D.FreezePositionX;
+        flyingEyeRange.KnockBack(25, 10);
     }
 
     public override void LogicUpdate()
     {
         base.LogicUpdate();
-        if (isGrounded)
-        {
-            Debug.Log("Grounded");
-            flyingEyeRange.StartCoroutine(flyingEyeRange.DestroyObject());
-        }
+
+        flyingEyeRange.StartCoroutine(flyingEyeRange.DestroyObject());
+
     }
 
     public override void PhysicsUpdate()

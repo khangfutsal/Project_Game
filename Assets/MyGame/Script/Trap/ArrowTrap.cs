@@ -13,7 +13,7 @@ public class ArrowTrap : Trap
     }
     private void Start()
     {
-        curTime = Time.time;
+        data.curTime = Time.time;
     }
 
     private void Update()
@@ -23,7 +23,7 @@ public class ArrowTrap : Trap
 
     public void AttackAnimation()
     {
-        if (Time.time >= (curTime + timeDelay))
+        if (Time.time >= (data.curTime + data.timeDelay))
         {
             anim.SetBool("Attack", true);
         }
@@ -32,7 +32,7 @@ public class ArrowTrap : Trap
         {
             if (anim.GetCurrentAnimatorStateInfo(0).normalizedTime > 1)
             {
-                curTime = Time.time;
+                data.curTime = Time.time;
                 anim.SetBool("Attack", false);
             }
         }
@@ -40,7 +40,7 @@ public class ArrowTrap : Trap
 
     public void SpawnArrow()
     {
-        ArrowBullet bullet = objPool.GetBulletFromPool().GetComponent<ArrowBullet>();
+        ArrowBullet bullet = objPool.GetTransformFromPool().GetComponent<ArrowBullet>();
         bullet.SetDirection(pointAttack);
         bullet.gameObject.SetActive(true);
     }

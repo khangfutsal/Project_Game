@@ -10,7 +10,7 @@ public class ArrowBullet : MonoBehaviour
     private float dmg;
     private void Awake()
     {
-        arrowTrap = transform.parent.parent.GetComponent<ArrowTrap>();
+        arrowTrap = transform.parent.parent.GetComponentInChildren<ArrowTrap>();
     }
 
     void Update()
@@ -23,13 +23,13 @@ public class ArrowBullet : MonoBehaviour
     {
         if (collision.CompareTag("Player"))
         {
+            InActive();
             IDmgable damageable = collision.GetComponent<IDmgable>();
-            dmg = arrowTrap.dmg;
+            dmg = arrowTrap.data.dmg;
             if (damageable != null)
             {
                 damageable.TakeDamage(dmg);
             }
-            InActive();
         }
 
     }
@@ -39,7 +39,6 @@ public class ArrowBullet : MonoBehaviour
     }
     public void SetDirection(Transform directionTf)
     {
-        Debug.Log("direction : " + directionTf.position);
         transform.position = directionTf.position;
     }
     public void InActive() { transform.gameObject.SetActive(false); }

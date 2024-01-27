@@ -20,7 +20,13 @@ public class SkeletonRange_DeathState : EnemyState
     public override void Enter()
     {
         base.Enter();
-        skeleton_Range.SetVelocityX(0);
+        skeleton_Range.colliderEnvironment.GetComponent<BoxCollider2D>().isTrigger = true;
+
+        skeleton_Range.rgBody2D.constraints &= ~RigidbodyConstraints2D.FreezePositionX;
+        
+        skeleton_Range.KnockBack(25, 10);
+
+
     }
 
     public override void Exit()
@@ -31,11 +37,9 @@ public class SkeletonRange_DeathState : EnemyState
     public override void LogicUpdate()
     {
         base.LogicUpdate();
-        if (_isGrounded)
-        {
-            Debug.Log("Grounded");
-            skeleton_Range.StartCoroutine(skeleton_Range.DestroyObject());
-        }
+
+        skeleton_Range.StartCoroutine(skeleton_Range.DestroyObject());
+
     }
 
     public override void PhysicsUpdate()

@@ -50,10 +50,10 @@ public class SkeletonMelee_Defense : EnemyState
             _isKnock = skeleton_Melee.GetBool_IsKnock();
             _isKnockAlready = skeleton_Melee.GetBool_IsKnockAlready();
             _isDeath = skeleton_Melee.GetBool_IsDeath();
-
+    
             if (_isDeath) stateMachine.ChangeState(skeleton_Melee.skeletonMelee_Death);
 
-            if (_isGrounded)
+            else if (_isGrounded)
             {
                 if (_isKnock)
                 {

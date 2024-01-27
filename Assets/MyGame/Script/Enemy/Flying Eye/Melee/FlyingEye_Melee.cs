@@ -234,6 +234,8 @@ public class FlyingEye_Melee : FlyingEye, IDmgable
     #region Death State
     public void Die()
     {
+        VFX_Controller.GetInstance().SpawnBloodsVFX(transform);
+
         rgBody2D.constraints &= ~RigidbodyConstraints2D.FreezePositionY;
         transform.tag = "Untagged";
         _isDeath = true;
@@ -243,9 +245,6 @@ public class FlyingEye_Melee : FlyingEye, IDmgable
     {
         if (!_isDeath) yield break;
         _isDeath = false;
-
-        rgBody2D.bodyType = RigidbodyType2D.Static;
-        Debug.Log("Test");
 
         yield return new WaitForSeconds(2);
         Destroy(transform.parent.gameObject);

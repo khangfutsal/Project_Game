@@ -25,7 +25,7 @@ public class Skeleton_Range : Skeleton, IDmgable
     [Header("Colliders")]
     [Space()]
 
-    private BoxCollider2D boxCollider2D;
+    public GameObject colliderEnvironment;
     private Object_Pool objPool;
 
     #region Transform Object
@@ -52,7 +52,7 @@ public class Skeleton_Range : Skeleton, IDmgable
     #region Initialize List
 
     #endregion
-
+    
     #region Unity Method
 
     protected override void Awake()
@@ -87,11 +87,6 @@ public class Skeleton_Range : Skeleton, IDmgable
 
     private void Update()
     {
-        //if (Input.GetKeyDown(KeyCode.O))
-        //{
-        //    //anim.speed = test;
-        //    FireBullet();
-        //}
         float timeElapsed = anim.GetCurrentAnimatorStateInfo(0).length;
         enemyStateMachine.currentState.LogicUpdate();
     }
@@ -174,7 +169,8 @@ public class Skeleton_Range : Skeleton, IDmgable
         //transform.position = Vector3.Lerp(transform.position, playerTf.position + new Vector3(1,1,1), Time.deltaTime / finalSpeed);
 
         // ------ Case2
-        transform.parent.position = Vector3.MoveTowards(transform.parent.position, playerTf.position, Time.deltaTime * skeletonRange_Data.moveSpeed * 5f);
+        Vector3 targetPlayer = new Vector3(playerTf.position.x, transform.position.y, transform.position.z);
+        transform.parent.position = Vector3.MoveTowards(transform.parent.position, targetPlayer, Time.deltaTime * skeletonRange_Data.moveSpeed * 5f);
 
         if (!_isFlip)
         {
@@ -211,12 +207,16 @@ public class Skeleton_Range : Skeleton, IDmgable
     public void IgnoreLayerCollider()
     {
         Physics2D.IgnoreLayerCollision(6, 9, true);
+        Physics2D.IgnoreLayerCollision(9, 9, true);
+
     }
     #endregion
 
     #region Death State
     public void Die()
     {
+        VFX_Controller.GetInstance().SpawnBloodsVFX(transform);
+
         rgBody2D.constraints &= ~RigidbodyConstraints2D.FreezePositionY;
         transform.tag = "Untagged";
         _isDeath = true;
@@ -246,7 +246,7 @@ public class Skeleton_Range : Skeleton, IDmgable
     }
     public void FireBullet()
     {
-        bullet = objPool.GetBulletFromPool().GetComponent<SkeletonRange_Bullet>();
+        bullet = objPool.GetTransformFromPool().GetComponent<SkeletonRange_Bullet>();
 
         bullet.gameObject.SetActive(true);
         bullet.FireBullet(hitboxTf);

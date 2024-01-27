@@ -1,10 +1,14 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 
 public class Object_Pool : MonoBehaviour
 {
-    [SerializeField] private List<Transform> listBulletTf;
+    [SerializeField] private List<Transform> listPoolTf;
+
+    [SerializeField] private GameObject obj;
+
     [SerializeField] private Transform holderTf;
     private void Awake()
     {
@@ -15,19 +19,39 @@ public class Object_Pool : MonoBehaviour
         Initialize();
     }
 
+
+
     public void Initialize()
     {
-        foreach(var bulletTf in holderTf)
+        foreach (var bulletTf in holderTf)
         {
-            listBulletTf.Add((Transform)bulletTf);
+            listPoolTf.Add((Transform)bulletTf);
         }
     }
 
-    public Transform GetBulletFromPool()
+    public GameObject SpawnObj()
     {
-        foreach(var bulletTf in listBulletTf)
+        GameObject gameObj = Instantiate(obj, transform.position, Quaternion.identity,holderTf);
+        return gameObj;
+    }
+
+    public Transform GetTransformFromPool()
+    {
+        Initialize();
+        if (obj != null)
         {
-            if (!bulletTf.gameObject.activeInHierarchy) return bulletTf;
+            if (listPoolTf.Count == 0 || listPoolTf.TrueForAll(obj => obj.gameObject.activeSelf))
+            {
+
+                GameObject gameObj = SpawnObj();
+                gameObj.SetActive(false);
+                listPoolTf.Add(gameObj.transform);
+            }
+        }
+
+        foreach (var poolTf in listPoolTf)
+        {
+            if (!poolTf.gameObject.activeInHierarchy) return poolTf;
         }
         return null;
     }

@@ -1,0 +1,53 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ab6772b6cf9b1a047b7869cf7370b38f, type: 3}
+  m_Name: Wave
+  m_EditorClassIdentifier: 
+  enemies:
+  - enemyObj: {fileID: 4175442336984547584, guid: ec6cc53332ab86842a3012579ef9466c, type: 3}
+    spawnObj: {fileID: 6832333570589321604, guid: f2878f50bed44e74a9895dbbcf75a765, type: 3}
+  - enemyObj: {fileID: 4175442336984547584, guid: ec6cc53332ab86842a3012579ef9466c, type: 3}
+    spawnObj: {fileID: 2336343685833173620, guid: 21b7a7169890e2c49ab01c22fba6f250, type: 3}
+  - enemyObj: {fileID: 4175442336984547584, guid: d24ecf847a9fdd741be0631c0a23aa52, type: 3}
+    spawnObj: {fileID: 351787550680274343, guid: d3f9b31edec6b834db9616893a2cb3e9, type: 3}
+  - enemyObj: {fileID: 4175442336984547584, guid: d24ecf847a9fdd741be0631c0a23aa52, type: 3}
+    spawnObj: {fileID: 3720553629799135679, guid: abe471e03ce214e458775fea652568f5, type: 3}
+  - enemyObj: {fileID: 4175442336984547584, guid: d24ecf847a9fdd741be0631c0a23aa52, type: 3}
+    spawnObj: {fileID: 6832333570589321604, guid: f2878f50bed44e74a9895dbbcf75a765, type: 3}
+  - enemyObj: {fileID: 4175442336984547584, guid: d24ecf847a9fdd741be0631c0a23aa52, type: 3}
+    spawnObj: {fileID: 2336343685833173620, guid: 21b7a7169890e2c49ab01c22fba6f250, type: 3}
+  traps:
+  - trapObj: {fileID: 7049892963341407440, guid: 23e3e0d83df77fb45bc73642583e5083, type: 3}
+    spawnPos: {fileID: 964776913023916968, guid: 84d6fec1e403b36419568f939044fa72, type: 3}
+    timeDelay: 4
+    curTime: 0
+    dmg: 5
+  - trapObj: {fileID: 7049892963341407440, guid: 23e3e0d83df77fb45bc73642583e5083, type: 3}
+    spawnPos: {fileID: 8031627031587566580, guid: c22ff68ba485a7d4abfeb43c08365db7, type: 3}
+    timeDelay: 8
+    curTime: 0
+    dmg: 5
+  - trapObj: {fileID: 7301929905562214354, guid: 47744378a9d17ac4185c9fcc37712188, type: 3}
+    spawnPos: {fileID: 2727258871491900167, guid: 3886972e0f615164fbcb2e5b0d1150e5, type: 3}
+    timeDelay: 3
+    curTime: 0
+    dmg: 5
+  - trapObj: {fileID: 7301929905562214354, guid: 47744378a9d17ac4185c9fcc37712188, type: 3}
+    spawnPos: {fileID: 9183713680876651976, guid: 45e8155c49d50bc4f885191553cdf340, type: 3}
+    timeDelay: 3
+    curTime: 0
+    dmg: 5
+  - trapObj: {fileID: 7301929905562214354, guid: 47744378a9d17ac4185c9fcc37712188, type: 3}
+    spawnPos: {fileID: 4437523019119978571, guid: a69169d13376700408882ea6165fd362, type: 3}
+    timeDelay: 3
+    curTime: 0
+    dmg: 5

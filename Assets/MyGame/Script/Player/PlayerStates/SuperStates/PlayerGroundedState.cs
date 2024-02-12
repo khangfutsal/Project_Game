@@ -10,6 +10,12 @@ public class PlayerGroundedState : PlayerState
     private bool meditateInput;
     private bool attackInput;
     private bool defenseInput;
+    private bool earthquakeInput;
+    private bool fireballInput;
+
+    private float statusDefense;
+    private float statusFireball;
+    private float statusEarthquake;
 
     protected bool _isHurt;
     public PlayerGroundedState(Player player, PlayerStateMachine stateMachine, PlayerData playerData, string animBoolName) : base(player, stateMachine, playerData, animBoolName)
@@ -28,7 +34,7 @@ public class PlayerGroundedState : PlayerState
         base.Enter();
         player.playerJumpState.ResetAmountOfJumpsLeft();
         player.playerInputHandler.UseAttackInput();
-        
+
     }
 
     public override void Exit()
@@ -39,11 +45,17 @@ public class PlayerGroundedState : PlayerState
     public override void LogicUpdate()
     {
         base.LogicUpdate();
+        statusDefense = player.playerStats.GetFloat_StatusDefense();
+        statusFireball = player.playerStats.GetFloat_StatusFireBall();
+        statusEarthquake = player.playerStats.GetFloat_StatusEarthquake();
+
         input = player.playerInputHandler.movementInput;
         jumpInput = player.playerInputHandler.jumpInput;
         meditateInput = player.playerInputHandler.meditateInput;
         attackInput = player.playerInputHandler.attackInput;
         defenseInput = player.playerInputHandler.defenseInput;
+        earthquakeInput = player.playerInputHandler.earthquakeInput;
+        fireballInput = player.playerInputHandler.fireBallInput;
 
         if (jumpInput && player.playerJumpState.canJump() && !attackInput)
         {
@@ -61,7 +73,7 @@ public class PlayerGroundedState : PlayerState
             player.playerInputHandler.UseAttackInput();
             stateMachine.ChangeState(player.playerAttackFirstState);
         }
-        else if (defenseInput)
+        else if (defenseInput && statusDefense == 1)
         {
             stateMachine.ChangeState(player.playerDefState);
         }
@@ -70,7 +82,16 @@ public class PlayerGroundedState : PlayerState
             player.SetVelocityX(0);
             stateMachine.ChangeState(player.playerTakeDamageState);
         }
-        
+        else if (earthquakeInput & statusEarthquake == 1)
+        {
+            player.SetVelocityX(0);
+            stateMachine.ChangeState(player.playerSkillEarthQuake);
+        }
+        else if (fireballInput && statusFireball == 1)
+        {
+            stateMachine.ChangeState(player.playerSkillFireBall);
+        }
+
 
     }
 

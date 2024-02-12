@@ -25,15 +25,15 @@ public class FlyEyeMelee_MoveState : FlyingEyeMelee_AbilityState
     {
         base.DoChecks();
         canAttack = flyingEye_Melee.CanAttack();
-        
+
     }
 
     public override void Enter()
     {
         base.Enter();
-        flyingEye_Melee.rgBody2D.constraints = RigidbodyConstraints2D.FreezePositionY 
-            | RigidbodyConstraints2D.FreezeRotation
-            | RigidbodyConstraints2D.FreezePositionX;
+        flyingEye_Melee.rgBody2D.constraints = RigidbodyConstraints2D.FreezePositionY
+            | RigidbodyConstraints2D.FreezeRotation;
+        flyingEye_Melee.rgBody2D.constraints &= ~RigidbodyConstraints2D.FreezePositionX;
     }
 
     public override void Exit()
@@ -46,20 +46,22 @@ public class FlyEyeMelee_MoveState : FlyingEyeMelee_AbilityState
         base.LogicUpdate();
 
         isBound = flyingEye_Melee.isBound;
-        
-        if (isBound && Time.time >= startTime + timeDelay)
+
+
+        if (canAttack)
         {
-            flyingEye_Melee.Chase();
-            if (canAttack)
-            {
-                stateMachine.ChangeState(flyingEye_Melee.flyEyeMelee_AttackState);
-            }
+            stateMachine.ChangeState(flyingEye_Melee.flyEyeMelee_AttackState);
+
         }
     }
-
     public override void PhysicsUpdate()
     {
         base.PhysicsUpdate();
+        if (isBound && Time.time >= startTime + timeDelay)
+        {
+            flyingEye_Melee.Chase();
+        }
+
         flyingEye_Melee.SetDefault_Moving();
     }
 }

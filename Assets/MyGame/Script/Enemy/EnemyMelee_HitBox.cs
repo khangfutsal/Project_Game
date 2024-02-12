@@ -4,7 +4,6 @@ using UnityEngine;
 
 public class EnemyMelee_HitBox : MonoBehaviour
 {
-    [SerializeField] private Transform tf;
     [SerializeField] private Enemy enemy;
 
 
@@ -17,7 +16,7 @@ public class EnemyMelee_HitBox : MonoBehaviour
         if (collision.CompareTag("Player"))
         {
             float dmg = 0;
-            enemy = tf.GetComponentInParent<Enemy>();
+            enemy = transform.parent.GetComponent<Enemy>();
             if (enemy is FlyingEye_Melee flyingEye)
             {
                 dmg = flyingEye.GetFloat_DmgAttack();
@@ -31,6 +30,7 @@ public class EnemyMelee_HitBox : MonoBehaviour
             
             if (damageable != null)
             {
+                HudUI.GetInstance().TakeSliderHealth(dmg);
                 damageable.TakeDamage(dmg, transform);
             }
         }

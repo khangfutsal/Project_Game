@@ -40,6 +40,7 @@ public class ArrowBullet : MonoBehaviour
     public void SetDirection(Transform directionTf)
     {
         transform.position = directionTf.position;
+        transform.rotation = directionTf.rotation;
     }
     public void InActive() { transform.gameObject.SetActive(false); }
 }

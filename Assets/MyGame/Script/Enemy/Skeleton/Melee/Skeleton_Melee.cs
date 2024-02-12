@@ -30,7 +30,7 @@ public class Skeleton_Melee : Skeleton, IDmgable
     private bool _isDeath;
     private bool _useDecisionNextState;
 
-    
+
     [field: SerializeField] public float maxHealth { get; set; }
     [field: SerializeField] public float health { get; set; }
     #endregion
@@ -40,7 +40,7 @@ public class Skeleton_Melee : Skeleton, IDmgable
     #region Variable Component
 
     [SerializeField] private Transform groundCheckTf;
-    
+
     [SerializeField] public GameObject colliderEnvironment;
 
     #endregion
@@ -121,12 +121,14 @@ public class Skeleton_Melee : Skeleton, IDmgable
         _isTakeDamage = true;
 
         float totalDamage = dmg;
-        Player player = tf.GetComponentInParent<Player>();
+        Vector3 directionToTarget = (tf.position - transform.position).normalized;
 
-        float playerFacingDirection = player.facingDirection;
+        float dotProduct = Vector3.Dot(transform.right, directionToTarget);
+
+        Debug.Log("dot : " + dotProduct);
         if (_isDefense)
         {
-            if (facingDirection != playerFacingDirection)
+            if (dotProduct > .4f)
             {
                 totalDamage = dmg * .8f;
                 health -= totalDamage;
@@ -141,26 +143,28 @@ public class Skeleton_Melee : Skeleton, IDmgable
         {
             health -= totalDamage;
         }
-        bool attackSecondAlready = player.GetBool_IsHitAttackSecond();
+        if (health <= 0) { Die(); health = 0; }
+
+        if (tf.GetComponentInParent<Player>() == null) return;
+        Player player = tf.GetComponentInParent<Player>();
+
         bool attackFinalAlready = player.GetBool_IsHitAttackFinal();
-        if (attackSecondAlready && player.GetComponent<SpriteRenderer>().sprite.name == "3_atk_9")
+        bool skillEarthQuakeAlready = player.GetBool_IsSkillEarthQuake();
+        if (attackFinalAlready && player.GetComponent<SpriteRenderer>().sprite.name == "3_atk_9")
         {
             rgBody2D.constraints &= ~RigidbodyConstraints2D.FreezePositionX;
             KnockBack(10, 0);
-            if (health <= 0) { Die(); health = 0; }
             return;
         }
-        if (attackFinalAlready && player.GetComponent<SpriteRenderer>().sprite.name == "3_atk_18")
+        if (skillEarthQuakeAlready && player.GetComponent<SpriteRenderer>().sprite.name == "3_atk_18")
         {
             rgBody2D.constraints &= ~RigidbodyConstraints2D.FreezePositionY;
             KnockBack(0, 5);
             StartCoroutine(player.AttackTimeScale());
-            if (health <= 0) { Die(); health = 0; }
             return;
         }
         rgBody2D.constraints &= ~RigidbodyConstraints2D.FreezePositionX;
         KnockBack(.5f, 0);
-        if (health <= 0) { Die(); health = 0; }
     }
 
 
@@ -238,6 +242,8 @@ public class Skeleton_Melee : Skeleton, IDmgable
     public void Die()
     {
         VFX_Controller.GetInstance().SpawnBloodsVFX(transform);
+
+        Collection_Controller.GetInstance().SpawnGem(transform);
 
         rgBody2D.constraints &= ~RigidbodyConstraints2D.FreezePositionY;
         transform.tag = "Untagged";

@@ -24,13 +24,13 @@ public class FlyingEye_AbilityState : EnemyState
     public override void DoChecks()
     {
         base.DoChecks();
-        _isTakeDmg = GameController.GetInstance().player.GetBool_AttackEnemy();
+        //_isTakeDmg = GameController.GetInstance().player.GetBool_AttackEnemy();
     }
 
     public override void Enter()
     {
         base.Enter();
-        GameController.GetInstance().player.SetBool_AttackEnemy(false);
+        //GameController.GetInstance().player.SetBool_AttackEnemy(false);
     }
 
     public override void Exit()

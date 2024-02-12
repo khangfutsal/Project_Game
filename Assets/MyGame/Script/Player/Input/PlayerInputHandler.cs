@@ -12,10 +12,21 @@ public class PlayerInputHandler : MonoBehaviour
     private float inputHoldtime = 0.2f;
     private float jumpInputStartTime;
 
+
     public bool meditateInput;
     public bool attackInput;
     public bool defenseInput;
-    
+    public bool earthquakeInput;
+    public bool fireBallInput;
+
+    [SerializeField] private float skillFireballMana;
+    [SerializeField] private float skillEarthQuakeMana;
+
+    private PlayerStats playerStats;
+    private void Awake()
+    {
+        playerStats = GetComponent<PlayerStats>();
+    }
 
     private void Update()
     {
@@ -24,6 +35,8 @@ public class PlayerInputHandler : MonoBehaviour
         OnMeditateInput();
         OnAttackInput();
         OnDefenseInput();
+        OnSkillEarthQuakeInput();
+        OnSkillFireBallInput();
 
         CheckJumpInputHoldTime();
     }
@@ -35,8 +48,41 @@ public class PlayerInputHandler : MonoBehaviour
             attackInput = true;
         }
     }
-    
+
     public void UseAttackInput() => attackInput = false;
+    #endregion
+
+
+    #region Skill EarthQuake Function
+    public void OnSkillEarthQuakeInput()
+    {
+        if (Input.GetKeyDown(KeyCode.F) && playerStats.mana >= skillEarthQuakeMana && playerStats.GetFloat_StatusEarthquake() == 1)
+        {
+            HudUI.GetInstance().TakeSliderMana(skillEarthQuakeMana);
+            earthquakeInput = true;
+
+            playerStats.TakeMana(skillEarthQuakeMana);
+        }
+    }
+
+    public void UseSkillEarthQuakeInput() => earthquakeInput = false;
+    #endregion
+
+    #region FireBall Function
+    public void OnSkillFireBallInput()
+    {
+
+        if (Input.GetKeyDown(KeyCode.Z) && playerStats.mana >= skillFireballMana && playerStats.GetFloat_StatusFireBall() == 1)
+        {
+            HudUI.GetInstance().TakeSliderMana(skillFireballMana);
+            fireBallInput = true;
+            playerStats.TakeMana(skillFireballMana);
+        }
+
+
+    }
+    public void UseSkillFireBallInput() => fireBallInput = false;
+
     #endregion
 
     #region Defense Function
@@ -56,7 +102,7 @@ public class PlayerInputHandler : MonoBehaviour
     #region Meditate Function
     private void OnMeditateInput()
     {
-        if (Input.GetKeyDown(KeyCode.F))
+        if (Input.GetKeyDown(KeyCode.C))
         {
             meditateInput = true;
         }
@@ -85,7 +131,7 @@ public class PlayerInputHandler : MonoBehaviour
     }
     private void CheckJumpInputHoldTime()
     {
-        if(Time.time >= jumpInputStartTime + inputHoldtime)
+        if (Time.time >= jumpInputStartTime + inputHoldtime)
         {
             jumpInput = false;
         }
@@ -93,4 +139,6 @@ public class PlayerInputHandler : MonoBehaviour
 
     public void UseJumpInput() => jumpInput = false;
     #endregion
+
+
 }

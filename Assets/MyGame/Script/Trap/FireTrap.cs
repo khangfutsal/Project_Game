@@ -4,6 +4,7 @@ using UnityEngine;
 
 public class FireTrap : Trap
 {
+    private float damage;
     private void Awake()
     {
         anim = GetComponent<Animator>();
@@ -31,6 +32,19 @@ public class FireTrap : Trap
             {
                 data.curTime = Time.time;
                 anim.SetBool("Attack", false);
+            }
+        }
+    }
+
+    private void OnTriggerEnter2D(Collider2D collision)
+    {
+        if (collision.CompareTag("Player"))
+        {
+            IDmgable damageable = collision.GetComponent<IDmgable>();
+            damage = data.dmg;
+            if (damageable != null)
+            {
+                damageable.TakeDamage(data.dmg);
             }
         }
     }

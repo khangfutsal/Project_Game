@@ -43,6 +43,10 @@ public class PlayerAttackSecond : PlayerAttackState
             stateMachine.ChangeState(player.playerAttackThirdState);
             
         }
+        else if (isAnimationFinished)
+        {
+            stateMachine.ChangeState(player.playerIdleState);
+        }
     }
 
     public override void PhysicsUpdate()

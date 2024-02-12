@@ -159,7 +159,6 @@ public class SkeletonRange_Bullet : MonoBehaviour
             Collider2D collider2D = Physics2D.OverlapCircle(v, radiusOfPosition, playerMask);
             if (collider2D != null)
             {
-                Debug.Log("Check position ");
                 return true;
             }
             return false;

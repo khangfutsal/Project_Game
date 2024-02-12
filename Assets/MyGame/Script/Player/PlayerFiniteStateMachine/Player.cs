@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
-public class Player : MonoBehaviour, IDmgable
+public class Player : MonoBehaviour
 {
     #region Player Animation
     public PlayerStateMachine playerStateMachine;
@@ -28,6 +28,9 @@ public class Player : MonoBehaviour, IDmgable
     public PlayerAttackSecond playerAttackSecondState;
     public PlayerAttackThird playerAttackThirdState;
     public PlayerAttackInAirState playerAttackInAirState;
+
+    public PlayerSkillEarthQuake playerSkillEarthQuake;
+    public PlayerSkillFireBall playerSkillFireBall;
     #endregion
 
     public Coroutine couroutine_Invulnerability;
@@ -41,6 +44,11 @@ public class Player : MonoBehaviour, IDmgable
     [SerializeField]
     public PlayerData playerData;
     public PlayerInputHandler playerInputHandler;
+    public PlayerStats playerStats;
+
+    public Transform hitboxTf;
+
+    private Object_Pool objPool;
 
     public Vector2 workspace;
     public Vector2 currentVelocity { get; private set; }
@@ -49,20 +57,17 @@ public class Player : MonoBehaviour, IDmgable
     [SerializeField] private float iFramesDuration;
     [SerializeField] private int numberOfFlashes;
     public int facingDirection { get; private set; }
-    [field: SerializeField] public float maxHealth { get; set; }
-    [field: SerializeField] public float health { get; set; }
 
     private int attackDmg;
 
-    private float time;
 
     private bool _isAttackEnemy;
     private bool _isHurt;
     private bool _isKnock;
     private bool _isInvulnerability;
     private bool _isDeath;
-    private bool _isHitAttackSecond;
-    private bool _isHitAttackFinal;
+    private bool _isHitFinalSecond;
+    private bool _isSkillEarthQuake;
 
     private static Player _ins;
 
@@ -78,7 +83,6 @@ public class Player : MonoBehaviour, IDmgable
     public Animator anim;
     [SerializeField] public SpriteRenderer spriteRerender;
     [SerializeField] private Rigidbody2D RgBody2D;
-    private Collider2D playerCollider;
     #endregion
 
     #region Attack Variable
@@ -102,8 +106,11 @@ public class Player : MonoBehaviour, IDmgable
         playerAttackSecondState = new PlayerAttackSecond(this, playerStateMachine, playerData, "attack2");
         playerAttackThirdState = new PlayerAttackThird(this, playerStateMachine, playerData, "attack3");
         playerAttackInAirState = new PlayerAttackInAirState(this, playerStateMachine, playerData, "attackAir");
+        playerSkillEarthQuake = new PlayerSkillEarthQuake(this, playerStateMachine, playerData, "earthquake");
+        playerSkillFireBall = new PlayerSkillFireBall(this, playerStateMachine, playerData, "fireball");
 
-        playerCollider = GetComponent<Collider2D>();
+
+        objPool = GetComponent<Object_Pool>();
 
         _ins = this;
     }
@@ -115,7 +122,6 @@ public class Player : MonoBehaviour, IDmgable
         spriteRerender = GetComponent<SpriteRenderer>();
 
         playerStateMachine.Initialize(playerIdleState);
-        health = maxHealth;
         facingDirection = 1;
         _isDeath = false;
     }
@@ -123,8 +129,6 @@ public class Player : MonoBehaviour, IDmgable
 
     private void Update()
     {
-        
-
         currentVelocity = RgBody2D.velocity;
         playerStateMachine.currentState.LogicUpdate();
     }
@@ -139,25 +143,22 @@ public class Player : MonoBehaviour, IDmgable
 
     #region Get Functions
     public static Player GetInstance() => _ins;
-    public bool GetBool_IsHitAttackSecond() => _isHitAttackSecond;
-    public bool GetBool_IsHitAttackFinal() => _isHitAttackFinal;
+    public bool GetBool_IsHitAttackFinal() => _isHitFinalSecond;
+    public bool GetBool_IsSkillEarthQuake() => _isSkillEarthQuake;
     public bool GetBool_IsDeath() => _isDeath;
     public bool GetBool_IsKnock() => _isKnock;
     public bool GetBool_IsInvulnerability() => _isInvulnerability;
     public bool GetBool_Hurt() => _isHurt;
-    public bool GetBool_AttackEnemy() => _isAttackEnemy;
-    public int GetInt_AttackDmg() => attackDmg;
+
     #endregion
 
     #region Set Functions
-    public bool SetBool_IsHitAttackSecond(bool _bool) => _isHitAttackSecond = _bool;
-    public bool SetBool_IsHitAttackFinal(bool _bool) => _isHitAttackFinal = _bool;
+    public bool SetBool_IsHitAttackFinal(bool _bool) => _isHitFinalSecond = _bool;
+    public bool SetBool_IsSkillEarthQuake(bool _bool) => _isSkillEarthQuake = _bool;
     public bool SetBool_IsDeath(bool _bool) => _isDeath = _bool;
     public bool SetBool__IsVulnerability(bool _bool) => _isInvulnerability = _bool;
     public bool SetBool_IsKnock(bool _bool) => _isKnock = _bool;
     public bool SetBool_IsHurt(bool _bool) => _isHurt = _bool;
-    public bool SetBool_AttackEnemy(bool _bool) => _isAttackEnemy = _bool;
-    public int SetInt_AttackDmg(int dmg) => attackDmg = dmg;
 
     public void SetVelocityX(float velocity)
     {
@@ -228,6 +229,8 @@ public class Player : MonoBehaviour, IDmgable
         Physics2D.IgnoreLayerCollision(6, 8, false);
         Physics2D.IgnoreLayerCollision(6, 11, false);
     }
+
+    
     #endregion
 
     #region Hurt State Functions
@@ -237,65 +240,7 @@ public class Player : MonoBehaviour, IDmgable
         _isKnock = true;
     }
 
-    public void TakeDamage(float dmg, Transform tf = null)
-    {
-        if(tf == null)
-        {
-            health -= dmg;
-            SetBool_IsHurt(true);
-            return;
-        }
-        bool defenseInput = playerInputHandler.defenseInput;
 
-        int playerFaceDirection = facingDirection;
-        Enemy enemy = tf.GetComponentInParent<Enemy>();
-        if (enemy == null)
-        {
-            enemy = tf.parent.parent.GetComponentInChildren<Enemy>();
-        }
-        int enemyFaceDirection = enemy.facingDirection;
-
-        float totalDamage;
-        if (defenseInput)
-        {
-            if (playerFaceDirection != enemyFaceDirection)
-            {
-                totalDamage = dmg * .8f;
-                SetBool_IsHurt(true);
-                health -= totalDamage;
-                if (health <= 0) { Die(); health = 0; }
-                return;
-            }
-            else
-            {
-                totalDamage = dmg;
-                SetBool_IsHurt(true);
-                health -= totalDamage;
-                if (health <= 0) { Die(); health = 0; }
-
-                playerStateMachine.ChangeState(playerTakeDamageState);
-                return;
-            }
-        }
-        totalDamage = dmg;
-        SetBool_IsHurt(true);
-        health -= totalDamage;
-        if (health <= 0) { Die(); health = 0; }
-
-        //Debug.Log("Hit Player Enter : " + enemy.gameObject.name);
-    }
-
-    public void Die()
-    {
-        SetBool_IsDeath(true);
-        SetVelocityX(0);
-        StartCoroutine(DelayEnd());
-        IEnumerator DelayEnd()
-        {
-            yield return new WaitForSeconds(2f);
-            Time.timeScale = 0;
-        }
-    }
 
     public IEnumerator DeleteVfX(Transform vfxDefense)
     {
@@ -327,18 +272,27 @@ public class Player : MonoBehaviour, IDmgable
 
     }
 
+    public void SpawnBullet()
+    {
+        FireBallBullet fireballBullet = objPool.GetTransformFromPool().GetComponent<FireBallBullet>();
+        fireballBullet.gameObject.SetActive(true);
+        fireballBullet.SetDirection(hitboxTf);
+    }
+
 
     #endregion
 
     #region Function Animation Trigger
-    public void AttackSecondAlready()
-    {
-        _isHitAttackSecond = true;
-    }
-
     public void AttackFinalAlready()
     {
-        _isHitAttackFinal = true;
+        _isHitFinalSecond = true;
+    }
+
+    public void SkillEarthQuakeAlready()
+    {
+        _isSkillEarthQuake = true;
     }
     #endregion
+
+    
 }

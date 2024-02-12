@@ -30,7 +30,6 @@ public class SkeletonRange_AbilityState : EnemyState
     {
         base.LogicUpdate();
         _isTakeDmg = skeleton_Range.GetBool_IsTakeDamage();
-        Debug.Log("Is take dmg " + _isTakeDmg);
         if (_isTakeDmg)
         {
             stateMachine.ChangeState(skeleton_Range.skeletonRange_TakeDamage);

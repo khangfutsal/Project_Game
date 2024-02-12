@@ -126,26 +126,27 @@ public class Skeleton_Range : Skeleton, IDmgable
         health -= dmg;
         _isTakeDamage = true;
 
+        if (health <= 0) { Die(); health = 0; }
+
+        if (tf.GetComponentInParent<Player>() == null) return;
+
         Player player = tf.GetComponentInParent<Player>();
-        bool attackSecondAlready = player.GetBool_IsHitAttackSecond();
         bool attackFinalAlready = player.GetBool_IsHitAttackFinal();
-        if (attackSecondAlready && player.GetComponent<SpriteRenderer>().sprite.name == "3_atk_9")
+        bool skillEarthQuakeAlready = player.GetBool_IsSkillEarthQuake();
+        if (attackFinalAlready && player.GetComponent<SpriteRenderer>().sprite.name == "3_atk_9")
         {
             rgBody2D.constraints &= ~RigidbodyConstraints2D.FreezePositionX;
             KnockBack(10, 0);
-            if (health <= 0) { Die(); health = 0; }
             return;
         }
-        if (attackFinalAlready && player.GetComponent<SpriteRenderer>().sprite.name == "3_atk_18")
+        if (skillEarthQuakeAlready && player.GetComponent<SpriteRenderer>().sprite.name == "3_atk_18")
         {
             rgBody2D.constraints &= ~RigidbodyConstraints2D.FreezePositionY;
             KnockBack(0, 5);
             StartCoroutine(player.AttackTimeScale());
-            if (health <= 0) { Die(); health = 0; }
             return;
         }
         KnockBack(.5f, 0);
-        if (health <= 0) { Die(); health = 0; }
 
     }
     #endregion
@@ -216,6 +217,8 @@ public class Skeleton_Range : Skeleton, IDmgable
     public void Die()
     {
         VFX_Controller.GetInstance().SpawnBloodsVFX(transform);
+
+        Collection_Controller.GetInstance().SpawnGem(transform);
 
         rgBody2D.constraints &= ~RigidbodyConstraints2D.FreezePositionY;
         transform.tag = "Untagged";

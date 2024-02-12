@@ -1,0 +1,23 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ab6772b6cf9b1a047b7869cf7370b38f, type: 3}
+  m_Name: Wave 1
+  m_EditorClassIdentifier: 
+  enemies:
+  - enemyObj: {fileID: 9073250768796106972, guid: 2956ac21c51a9bc49a81f9bdc6572cc1, type: 3}
+    spawnObj: {fileID: 5502378998974602001, guid: 6e367abe7fd45da4cb9fa695cf781bc7, type: 3}
+  traps:
+  - trapObj: {fileID: 7301929905562214354, guid: 47744378a9d17ac4185c9fcc37712188, type: 3}
+    spawnPos: {fileID: 3031391278326848259, guid: b8159789918f8464ca8a5b91275aa8d9, type: 3}
+    timeDelay: 3
+    curTime: 0
+    dmg: 5

@@ -28,4 +28,5 @@ public class PlayerData : ScriptableObject
     public LayerMask playerDefaultLayer;
     public LayerMask playerGhostLayer;
 
+
 }

@@ -74,8 +74,8 @@ SpriteRenderer:
   m_AutoUVMaxDistance: 0.5
   m_AutoUVMaxAngle: 89
   m_LightmapParameters: {fileID: 0}
-  m_SortingLayerID: 0
-  m_SortingLayer: 0
+  m_SortingLayerID: -1597911445
+  m_SortingLayer: 4
   m_SortingOrder: 0
   m_Sprite: {fileID: 1128585616, guid: 35b6a8307b7174848be5749dae1a235e, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
@@ -100,18 +100,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 068361db4e66b204c9e1e0ed0a395e3c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  animator: {fileID: 0}
-  boxCollider2D: {fileID: 0}
-  rgbody2D: {fileID: 0}
   playerMask:
     serializedVersion: 2
     m_Bits: 64
-  playerTf: {fileID: 0}
   force: 8
+  radiusOfPosition: 0.2
   test_vfx: {fileID: 0}
   listPositionCheck: []
-  trajectionCircle: {fileID: 0}
-  radiusOfPosition: 0.2
   skeleton_Range: {fileID: 0}
 --- !u!50 &5142263607780300724
 Rigidbody2D:

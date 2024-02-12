@@ -23,6 +23,9 @@ public class Object_Pool : MonoBehaviour
 
     public void Initialize()
     {
+        if (holderTf == null) return;
+        listPoolTf.Clear();
+
         foreach (var bulletTf in holderTf)
         {
             listPoolTf.Add((Transform)bulletTf);
@@ -32,6 +35,7 @@ public class Object_Pool : MonoBehaviour
     public GameObject SpawnObj()
     {
         GameObject gameObj = Instantiate(obj, transform.position, Quaternion.identity,holderTf);
+        Debug.Log(gameObj.transform.localEulerAngles);
         return gameObj;
     }
 

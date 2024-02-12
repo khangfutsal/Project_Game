@@ -30,7 +30,6 @@ public class PlayerDeathState : PlayerState
     public override void LogicUpdate()
     {
         base.LogicUpdate();
-        Debug.Log(_isKnock);
         if (_isKnock)
         {
             if (Time.time >= startTime + playerData.knockDuration)

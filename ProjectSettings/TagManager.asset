@@ -6,6 +6,9 @@ TagManager:
   tags:
   - Enemy
   - Grounded
+  - interact
+  - DeadZoneX
+  - DeadZoneY
   layers:
   - Default
   - TransparentFX
@@ -45,6 +48,18 @@ TagManager:
     locked: 0
   - name: Default
     uniqueID: 0
+    locked: 0
+  - name: Room
+    uniqueID: 1044111155
+    locked: 0
+  - name: Grounded
+    uniqueID: 1799812513
+    locked: 0
+  - name: Environment
+    uniqueID: 281194773
+    locked: 0
+  - name: Enemy
+    uniqueID: 2697055851
     locked: 0
   - name: Player
     uniqueID: 3408437779

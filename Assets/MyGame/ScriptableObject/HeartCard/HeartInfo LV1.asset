@@ -1,0 +1,24 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c004e419c219f824abd11de8494c6987, type: 3}
+  m_Name: HeartInfo LV1
+  m_EditorClassIdentifier: 
+  name: Heart
+  imgCollection: {fileID: 692917766455180279, guid: 3605262d242fafd47805702c21c49770, type: 3}
+  imgStamina: {fileID: 5335694422596211878, guid: 45ed0128cc539f64aa74a244d4665371, type: 3}
+  description: Increase 0,5% health per one second
+  price: 100
+  dataCard:
+  - 0.5
+  - 1
+  _maxLevel: 0
+  _isBought: 0

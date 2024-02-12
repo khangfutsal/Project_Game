@@ -38,7 +38,6 @@ public class SpawnSkeleton : MonoBehaviour
         RaycastHit2D hit = Physics2D.Raycast(transform.position, Vector2.down, float.MaxValue, ~IgnoreLayerMask);
         if (hit.collider != null)
         {
-            Debug.Log("Collider : " + hit.collider.name);
             if (hit.collider.CompareTag("Grounded"))
             {
                 transform.position = hit.point - offset;

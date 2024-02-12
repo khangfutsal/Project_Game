@@ -37,6 +37,10 @@ public class PlayerAttackThird : PlayerAttackState
     public override void LogicUpdate()
     {
         base.LogicUpdate();
+        if (isAnimationFinished)
+        {
+            stateMachine.ChangeState(player.playerIdleState);
+        }
     }
 
     public override void PhysicsUpdate()

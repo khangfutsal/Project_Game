@@ -136,8 +136,8 @@ SpriteRenderer:
   m_AutoUVMaxDistance: 0.5
   m_AutoUVMaxAngle: 89
   m_LightmapParameters: {fileID: 0}
-  m_SortingLayerID: 0
-  m_SortingLayer: 0
+  m_SortingLayerID: -1597911445
+  m_SortingLayer: 4
   m_SortingOrder: 0
   m_Sprite: {fileID: -744083762, guid: e31038f203118294d91dc83f789ed359, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
@@ -364,7 +364,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   playerObj: {fileID: 0}
-  enemyTf: {fileID: 8918332900530695696}
   enemy: {fileID: 0}
 --- !u!1 &8918332901153935925
 GameObject:
@@ -519,7 +518,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 29e7aa91fe6568442a496de93b67884f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  tf: {fileID: 0}
   enemy: {fileID: 0}
 --- !u!61 &8918332902024284625
 BoxCollider2D:

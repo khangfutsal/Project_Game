@@ -5,13 +5,12 @@ using UnityEngine;
 public class CircleBound : MonoBehaviour
 {
     [SerializeField] private GameObject playerObj;
-    [SerializeField] private Transform enemyTf;
     [SerializeField] private Enemy enemy;
 
     private void Awake()
     {
         playerObj = GameObject.Find("BonzePlayer");
-        enemy = enemyTf.transform.GetComponentInParent<Enemy>();
+        enemy = transform.parent.GetComponent<Enemy>();
     }
 
     private void OnTriggerEnter2D(Collider2D collision)

@@ -109,6 +109,7 @@ public class FlyEyeRange_Bullet : MonoBehaviour
             float dmg = flyingEye_Range.GetFloat_DmgAttack();
             if (damageable != null)
             {
+                HudUI.GetInstance().TakeSliderHealth(dmg);
                 damageable.TakeDamage(dmg, transform);
             }
         }

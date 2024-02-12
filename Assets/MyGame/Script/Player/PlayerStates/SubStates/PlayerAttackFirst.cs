@@ -28,13 +28,13 @@ public class PlayerAttackFirst : PlayerAttackState
     public override void Enter()
     {
         base.Enter();
-        dmg = UnityEngine.Random.Range(1, 3);
-        GameController.GetInstance().player.SetInt_AttackDmg(dmg);
+        //dmg = UnityEngine.Random.Range(1, 5);
+        //player.SetInt_AttackDmg(dmg);
 
         player.StopInvulnerability();
 
-        player.SetBool_IsHitAttackSecond(false);
         player.SetBool_IsHitAttackFinal(false);
+        player.SetBool_IsSkillEarthQuake(false);
     }
 
     public override void Exit()
@@ -45,10 +45,20 @@ public class PlayerAttackFirst : PlayerAttackState
     public override void LogicUpdate()
     {
         base.LogicUpdate();
-        if (attackInput)
+        if (player.anim.GetCurrentAnimatorStateInfo(0).IsName("Attack1"))
         {
-            player.playerInputHandler.UseAttackInput();
-            stateMachine.ChangeState(player.playerAttackSecondState);
+            if (player.anim.GetCurrentAnimatorStateInfo(0).normalizedTime > 0.4)
+            {
+                if (attackInput)
+                {
+                    player.playerInputHandler.UseAttackInput();
+                    stateMachine.ChangeState(player.playerAttackSecondState);
+                }
+            }
+        }
+        if (isAnimationFinished)
+        {
+            stateMachine.ChangeState(player.playerIdleState);
         }
     }
 

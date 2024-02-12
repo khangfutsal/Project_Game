@@ -14,7 +14,7 @@ GameObject:
   - component: {fileID: 151368553775567625}
   - component: {fileID: 151368553775567620}
   - component: {fileID: 151368553775567621}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: EnemyBullet
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -70,10 +70,14 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   animator: {fileID: 0}
+  boxCollider2D: {fileID: 0}
   playerTf: {fileID: 0}
   speed: 5
   currentTimes: 0
   times: 1
+  test_vfx: {fileID: 0}
+  flyingEye_Range: {fileID: 0}
+  _canAttack: 0
 --- !u!212 &151368553775567625
 SpriteRenderer:
   m_ObjectHideFlags: 0
@@ -112,8 +116,8 @@ SpriteRenderer:
   m_AutoUVMaxDistance: 0.5
   m_AutoUVMaxAngle: 89
   m_LightmapParameters: {fileID: 0}
-  m_SortingLayerID: 0
-  m_SortingLayer: 0
+  m_SortingLayerID: -1597911445
+  m_SortingLayer: 4
   m_SortingOrder: 0
   m_Sprite: {fileID: -1826383468, guid: 7a341b2f17e514d45adc1e9d9e84c1b7, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}

@@ -67,13 +67,10 @@ public class FlyEyeMelee_TakeDamageState : EnemyState
         if (_isKnockAlready)
         {
             flyingEye_Melee.SetBool_IsKnockAlready(false);
+            flyingEye_Melee.rgBody2D.constraints = RigidbodyConstraints2D.FreezePositionX;
             stateMachine.ChangeState(flyingEye_Melee.flyEyeMelee_MoveState);
         }
 
-        //if (flyingEye_Melee.GetBool_IsTakeDamage())
-        //{
-        //    stateMachine.ChangeState(flyingEye_Melee.flyEyeMelee_MoveState);
-        //}
     }
 
     public override void PhysicsUpdate()

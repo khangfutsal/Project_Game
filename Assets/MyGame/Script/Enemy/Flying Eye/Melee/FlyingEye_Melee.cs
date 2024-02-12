@@ -18,6 +18,7 @@ public class FlyingEye_Melee : FlyingEye, IDmgable
     #region Variable Component
 
     private BoxCollider2D boxCollider2D;
+    [SerializeField] public GameObject colliderEnvironment;
     #endregion
 
     #region Transform Obj
@@ -59,10 +60,13 @@ public class FlyingEye_Melee : FlyingEye, IDmgable
     {
         enemyStateMachine.Initialize(flyEyeMelee_MoveState);
 
+        _current = .5f; 
         facingDirection = 1;
         _target = 1;
         health = maxHealth;
         _isFlip = true;
+
+        IgnoreLayerCollider();
     }
 
     private void Update()
@@ -110,22 +114,23 @@ public class FlyingEye_Melee : FlyingEye, IDmgable
         }
         else
         {
-            if (Vector3.Distance(transform.position, endPos.position) < 0.001f)
+            if (Vector3.Distance(transform.position, endPos.position) < 0.3f)
             {
                 Flip();
             }
-            else if (Vector3.Distance(transform.position, startPos.position) < 0.001f)
+            else if (Vector3.Distance(transform.position, startPos.position) < 0.3f)
             {
                 Flip();
             }
             _target = _target == 1 ? 1 : 0;
             _current = Mathf.MoveTowards(_current, _target, flyingEyeMelee_Data.moveSpeed * Time.deltaTime);
+            Debug.Log("_current :" + Vector3.Distance(transform.position, endPos.position));
+            Debug.Log("test :" + Vector3.Distance(transform.position, startPos.position));
             transform.position = Vector3.Lerp((Vector2)startPos.position, (Vector2)endPos.position, _current);
         }
 
         #region  
         void ReturnPosition()
-        #endregion
         {
             CheckFlip(transform.position, startPos.position);
             if (!_isFlip)
@@ -151,34 +156,46 @@ public class FlyingEye_Melee : FlyingEye, IDmgable
             }
 
         }
+        #endregion
+
+    }
+
+    public void IgnoreLayerCollider()
+    {
+        Physics2D.IgnoreLayerCollision(6, 9, true);
+        Physics2D.IgnoreLayerCollision(9, 9, true);
+
     }
 
     public void TakeDamage(float dmg, Transform tf = null)
     {
-        health -= dmg;
         _isTakeDamage = true;
 
+        health -= dmg;
+
+        if (health <= 0) { Die(); health = 0; }
+
+
+        if (tf.GetComponentInParent<Player>() == null) return;
+
         Player player = tf.GetComponentInParent<Player>();
-        bool attackSecondAlready = player.GetBool_IsHitAttackSecond();
         bool attackFinalAlready = player.GetBool_IsHitAttackFinal();
-        if (attackSecondAlready && player.GetComponent<SpriteRenderer>().sprite.name == "3_atk_9")
+        bool skillEarthQuakeAlready = player.GetBool_IsSkillEarthQuake();
+        if (attackFinalAlready && player.GetComponent<SpriteRenderer>().sprite.name == "3_atk_9")
         {
             KnockBack(10, 0);
             rgBody2D.constraints &= ~RigidbodyConstraints2D.FreezePositionX;
-            if (health <= 0) { Die(); health = 0; }
             return;
         }
-        if (attackFinalAlready && player.GetComponent<SpriteRenderer>().sprite.name == "3_atk_18")
+        if (skillEarthQuakeAlready && player.GetComponent<SpriteRenderer>().sprite.name == "3_atk_18")
         {
             rgBody2D.constraints &= ~RigidbodyConstraints2D.FreezePositionY;
             KnockBack(0, 5);
             StartCoroutine(player.AttackTimeScale());
-            if (health <= 0) { Die(); health = 0; }
             return;
         }
         rgBody2D.constraints &= ~RigidbodyConstraints2D.FreezePositionX;
         KnockBack(.5f, 0);
-        if (health <= 0) { Die(); health = 0; }
     }
     #endregion
 
@@ -235,6 +252,8 @@ public class FlyingEye_Melee : FlyingEye, IDmgable
     public void Die()
     {
         VFX_Controller.GetInstance().SpawnBloodsVFX(transform);
+
+        Collection_Controller.GetInstance().SpawnGem(transform);
 
         rgBody2D.constraints &= ~RigidbodyConstraints2D.FreezePositionY;
         transform.tag = "Untagged";

@@ -18,7 +18,7 @@ public class SkeletonRange_IdleState : SkeletonRange_AbilityState
     public override void Enter()
     {
         base.Enter();
-        skeleton_Range.rgBody2D.constraints &= ~RigidbodyConstraints2D.FreezePositionY;
+        skeleton_Range.rgBody2D.constraints &= ~RigidbodyConstraints2D.FreezePositionY | RigidbodyConstraints2D.FreezePositionX;
         skeleton_Range.transform.tag = "Enemy";
     }
 
@@ -31,9 +31,9 @@ public class SkeletonRange_IdleState : SkeletonRange_AbilityState
     {
         base.LogicUpdate();
         isBound = skeleton_Range.isBound;
-        if (isBound && Time.time >= startTime + timeDelay)
+        if (isBound)
         {
-            stateMachine.ChangeState(skeleton_Range.skeletonRange_Move);
+           stateMachine.ChangeState(skeleton_Range.skeletonRange_Move);
         }
     }
 

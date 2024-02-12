@@ -52,6 +52,7 @@ public class FlyEyeRange_TakeDamageState : EnemyState
         if (_isKnockAlready)
         {
             flyingEye_Range.SetBool_IsKnockAlready(false);
+            flyingEye_Range.rgBody2D.constraints = RigidbodyConstraints2D.FreezePositionX;
             stateMachine.ChangeState(flyingEye_Range.flyEyeRange_MoveState);
         }
     }

@@ -18,7 +18,8 @@ public class SkeletonMelee_IdleState : SkeletonMelee_AbilityState
     public override void Enter()
     {
         base.Enter();
-        skeleton_Melee.rgBody2D.constraints &= ~RigidbodyConstraints2D.FreezePositionY;
+        skeleton_Melee.rgBody2D.constraints &= ~(RigidbodyConstraints2D.FreezePositionY | RigidbodyConstraints2D.FreezePositionX);
+
         skeleton_Melee.transform.tag = "Enemy";
     }
 
@@ -26,7 +27,7 @@ public class SkeletonMelee_IdleState : SkeletonMelee_AbilityState
     {
         base.LogicUpdate();
         isBound = skeleton_Melee.isBound;
-        if (isBound && Time.time >= startTime + timeDelay)
+        if (isBound)
         {
             stateMachine.ChangeState(skeleton_Melee.skeletonMelee_Move);
         }

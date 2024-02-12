@@ -21,6 +21,7 @@ public class FlyEyeMelee_DeathState : EnemyState
     {
         base.Enter();
         Debug.Log("Enter Death");
+        flyingEyeMelee.colliderEnvironment.GetComponent<BoxCollider2D>().isTrigger = true;
         flyingEyeMelee.rgBody2D.constraints &= ~RigidbodyConstraints2D.FreezePositionX;
         flyingEyeMelee.KnockBack(25, 10);
 

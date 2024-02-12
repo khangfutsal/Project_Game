@@ -20,7 +20,7 @@ public class FlyEyeRange_DeathState : EnemyState
     public override void Enter()
     {
         base.Enter();
-
+        flyingEyeRange.colliderEnvironment.GetComponent<BoxCollider2D>().isTrigger = true;
         flyingEyeRange.rgBody2D.constraints &= ~RigidbodyConstraints2D.FreezePositionX;
         flyingEyeRange.KnockBack(25, 10);
     }

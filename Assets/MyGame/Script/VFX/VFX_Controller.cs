@@ -9,6 +9,7 @@ public class VFX_Controller : MonoBehaviour
     [Header("Holder Transform")]
     [SerializeField] private Transform bloodVFXHolder;
     [SerializeField] private Transform hitVFXHolder;
+    [SerializeField] private Transform GroundVFXHolder;
 
     [Header("Reference Object")]
     [SerializeField] private VFX_Manager VFX_Manager;
@@ -54,9 +55,11 @@ public class VFX_Controller : MonoBehaviour
 
     }
 
-    public void SpawnVFX(GameObject vfxObj, Transform tf)
+    public void SpawnVFX(GameObject vfxObj, Transform tf,string name)
     {
-        Object_Pool objPool = hitVFXHolder.parent.GetComponentInChildren<Object_Pool>();
+        GameObject obj = GameObject.Find(name);
+        Transform holder = obj.transform.Find("Holder");
+        Object_Pool objPool = holder.parent.GetComponentInChildren<Object_Pool>();
 
         Transform transform = objPool.GetTransformFromPool();
 
@@ -66,7 +69,7 @@ public class VFX_Controller : MonoBehaviour
             transform.position = tf.position;
             return;
         }
-        else Instantiate(vfxObj, tf.position, Quaternion.identity, hitVFXHolder);
+        else Instantiate(vfxObj, tf.position, Quaternion.identity, holder);
 
     }
 

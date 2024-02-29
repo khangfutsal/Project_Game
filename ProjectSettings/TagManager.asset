@@ -9,6 +9,10 @@ TagManager:
   - interact
   - DeadZoneX
   - DeadZoneY
+  - Wall
+  - Skill
+  - IceCarpet
+  - FireCarpet
   layers:
   - Default
   - TransparentFX

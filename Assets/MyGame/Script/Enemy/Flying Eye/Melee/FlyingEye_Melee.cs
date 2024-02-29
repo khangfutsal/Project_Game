@@ -124,8 +124,6 @@ public class FlyingEye_Melee : FlyingEye, IDmgable
             }
             _target = _target == 1 ? 1 : 0;
             _current = Mathf.MoveTowards(_current, _target, flyingEyeMelee_Data.moveSpeed * Time.deltaTime);
-            Debug.Log("_current :" + Vector3.Distance(transform.position, endPos.position));
-            Debug.Log("test :" + Vector3.Distance(transform.position, startPos.position));
             transform.position = Vector3.Lerp((Vector2)startPos.position, (Vector2)endPos.position, _current);
         }
 

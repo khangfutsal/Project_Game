@@ -35,7 +35,6 @@ public class Object_Pool : MonoBehaviour
     public GameObject SpawnObj()
     {
         GameObject gameObj = Instantiate(obj, transform.position, Quaternion.identity,holderTf);
-        Debug.Log(gameObj.transform.localEulerAngles);
         return gameObj;
     }
 
@@ -55,7 +54,7 @@ public class Object_Pool : MonoBehaviour
 
         foreach (var poolTf in listPoolTf)
         {
-            if (!poolTf.gameObject.activeInHierarchy) return poolTf;
+            if (!poolTf.gameObject.activeSelf) return poolTf;
         }
         return null;
     }

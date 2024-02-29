@@ -370,7 +370,7 @@ SpriteRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 10754, guid: 0000000000000000f000000000000000, type: 0}
+  - {fileID: 2100000, guid: d56a02b9697b32a4fbaf92b61ec989dd, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -416,7 +416,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   anim: {fileID: 0}
   playerTf: {fileID: 0}
-  facingDirection: 0
+  facingDirection: 1
   isBound: 0
   _isKnock: 0
   _isKnockAlready: 0
@@ -442,7 +442,7 @@ MonoBehaviour:
   groundCheckTf: {fileID: 449249046}
   hitboxTf: {fileID: 7059878366342089858}
   dmgAttack: 5
-  <maxHealth>k__BackingField: 2
+  <maxHealth>k__BackingField: 100
   <health>k__BackingField: 0
   test: 0
 --- !u!114 &7059878367595993215
@@ -498,7 +498,7 @@ BoxCollider2D:
   m_SpriteTilingProperty:
     border: {x: 0, y: 0, z: 0, w: 0}
     pivot: {x: 0.5, y: 0.5}
-    oldSize: {x: 1.28125, y: 0.96875}
+    oldSize: {x: 1.34375, y: 1.03125}
     newSize: {x: 1.28125, y: 0.96875}
     adaptiveTilingThreshold: 0.5
     drawMode: 0

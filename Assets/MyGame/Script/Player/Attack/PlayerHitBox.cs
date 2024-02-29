@@ -10,7 +10,7 @@ public class PlayerHitBox : MonoBehaviour
         if (collision.CompareTag("Enemy"))
         {
             GameObject hitVFX = VFX_Controller.GetInstance().GetVFX_Manager().GetHitVFX();
-            //VFX_Controller.GetInstance().SpawnVFX(hitVFX, collision.transform);
+            VFX_Controller.GetInstance().SpawnVFX(hitVFX, collision.transform,"HitVFX");
 
             IDmgable damageable = collision.GetComponent<IDmgable>();
             Player player = transform.GetComponentInParent<Player>();

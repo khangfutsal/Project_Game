@@ -3,9 +3,10 @@ using System.Collections.Generic;
 using UnityEngine;
 
 public class PlayerMoveState : PlayerGroundedState
-{ 
+{
     private bool _isDeath;
     private bool defenseInput;
+    private bool _isDurationEffectIceSkill;
     public PlayerMoveState(Player player, PlayerStateMachine stateMachine, PlayerData playerData, string animBoolName) : base(player, stateMachine, playerData, animBoolName)
     {
 
@@ -15,6 +16,7 @@ public class PlayerMoveState : PlayerGroundedState
     {
         base.DoChecks();
         _isDeath = player.GetBool_Hurt();
+        _isDurationEffectIceSkill = player.playerStats._durationIce;
     }
 
     public override void Enter()
@@ -36,7 +38,17 @@ public class PlayerMoveState : PlayerGroundedState
         if (!_isHurt && !_isDeath && !defenseInput)
         {
             player.CheckIfShouldFlip((int)input.x);
-            player.SetVelocityX(playerData.movementVelocity * input.x);
+            if (!_isDurationEffectIceSkill)
+            {
+                player.anim.speed = 1;
+                player.SetVelocityX(playerData.movementVelocity * input.x);
+            }
+            else
+            {
+                player.anim.speed = .2f;
+                player.SetVelocityX(player.playerStats.speed * input.x);
+            }
+
 
             if (input.x == 0f)
             {

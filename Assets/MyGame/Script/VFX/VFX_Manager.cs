@@ -10,11 +10,14 @@ public class VFX_Manager : MonoBehaviour
     [Space()]
     [SerializeField] private GameObject hitVFX;
 
+    [SerializeField] private GameObject groundedVFX;
+
     #region Unity Method
 
     #endregion
 
     #region Get Function
+    public GameObject GetGroundedVFX() => groundedVFX;
     public List<GameObject> GetBloodsVFX() => BloodsVFX;
     public GameObject GetHitVFX() => hitVFX;
     #endregion

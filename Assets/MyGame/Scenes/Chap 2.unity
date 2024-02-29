@@ -16024,6 +16024,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   bloodVFXHolder: {fileID: 840821125}
   hitVFXHolder: {fileID: 2035648433}
+  GroundVFXHolder: {fileID: 0}
   VFX_Manager: {fileID: 1689394168}
 --- !u!1 &758219793
 GameObject:
@@ -22459,6 +22460,7 @@ MonoBehaviour:
   anim: {fileID: 0}
   spriteRerender: {fileID: 0}
   RgBody2D: {fileID: 0}
+  myMaterial: {fileID: 0}
 --- !u!114 &901703601
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -22550,6 +22552,12 @@ MonoBehaviour:
   statusFireballSkill: 0
   statusEarthquakeSkill: 0
   statusDefenseSkill: 0
+  speed: 0
+  durationIce: 0
+  _durationIce: 0
+  durationFire: 0
+  timesHitFireEffect: 0
+  damageFire: 0
 --- !u!1001 &906185785
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -32554,7 +32562,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!199 &1376399602
 ParticleSystemRenderer:
   serializedVersion: 6
@@ -44989,6 +44997,7 @@ MonoBehaviour:
   - {fileID: 7895688523234679006, guid: fcce60652b62f6540b5413267f48c953, type: 3}
   - {fileID: 7004467185029764847, guid: bf671a67b16e1dc47b482502640422a0, type: 3}
   hitVFX: {fileID: 2024606368197052178, guid: ad1bc4be9e349c54bbb1f0ff972c2e3a, type: 3}
+  groundedVFX: {fileID: 0}
 --- !u!4 &1689394169
 Transform:
   m_ObjectHideFlags: 0

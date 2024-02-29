@@ -36,7 +36,7 @@ public class Player : MonoBehaviour
     public Coroutine couroutine_Invulnerability;
     #region Check Transforms
     [SerializeField]
-    private Transform groundCheck;
+    public Transform groundCheck;
     #endregion
 
     #region Other Variable
@@ -82,7 +82,9 @@ public class Player : MonoBehaviour
 
     public Animator anim;
     [SerializeField] public SpriteRenderer spriteRerender;
-    [SerializeField] private Rigidbody2D RgBody2D;
+    [SerializeField] public Rigidbody2D RgBody2D;
+
+    [SerializeField] private Material myMaterial;
     #endregion
 
     #region Attack Variable
@@ -109,7 +111,6 @@ public class Player : MonoBehaviour
         playerSkillEarthQuake = new PlayerSkillEarthQuake(this, playerStateMachine, playerData, "earthquake");
         playerSkillFireBall = new PlayerSkillFireBall(this, playerStateMachine, playerData, "fireball");
 
-
         objPool = GetComponent<Object_Pool>();
 
         _ins = this;
@@ -120,6 +121,7 @@ public class Player : MonoBehaviour
         playerInputHandler = GetComponent<PlayerInputHandler>();
         RgBody2D = GetComponent<Rigidbody2D>();
         spriteRerender = GetComponent<SpriteRenderer>();
+        myMaterial = spriteRerender.material;
 
         playerStateMachine.Initialize(playerIdleState);
         facingDirection = 1;
@@ -167,6 +169,8 @@ public class Player : MonoBehaviour
         currentVelocity = workspace;
     }
 
+   
+
     public void SetVelocityY(float velocity)
     {
         workspace.Set(currentVelocity.x, velocity);
@@ -206,13 +210,20 @@ public class Player : MonoBehaviour
 
     public IEnumerator Invulnerability()
     {
+        Color currentColor = myMaterial.GetColor("_ColorAlpha");
+
         Physics2D.IgnoreLayerCollision(6, 8, true);
         Physics2D.IgnoreLayerCollision(6, 11, true);
         for (int i = 0; i < numberOfFlashes; i++)
         {
-            spriteRerender.color = new Color(1, 1, 1, 0.5f);
+            currentColor.a = .5f;
+
+            myMaterial.SetColor("_ColorAlpha", currentColor);
+            //spriteRerender.color = new Color(1, 1, 1, 0.5f);
             yield return new WaitForSeconds(iFramesDuration / (numberOfFlashes * 2));
-            spriteRerender.color = Color.white;
+            currentColor.a = 1f;
+
+            myMaterial.SetColor("_ColorAlpha", currentColor);
             yield return new WaitForSeconds(iFramesDuration / (numberOfFlashes * 2));
         }
         Physics2D.IgnoreLayerCollision(6, 8, false);
@@ -225,7 +236,10 @@ public class Player : MonoBehaviour
     {
         if (couroutine_Invulnerability == null) return;
         StopCoroutine(couroutine_Invulnerability);
-        spriteRerender.color = Color.white;
+        Color currentColor = myMaterial.GetColor("_ColorAlpha");
+        currentColor.a = 1f;
+
+        myMaterial.SetColor("_ColorAlpha", currentColor);
         Physics2D.IgnoreLayerCollision(6, 8, false);
         Physics2D.IgnoreLayerCollision(6, 11, false);
     }

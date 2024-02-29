@@ -9,7 +9,7 @@ public abstract class Enemy : MonoBehaviour
     public EnemyData enemyData;
     [HideInInspector] public Transform playerTf;
 
-    [HideInInspector] public int facingDirection;
+    [SerializeField] public int facingDirection;
 
     protected float _target;
 

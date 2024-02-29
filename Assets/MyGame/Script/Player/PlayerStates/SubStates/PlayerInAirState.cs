@@ -9,6 +9,9 @@ public class PlayerInAirState : PlayerState
     private bool jumpInput;
     private bool attackInput;
     private bool isHurt;
+    private bool _isDurationEffectIceSkill;
+
+    private GameObject vfxGrounded;
     public PlayerInAirState(Player player, PlayerStateMachine stateMachine, PlayerData playerData, string animBoolName) : base(player, stateMachine, playerData, animBoolName)
     {
 
@@ -19,12 +22,14 @@ public class PlayerInAirState : PlayerState
         base.DoChecks();
         isGrounded = player.CheckIfGrounded();
         isHurt = player.GetBool_Hurt();
+        _isDurationEffectIceSkill = player.playerStats._durationIce;
 
     }
 
     public override void Enter()
     {
         base.Enter();
+        vfxGrounded = VFX_Controller.GetInstance().GetVFX_Manager().GetGroundedVFX();
     }
 
     public override void Exit()
@@ -42,9 +47,10 @@ public class PlayerInAirState : PlayerState
 
         if (isGrounded && player.currentVelocity.y < 0.01f)
         {
+            VFX_Controller.GetInstance().SpawnVFX(vfxGrounded, player.groundCheck, "GroundedVFX");
             stateMachine.ChangeState(player.playerIdleState);
         }
-        else if(jumpInput && player.playerJumpState.canJump())
+        else if (jumpInput && player.playerJumpState.canJump())
         {
             stateMachine.ChangeState(player.playerJumpState);
         }
@@ -59,11 +65,21 @@ public class PlayerInAirState : PlayerState
         }
         else
         {
+            if (!_isDurationEffectIceSkill)
+            {
+                player.anim.speed = 1;
+                player.SetVelocityX(playerData.movementVelocity * xInput);
+            }
+            else
+            {
+                player.anim.speed = .2f;
+                player.SetVelocityX(player.playerStats.speed * xInput);
+            }
             player.CheckIfShouldFlip(xInput);
-            player.SetVelocityX(playerData.movementVelocity * xInput);
+
             player.anim.SetFloat("yVel", player.currentVelocity.y);
         }
-        
+
     }
 
     public override void PhysicsUpdate()

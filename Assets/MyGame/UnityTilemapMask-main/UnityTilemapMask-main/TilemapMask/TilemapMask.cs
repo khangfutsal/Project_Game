@@ -27,7 +27,7 @@ public class TilemapMask : MonoBehaviour
                 {
                     //Create maskCell on the cell coords
                     Vector3 coord = tilemap.CellToWorld(new Vector3Int(x, y, startCoord.z)) + new Vector3(0.5f, 0.5f, 0);
-                    Instantiate(maskCell, coord, Quaternion.identity, transform);
+                    Instantiate(maskCell, coord + new Vector3(0,0.03f,0), Quaternion.identity, transform);
                 }
             }
         }

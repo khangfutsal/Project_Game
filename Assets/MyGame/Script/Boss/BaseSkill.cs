@@ -1,14 +1,26 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Events;
 
-public class BaseSkill : MonoBehaviour
+public abstract class BaseSkill : MonoBehaviour
 {
-    [SerializeField] protected GameObject skillObj;
+    [SerializeField] public string name;
+    [SerializeField] public string typeSkill;
+    [SerializeField] public int phase;
+    [Header("Properties Skills")]
+    [SerializeField] public float curTime;
+    [SerializeField] public float timeDelay;
+    [SerializeField] public float damage;
+    [SerializeField] public float duration;
 
-    [SerializeField] protected Transform spawnTf;
+    public UnityEvent OnHitEffect = new UnityEvent();
 
-    [SerializeField] protected float delay;
-    [SerializeField] protected float curTime;
+    [SerializeField] public bool _useSkill;
+    
+    public abstract void UseSkill();
+    public abstract bool CanUseSkill();
+
 
 }

@@ -5,7 +5,7 @@ using UnityEngine.Events;
 
 public class PlayerStats : MonoBehaviour, IDmgable
 {
-    public static UnityEvent OnUpdateStats = new UnityEvent();
+    
     [field: SerializeField] public float maxHealth { get; set; }
     [field: SerializeField] public float health { get; set; }
 
@@ -30,6 +30,16 @@ public class PlayerStats : MonoBehaviour, IDmgable
     [SerializeField] private float statusFireballSkill;
     [SerializeField] private float statusEarthquakeSkill;
     [SerializeField] private float statusDefenseSkill;
+
+    [Header("Ice Skill Properties")]
+    [SerializeField] public float speed;
+    [SerializeField] private float durationIce;
+    [SerializeField] public bool _durationIce;
+
+    [Header("Fire Skill Properties")]
+    [SerializeField] private float durationFire;
+    [SerializeField] private float timesHitFireEffect;
+    [SerializeField] private float damageFire;
 
 
     private Player player;
@@ -80,19 +90,37 @@ public class PlayerStats : MonoBehaviour, IDmgable
         startTimeRegenerationHealth = timeRegenerationHealth;
     }
 
-    public void UpdateProperties()
+    public void HitEffectIceSkill()
     {
-        Debug.Log("UpdateProperties");
+        Debug.Log("Ice skill");
+        _durationIce = true;
+        StartCoroutine(IceEffect());
+
+        IEnumerator IceEffect()
+        {
+            yield return new WaitForSeconds(durationIce);
+            _durationIce = false;
+
+        }
     }
 
-    private void OnEnable()
+    public void HitEffectFireSkill()
     {
-        OnUpdateStats.AddListener(UpdateProperties);
+        Debug.Log("Fire skill");
+        StartCoroutine(FireEffect());
+
+        IEnumerator FireEffect()
+        {
+            for(int i=0;i< timesHitFireEffect; i++)
+            {
+                yield return new WaitForSeconds(durationFire);
+                TakeDamage(damageFire);
+            }
+        }
     }
-    private void OnDisable()
-    {
-        OnUpdateStats.RemoveListener(UpdateProperties);
-    }
+
+
+
     public void RegenerationMana()
     {
         if (mana < 100 && mana >= 0)

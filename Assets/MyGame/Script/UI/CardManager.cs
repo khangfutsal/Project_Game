@@ -21,7 +21,16 @@ public class CardManager : MonoBehaviour
     private void Awake()
     {
         horizonGroup = GetComponent<HorizontalLayoutGroup>();
+
+        var listCards = DataManager.GetInstance().dataPlayerSO.listCards;
+
+        foreach (var card in listCards)
+        {
+            cardsInfo.Add(card);
+        }
     }
+
+
 }
 
 

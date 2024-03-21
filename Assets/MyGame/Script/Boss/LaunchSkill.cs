@@ -33,6 +33,8 @@ public class LaunchSkill : MonoBehaviour
         Colliders[0].enabled = true;
     }
 
+
+
     void LateUpdate()
     {
 
@@ -84,7 +86,7 @@ public class LaunchSkill : MonoBehaviour
         Invoke("InActive", timeDestroy);
         foreach(var obj in carpets)
         {
-            if(Vector3.Distance(obj.transform.position,transform.position) < 2.5f)
+            if(Vector3.Distance(obj.transform.position,transform.position) < 3f)
             {
                 obj.SetActive(true);
                 obj.GetComponent<CarpetSkill>().damage = damage;

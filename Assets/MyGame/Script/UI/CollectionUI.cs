@@ -1,5 +1,4 @@
 using System.Collections;
-using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
@@ -40,7 +39,8 @@ public class CollectionUI : MonoBehaviour
     public void ShowGroupCrystalUI()
     {
         groupCrystalUI.SetActive(true);
-        textCrystal.text = Collection_Controller.GetInstance().GetCollectionManager().GetCrystalGem().GetCrystal().ToString();
+
+        textCrystal.text = GameController.GetInstance().gameManager.GetCrystalUI().ToString();
 
         if (IEInActiveCrystal != null)
         {
@@ -57,7 +57,7 @@ public class CollectionUI : MonoBehaviour
     {
         groupCoinUI.SetActive(true);
         
-        textCoin.text = Collection_Controller.GetInstance().GetCollectionManager().GetCoinGem().GetCoin().ToString();
+        textCoin.text = GameController.GetInstance().gameManager.GetCoinUI().ToString();
 
         if (IEInActiveCoin != null)
         {
@@ -73,10 +73,10 @@ public class CollectionUI : MonoBehaviour
     public void UpdateGem()
     {
         if (!groupCoinUI.activeSelf) return;
-        textCoin.text = Collection_Controller.GetInstance().GetCollectionManager().GetCoinGem().GetCoin().ToString();
+        textCoin.text = GameController.GetInstance().gameManager.GetCoinUI().ToString();
 
         if (!groupCrystalUI.activeSelf) return;
-        textCrystal.text = Collection_Controller.GetInstance().GetCollectionManager().GetCrystalGem().GetCrystal().ToString();
+        textCrystal.text = GameController.GetInstance().gameManager.GetCrystalUI().ToString();
     }
 
     public IEnumerator InActive(string name)

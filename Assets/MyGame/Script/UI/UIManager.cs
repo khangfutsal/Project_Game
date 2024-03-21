@@ -5,6 +5,7 @@ using UnityEngine;
 
 public class UIManager : MonoBehaviour
 {
+    [SerializeField] private GameObject door;
     [Header("Shop UI")]
     [SerializeField] private GameObject shopUI;
 
@@ -14,5 +15,6 @@ public class UIManager : MonoBehaviour
     #region Get Function
     public GameObject GetShopUI() => shopUI;
     public TextMeshProUGUI GetTitleWave() => titleWave;
+    public GameObject GetDoor() => door;
     #endregion
 }

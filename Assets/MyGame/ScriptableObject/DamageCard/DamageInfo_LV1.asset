@@ -20,4 +20,5 @@ MonoBehaviour:
   dataCard:
   - 2
   _maxLevel: 0
-  _isBought: 0
+  _isBought: 1
+  _tutoCard: 1

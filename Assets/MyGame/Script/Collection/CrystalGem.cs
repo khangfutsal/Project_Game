@@ -4,7 +4,6 @@ using UnityEngine;
 
 public class CrystalGem : MonoBehaviour
 {
-    [SerializeField] private static int crystal;
 
     [SerializeField] private Transform playerTf;
 
@@ -19,13 +18,6 @@ public class CrystalGem : MonoBehaviour
     [SerializeField] private float curTime;
 
 
-    #region Get Function
-    public int GetCrystal() => crystal;
-    #endregion
-
-    #region Set Function
-    public void SetCrystal(int _crystal) => crystal = _crystal;
-    #endregion
 
     private void Awake()
     {
@@ -53,9 +45,15 @@ public class CrystalGem : MonoBehaviour
         {
             Destroy(transform.gameObject);
 
+            var crystal = GameController.GetInstance().gameManager.GetCrystal();
+
+            GameController.GetInstance().gameManager.SetCrystalUI(++crystal);
+            GameController.GetInstance().gameManager.SetCrystal(++crystal);
+
+            DataManager.GetInstance().dataPlayerSO.curCrystal = crystal;
+
             CollectionUI.GetInstance().ShowGroupCrystalUI();
 
-            ++crystal;
         }
     }
 

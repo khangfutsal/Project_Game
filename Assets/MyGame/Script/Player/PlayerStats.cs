@@ -5,7 +5,7 @@ using UnityEngine.Events;
 
 public class PlayerStats : MonoBehaviour, IDmgable
 {
-    
+
     [field: SerializeField] public float maxHealth { get; set; }
     [field: SerializeField] public float health { get; set; }
 
@@ -81,13 +81,26 @@ public class PlayerStats : MonoBehaviour, IDmgable
 
     private void Start()
     {
-        statusDefenseSkill = 0;
-        statusFireballSkill = 0;
-        statusEarthquakeSkill = 0;
+        Init();
+    }
+
+    private void Init()
+    {
+
+        damageAttack = DataManager.GetInstance().dataPlayerSO.curDamage;
+        maxHealth = DataManager.GetInstance().dataPlayerSO.curHealth;
+        maxMana = DataManager.GetInstance().dataPlayerSO.curMana;
+        percentRegenerationHealth = DataManager.GetInstance().dataPlayerSO.percentRegenerationHealth;
+        timeRegenerationHealth = DataManager.GetInstance().dataPlayerSO.timeRegenerationHealth;
+        statsRegenerationMana = DataManager.GetInstance().dataPlayerSO.statsRegenerationMana;
+        timeRegenerationMana = DataManager.GetInstance().dataPlayerSO.timeRegenerationMana;
+        statusDefenseSkill = DataManager.GetInstance().dataPlayerSO.statusDefenseSkill;
+        statusEarthquakeSkill = DataManager.GetInstance().dataPlayerSO.statusEarthquakeSkill;
+        statusFireballSkill = DataManager.GetInstance().dataPlayerSO.statusFireballSkill;
+
 
         health = maxHealth;
         mana = maxMana;
-        startTimeRegenerationHealth = timeRegenerationHealth;
     }
 
     public void HitEffectIceSkill()
@@ -111,7 +124,7 @@ public class PlayerStats : MonoBehaviour, IDmgable
 
         IEnumerator FireEffect()
         {
-            for(int i=0;i< timesHitFireEffect; i++)
+            for (int i = 0; i < timesHitFireEffect; i++)
             {
                 yield return new WaitForSeconds(durationFire);
                 TakeDamage(damageFire);
@@ -160,6 +173,7 @@ public class PlayerStats : MonoBehaviour, IDmgable
     public void TakeMana(float _mana)
     {
         mana -= _mana;
+        DataManager.GetInstance().dataPlayerSO.curMana = mana;
     }
     public void RegenerationHealth()
     {
@@ -220,12 +234,12 @@ public class PlayerStats : MonoBehaviour, IDmgable
         if (tf == null)
         {
             health -= dmg;
-            player.SetBool_IsHurt(true); return;
-        }
-        else
-        {
-            health -= dmg;
+
+            DataManager.GetInstance().dataPlayerSO.curHealth = health;
+
             player.SetBool_IsHurt(true);
+            if (health <= 0) { Die(); health = 0; }
+            return;
         }
 
         Vector3 directionToTarget = (tf.position - transform.position).normalized;
@@ -234,7 +248,7 @@ public class PlayerStats : MonoBehaviour, IDmgable
         bool defenseInput = player.playerInputHandler.defenseInput;
 
         float totalDamage;
-        Debug.Log("Player Dot : " + dotProduct);
+        //Debug.Log("Player Dot : " + dotProduct);
         if (defenseInput)
         {
             if (dotProduct > .3f)
@@ -242,6 +256,9 @@ public class PlayerStats : MonoBehaviour, IDmgable
                 totalDamage = dmg * .8f;
                 player.SetBool_IsHurt(true);
                 health -= totalDamage;
+
+                DataManager.GetInstance().dataPlayerSO.curHealth = health;
+
                 if (health <= 0) { Die(); health = 0; }
                 return;
             }
@@ -250,6 +267,9 @@ public class PlayerStats : MonoBehaviour, IDmgable
                 totalDamage = dmg;
                 player.SetBool_IsHurt(true);
                 health -= totalDamage;
+
+                DataManager.GetInstance().dataPlayerSO.curHealth = health;
+
                 if (health <= 0) { Die(); health = 0; }
 
                 player.playerStateMachine.ChangeState(player.playerTakeDamageState);
@@ -259,6 +279,8 @@ public class PlayerStats : MonoBehaviour, IDmgable
         totalDamage = dmg;
         player.SetBool_IsHurt(true);
         health -= totalDamage;
+
+        DataManager.GetInstance().dataPlayerSO.curHealth = health;
         if (health <= 0) { Die(); health = 0; }
     }
 
@@ -288,5 +310,5 @@ public class PlayerStats : MonoBehaviour, IDmgable
         }
     }
 
-  
+
 }

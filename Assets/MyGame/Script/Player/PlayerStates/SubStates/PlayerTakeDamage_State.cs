@@ -33,11 +33,12 @@ public class PlayerTakeDamage_State : PlayerState
         base.Enter();
         player.couroutine_Invulnerability = player.StartCoroutine(player.Invulnerability());
         player.KnockBack(playerData.knockOutX,playerData.knockOutY);
-        player.SetBool_IsHurt(false);
+        
     }
 
     public override void Exit()
     {
+        player.SetBool_IsHurt(false);
         base.Exit();
     }
 

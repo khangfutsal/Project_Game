@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Playables;
 
 public class HandleDoorFinal : MonoBehaviour
 {
@@ -8,6 +9,8 @@ public class HandleDoorFinal : MonoBehaviour
     [SerializeField] private SpriteRenderer curSprite;
     [SerializeField] private BoxCollider2D curCollider2D;
     [SerializeField] private CapsuleCollider2D colliderInteract2D;
+
+    [SerializeField] private PlayableDirector playableDirector;
 
 
     [SerializeField] private Player player;
@@ -31,6 +34,8 @@ public class HandleDoorFinal : MonoBehaviour
     {   
         if(collision.gameObject == player.gameObject)
         {
+            playableDirector.Play();
+
             curCollider2D.enabled = true;
             colliderInteract2D.enabled = false;
             curSprite.sprite = sprites[1].sprite;

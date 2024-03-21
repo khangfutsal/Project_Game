@@ -13,12 +13,14 @@ public class Demon : Boss
     public Demon_IdleState demon_IdleState;
     public Demon_AttackState demon_AttackState;
     public Demon_EvolutionState demon_EvolutionState;
+    public Demon_DeathState demon_DeathState;
     public DemonData demonData;
     public DemonStats demonStats;
 
     [Header("Setup Infor")]
     [SerializeField] private List<BaseSkill> SkillsPhase;
-    [SerializeField] private List<GameObject> pointsTele;
+    [SerializeField] private List<PositionsBoss> points;
+    [SerializeField] private List<GameObject> curPoints;
     [SerializeField] private BaseSkill curSkill;
     [SerializeField] private float durationSkill;
 
@@ -31,11 +33,17 @@ public class Demon : Boss
     [SerializeField] public bool _canAttack;
     [SerializeField] public bool _endSkill;
 
+    [SerializeField] private bool _isDeath;
+
     [Header("Component Variable")]
-    private BoxCollider2D boxCollider2D;
+    public BoxCollider2D boxCollider2D;
     public TransitionDemon transitionDemon;
+    public SpriteRenderer spriteRenderer;
 
 
+    public void SetBool_IsDeath(bool _bool) => _isDeath = _bool;
+
+    public bool GetBool_IsDeath() => _isDeath;
 
     private void Awake()
     {
@@ -44,10 +52,12 @@ public class Demon : Boss
         boxCollider2D = GetComponent<BoxCollider2D>();
         demonStats = GetComponent<DemonStats>();
         transitionDemon = GetComponent<TransitionDemon>();
+        spriteRenderer = GetComponent<SpriteRenderer>();
 
         demon_IdleState = new Demon_IdleState(this, enemyStateMachine, demonData, "idle");
         demon_AttackState = new Demon_AttackState(this, enemyStateMachine, demonData, "attack");
         demon_EvolutionState = new Demon_EvolutionState(this, enemyStateMachine, demonData, "Evolution");
+        demon_DeathState = new Demon_DeathState(this, enemyStateMachine, demonData, "Death");
     }
 
     private void Start()
@@ -59,21 +69,69 @@ public class Demon : Boss
 
     private void Update()
     {
+        if (Input.GetKeyDown(KeyCode.N))
+        {
+            enemyStateMachine.Initialize(demon_IdleState);
+        }
+        if (enemyStateMachine.currentState == null) return;
         enemyStateMachine.currentState.LogicUpdate();
+    }
+
+    private void SetFacingDirection()
+    {
+        if (transform.rotation.y == 0)
+        {
+            facingDirection = -1;
+        }
+        else
+        {
+            facingDirection = 1;
+        }
     }
 
     private void FixedUpdate()
     {
+        if (enemyStateMachine.currentState == null) return;
         enemyStateMachine.currentState.PhysicsUpdate();
     }
 
     public void Initilize()
     {
-        curpointsTele = pointsTele[3];
+        SetUpPositions();
+        curpointsTele = points[0].positions[3];
         transform.position = curpointsTele.transform.position;
-        Flip();
+        transform.rotation = curpointsTele.transform.rotation;
+
         InitializePhase(_curPhase);
+
+        
+
+    }
+
+    public void ActiveControls()
+    {
         enemyStateMachine.Initialize(demon_IdleState);
+    }
+
+    public void SetUpPositions()
+    {
+        curPoints.Clear();
+        if (_curPhase != Phase.Phase3)
+        {
+            for (int i = 0; i < points[0].positions.Count; i++)
+            {
+                curPoints.Add(points[0].positions[i]);
+            }
+        }
+        else
+        {
+            for (int i = 0; i < points[1].positions.Count; i++)
+            {
+                curPoints.Add(points[1].positions[i]);
+            }
+            curpointsTele = curPoints[1];
+            Flip();
+        }
     }
 
     #region Phase Function
@@ -214,6 +272,7 @@ public class Demon : Boss
                 if ((random < rating * (clampValueIndex + 1)) && (random > rating * clampValueIndex))
                 {
                     curSkill = SkillsPhase[i];
+                    Debug.Log("12");
                     PrepareUseSkill(SkillsPhase[i]);
 
                     break;
@@ -224,66 +283,38 @@ public class Demon : Boss
 
         void PrepareUseSkill(BaseSkill baseskill)
         {
-            float sign;
-            if(_curPhase != Phase.Phase3)
+            Debug.Log("34");
+            if (_curPhase != Phase.Phase3)
             {
-                switch (baseskill.typeSkill)
+                switch (baseskill.sidePosition)
                 {
-                    case "Range":
+                    case "Top":
                         {
-                            for (int i = pointsTele.Count - 2; i < pointsTele.Count; i++)
+                            for (int i = curPoints.Count - 2; i < curPoints.Count; i++)
                             {
-                                if (curpointsTele != pointsTele[i])
+                                if (curpointsTele != curPoints[i])
                                 {
-                                    sign = curpointsTele.transform.position.x - pointsTele[i].transform.position.x;
-                                    Debug.Log(sign);
-                                    if (sign != 0)
-                                    {
-                                        Flip();
-                                    }
-                                    curpointsTele = pointsTele[i];
+
+                                    curpointsTele = curPoints[i];
 
                                     transform.position = curpointsTele.transform.position;
+                                    transform.rotation = curpointsTele.transform.rotation;
                                     MaterialPhase.GetInstance().AppearDissolve();
                                     break;
                                 }
                             }
                             break;
                         }
-                    case "Melee":
+                    case "Bot":
                         {
-                            for (int i = 0; i < pointsTele.Count - 2; i++)
+                            for (int i = 0; i < curPoints.Count - 2; i++)
                             {
-                                if (curpointsTele != pointsTele[i])
+                                if (curpointsTele != curPoints[i])
                                 {
-                                    sign = curpointsTele.transform.position.x - pointsTele[i].transform.position.x;
-                                    Debug.Log(sign);
-                                    if (sign != 0)
-                                    {
-                                        Flip();
-                                    }
-                                    curpointsTele = pointsTele[i];
+
+                                    curpointsTele = curPoints[i];
                                     transform.position = curpointsTele.transform.position;
-                                    MaterialPhase.GetInstance().AppearDissolve();
-                                    break;
-                                }
-                            }
-                            break;
-                        }
-                    case "MeleeLaunch":
-                        {
-                            for (int i = 0; i < pointsTele.Count - 2; i++)
-                            {
-                                if (curpointsTele != pointsTele[i])
-                                {
-                                    sign = curpointsTele.transform.position.x - pointsTele[i].transform.position.x;
-                                    Debug.Log(sign);
-                                    if (sign != 0)
-                                    {
-                                        Flip();
-                                    }
-                                    curpointsTele = pointsTele[i];
-                                    transform.position = curpointsTele.transform.position;
+                                    transform.rotation = curpointsTele.transform.rotation;
                                     MaterialPhase.GetInstance().AppearDissolve();
                                     break;
                                 }
@@ -294,9 +325,42 @@ public class Demon : Boss
             }
             else
             {
+                Debug.Log(baseskill.sidePosition);
+                switch (baseskill.sidePosition)
+                {
+                    case "Top":
+                        {
+                            for (int i = curPoints.Count - 1; i < curPoints.Count; i++)
+                            {
+                                Debug.Log(curPoints[i].name);
+                                curpointsTele = curPoints[i];
 
+                                transform.position = curpointsTele.transform.position;
+                                transform.rotation = curpointsTele.transform.rotation;
+                                MaterialPhase.GetInstance().AppearDissolve();
+                                break;
+                            }
+                            break;
+                        }
+                    case "Bot":
+                        {
+                            for (int i = 0; i < curPoints.Count - 1; i++)
+                            {
+                                if (curpointsTele != curPoints[i])
+                                {
+                                    curpointsTele = curPoints[i];
+                                    transform.position = curpointsTele.transform.position;
+                                    transform.rotation = curpointsTele.transform.rotation;
+                                    MaterialPhase.GetInstance().AppearDissolve();
+                                    break;
+                                }
+                            }
+                            break;
+                        }
+                }
             }
-            
+
+            SetFacingDirection();
         }
 
 
@@ -309,12 +373,12 @@ public class Demon : Boss
         durationSkill = curSkill.duration;
         switch (curSkill.typeSkill)
         {
-            case "Melee":
+            case "Mantra":
                 {
                     anim.SetBool("Mantra", true);
                     break;
                 }
-            case "Range":
+            case "Launch":
                 {
                     anim.SetBool("Launch", true);
                     break;
@@ -337,6 +401,19 @@ public class Demon : Boss
     }
     #endregion
 
+    public void TransitionDeath()
+    {
+        Sequence sq = DOTween.Sequence();
+        sq.Append(spriteRenderer.DOFade(0, 3f));
+        sq.AppendCallback(() => {
+            Collection_Controller.GetInstance().SpawnGem(transform);
+
+            transform.gameObject.SetActive(false);
+
+            BossHealthBar.GetInstance().HideHealthBarUI();
+        });
+    }
+
     public IEnumerator TimeToAttack()
     {
         float random = UnityEngine.Random.Range(startTimeDelayToAttack, endTimeDelayToAttack);
@@ -358,8 +435,11 @@ public class Demon : Boss
     }
 
 }
-
-
+[Serializable]
+public class PositionsBoss
+{
+    public List<GameObject> positions;
+}
 public enum Phase
 {
     Phase1,

@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class Boss : Enemy
 {
-    [SerializeField] protected List<BaseSkill> skillsList;
+    [SerializeField] public List<BaseSkill> skillsList;
     public override void Chase()
     {
         Debug.Log("Chase");

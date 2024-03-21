@@ -26,7 +26,7 @@ public class FireSkullSkill : BaseSkill
     public override void UseSkill()
     {
         StartCoroutine(SpawnBullet());
-
+        
         IEnumerator SpawnBullet()
         {
             for (int i = 0; i < maxBullet; i++)

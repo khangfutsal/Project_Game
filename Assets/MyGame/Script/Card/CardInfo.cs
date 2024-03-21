@@ -13,4 +13,5 @@ public class CardInfo : ScriptableObject
     [SerializeField] public List<float> dataCard;
     [SerializeField] public bool _maxLevel;
     [SerializeField] public bool _isBought;
+    [SerializeField] public bool _tutoCard;
 }

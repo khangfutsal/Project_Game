@@ -1,0 +1,23 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 632be6de936b2a645a94161aa132c7d2, type: 3}
+  m_Name: SkillInfo_Earthquake
+  m_EditorClassIdentifier: 
+  name: SkillEarthquake
+  imgCollection: {fileID: 8129536280940236186, guid: 657f9a43e856b254cb7ed373947035ac, type: 3}
+  imgStamina: {fileID: 1494766286209893600, guid: 95154ca96e4a83b4e8bec202e16f3a90, type: 3}
+  description: make a earthquake that's deal damage
+  price: 100
+  dataCard:
+  - 1
+  _maxLevel: 1
+  _isBought: 0

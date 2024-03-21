@@ -21,3 +21,5 @@ MonoBehaviour:
   - 0.5
   - 1
   _maxLevel: 0
+  _isBought: 0
+  _tutoCard: 1

@@ -18,9 +18,6 @@ public class CardUI : MonoBehaviour
 
     [SerializeField] private PlayerStats playerStats;
 
-    private void Start()
-    {
-    }
 
     public void SubEvent(CardInfo cardInfo)
     {
@@ -30,7 +27,7 @@ public class CardUI : MonoBehaviour
 
     private void ButtonBuy(CardInfo cardInfo)
     {
-        cardInfo._isBought = true;
+        
         ShopUI.GetInstance().CheckStatusCardInfo(cardInfo);
 
         UpdateDataForPlayer();
@@ -47,36 +44,50 @@ public class CardUI : MonoBehaviour
 
                         int playerStatsDamage = (int)dataCard[0];
                         playerStats.SetInt_AttackDmg(playerStatsDamage);
+
+                        DataManager.GetInstance().dataPlayerSO.curDamage = playerStatsDamage;
                         break;
                     }
                 case "Heart":
                     {
                         playerStats.SetFloat_PercentRegenerationHealth(dataCard[0]);
                         playerStats.timeRegenerationHealth = dataCard[1];
+
+                        DataManager.GetInstance().dataPlayerSO.curDamage = (int)dataCard[0];
+                        DataManager.GetInstance().dataPlayerSO.curDamage = (int)dataCard[1];
                         break;
                     }
                 case "Mana":
                     {
                         playerStats.statsRegenerationMana = dataCard[0];
                         playerStats.timeRegenerationMana = dataCard[1];
+
+                        DataManager.GetInstance().dataPlayerSO.statsRegenerationMana = dataCard[0];
+                        DataManager.GetInstance().dataPlayerSO.timeRegenerationMana = dataCard[1];
                         break;
                     }
                 case "SkillDefense":
                     {
                         float curSkillStatus = dataCard[0];
                         playerStats.SetFloat_StatusDefense(curSkillStatus);
+
+                        DataManager.GetInstance().dataPlayerSO.statusDefenseSkill = curSkillStatus;
                         break;
                     }
                 case "SkillFireball":
                     {
                         float curSkillStatus = dataCard[0];
                         playerStats.SetFloat_StatusFireBall(curSkillStatus);
+
+                        DataManager.GetInstance().dataPlayerSO.statusFireballSkill = curSkillStatus;
                         break;
                     }
                 case "SkillEarthquake":
                     {
                         float curSkillStatus = dataCard[0];
                         playerStats.SetFloat_StatusEarthquake(curSkillStatus);
+
+                        DataManager.GetInstance().dataPlayerSO.statusEarthquakeSkill = curSkillStatus;
                         break;
                     }
                 default: break;
@@ -94,12 +105,19 @@ public class CardUI : MonoBehaviour
             {
                 case "Coin":
                     {
-                        var curCoin = Collection_Controller.GetInstance().GetCollectionManager().GetCoinGem().GetCoin();
-                        Debug.Log("curcoin : "+curCoin);
+                        var curCoin = GameController.GetInstance().gameManager.GetCoin();
+
                         if ((float)curCoin >= priceValue)
                         {
-                            Collection_Controller.GetInstance().TakeCoin(priceValue);
+                            var remainCoin = curCoin - (int)priceValue;
+                            GameController.GetInstance().gameManager.SetCoin(remainCoin);
+
+                            var collection_Ins = Collection_Controller.GetInstance();
+                            collection_Ins.StartCoroutine(collection_Ins.TakeCoin(priceValue));
+                            
                             transform.gameObject.SetActive(false);
+
+                            cardInfo._isBought = true;
                         }
                         else
                         {
@@ -110,9 +128,12 @@ public class CardUI : MonoBehaviour
                     }
                 case "red_crystal_0001_0":
                     {
-                        var curCrystal = Collection_Controller.GetInstance().GetCollectionManager().GetCrystalGem().GetCrystal();
+                        var curCrystal = GameController.GetInstance().gameManager.GetCrystal();
                         if ((float)curCrystal >= priceValue)
                         {
+                            var remainCrystal = curCrystal - (int)priceValue;
+                            GameController.GetInstance().gameManager.SetCrystalUI(remainCrystal);
+
                             Collection_Controller.GetInstance().TakeCrystal(priceValue);
                             transform.gameObject.SetActive(false);
                         }
@@ -126,7 +147,7 @@ public class CardUI : MonoBehaviour
             }
         }
 
-        
+
     }
 
 }

@@ -23,6 +23,7 @@ public class MaterialPhase : MonoBehaviour
     }
 
     public static MaterialPhase GetInstance() => _ins;
+    public Material GetShaderPhase() => curShaderPhase; 
 
     public void SetShaderPhase(int numMat)
     {

@@ -12,18 +12,20 @@ public class TransitionDemon : MonoBehaviour
 
     public bool isDone;
     [SerializeField] private List<TransitionPhase> transitionPhases;
+    [SerializeField] private Transform finalPosSpawnPlayer;
 
-
-    public TransitionDemon GetInstance() => _ins;
+    public static TransitionDemon GetInstance() => _ins;
+    private Demon demon;
 
     private void Awake()
     {
         _ins = this;
+        demon = GetComponent<Demon>();
     }
 
     public IEnumerator ModifyPhase(Phase curPhase)
     {
-        isDone = false;
+
         yield return new WaitForSeconds(3f);
         StartCoroutine(StartPhase(curPhase));
 
@@ -58,6 +60,16 @@ public class TransitionDemon : MonoBehaviour
                 }
             case Phase.Phase3:
                 {
+                    Player.GetInstance().playerInputHandler.DisableInput();
+
+                    var skills = demon.skillsList;
+                    foreach(var skill in skills)
+                    {
+                        if(skill.name == "SummonEnemies")
+                        {
+                            skill.GetComponent<SummonSkill>().UselessSkill();
+                        }
+                    }
 
                     for (int i = 0; i < transitionPhases.Count; i++)
                     {
@@ -70,9 +82,20 @@ public class TransitionDemon : MonoBehaviour
                                 {
                                     foreach (Transform partical in vfx.transform)
                                     {
-                                        partical.GetComponent<ParticleSystem>().Play();
+                                        var obj = partical.GetComponent<ParticleSystem>();
+                                        if (obj != null)
+                                        {
+                                            obj.gameObject.SetActive(true);
+                                            obj.Play();
+                                        }
+                                        else
+                                        {
+                                            yield return new WaitForSeconds(4f);
+                                            partical.gameObject.SetActive(true);
+                                        }
                                     }
                                 }
+
                             }
                             yield return new WaitForSeconds(4f);
                             var imageUI = transitionPhases[i].evolution.GetComponent<Image>();
@@ -80,19 +103,29 @@ public class TransitionDemon : MonoBehaviour
 
                             Sequence sq = DOTween.Sequence();
                             sq.Append(imageUI.DOFade(1, 2f));
+                            sq.AppendCallback(() =>
+                            {
+                                CameraController.GetInstance().ShowCamera("CameraBossFinal");
 
-                            yield return new WaitForSeconds(2f);
+                                UIController.GetInstance().uiManager.GetDoor().SetActive(false);
+
+                                Player.GetInstance().transform.position = finalPosSpawnPlayer.position;
+
+                                TilemapController.GetInstance().manager.ShowFinalMap();
+
+                                MaterialPhase.GetInstance().SetShaderPhase(i + 1);
+                            });
+                            sq.AppendInterval(2f);
 
                             sq.Append(imageUI.DOFade(0, 2f));
                             sq.AppendCallback(() =>
                             {
+                                Player.GetInstance().playerInputHandler.ActiveInput();
                                 isDone = true;
-
-                                imageUI.gameObject.SetActive(false);
 
                                 InActiveEffect();
 
-                                //MaterialPhase.GetInstance().SetShaderPhase(i + 1);
+
                             });
 
                             break;
@@ -105,6 +138,7 @@ public class TransitionDemon : MonoBehaviour
 
     public void InActiveEffect()
     {
+        Debug.Log("InEffect");
         foreach (var phase in transitionPhases)
         {
             phase.evolution.SetActive(false);

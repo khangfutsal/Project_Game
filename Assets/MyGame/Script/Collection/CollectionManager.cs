@@ -4,10 +4,6 @@ using UnityEngine;
 
 public class CollectionManager : MonoBehaviour
 {
-    [Header("Holder Gem")]
-    [SerializeField] private Transform coinHolderTf;
-    [SerializeField] private Transform crystalHolderTf;
-
     [Header("Object Reference")]
     [SerializeField] private CoinGem coin;
     [SerializeField] private CrystalGem crystal;
@@ -17,8 +13,7 @@ public class CollectionManager : MonoBehaviour
     [SerializeField] private int maxGem;
 
     #region Get Function
-    public Transform GetCoinHolderTf() => coinHolderTf;
-    public Transform GetCrystalHolderTf() => crystalHolderTf;
+
 
     public CoinGem GetCoinGem() => coin;
     public CrystalGem GetCrystalGem() => crystal;

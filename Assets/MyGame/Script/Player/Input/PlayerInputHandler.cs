@@ -18,27 +18,50 @@ public class PlayerInputHandler : MonoBehaviour
     public bool defenseInput;
     public bool earthquakeInput;
     public bool fireBallInput;
+    public bool _allowInput;
 
     [SerializeField] private float skillFireballMana;
     [SerializeField] private float skillEarthQuakeMana;
 
     private PlayerStats playerStats;
+    private Player player;
     private void Awake()
     {
+        player = GetComponent<Player>();
         playerStats = GetComponent<PlayerStats>();
+    }
+
+    private void Start()
+    {
+        _allowInput = true;
     }
 
     private void Update()
     {
-        OnMoveInput();
-        OnJumpInput();
-        OnMeditateInput();
-        OnAttackInput();
-        OnDefenseInput();
-        OnSkillEarthQuakeInput();
-        OnSkillFireBallInput();
+        if (_allowInput)
+        {
+            OnMoveInput();
+            OnJumpInput();
+            OnMeditateInput();
+            OnAttackInput();
+            OnDefenseInput();
+            OnSkillEarthQuakeInput();
+            OnSkillFireBallInput();
 
-        CheckJumpInputHoldTime();
+            CheckJumpInputHoldTime();
+        }
+        else
+        {
+            player.SetVelocityX(0);
+        }
+
+    }
+
+    public void ActiveInput() => _allowInput = true;
+    public void DisableInput()
+    {
+        movementInput.Set(0, 0);
+        _allowInput = false;
     }
     #region Attack Function
     private void OnAttackInput()

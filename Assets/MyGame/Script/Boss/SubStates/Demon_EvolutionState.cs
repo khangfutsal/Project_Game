@@ -21,7 +21,10 @@ public class Demon_EvolutionState : EnemyState
     public override void Enter()
     {
         base.Enter();
+
         _curPhase = demon._curPhase;
+
+        demon.SetUpPositions();
         demon.transitionDemon.StartCoroutine(demon.transitionDemon.ModifyPhase(_curPhase));
         demon.InitializePhase(_curPhase);
     }
@@ -29,6 +32,7 @@ public class Demon_EvolutionState : EnemyState
     public override void Exit()
     {
         base.Exit();
+        TransitionDemon.GetInstance().isDone = false;
     }
 
     public override void LogicUpdate()
@@ -36,6 +40,7 @@ public class Demon_EvolutionState : EnemyState
         base.LogicUpdate();
         if (isDonePhase)
         {
+            demon.boxCollider2D.enabled = true;
             stateMachine.ChangeState(demon.demon_IdleState);
         }
     }

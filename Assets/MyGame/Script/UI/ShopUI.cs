@@ -39,28 +39,52 @@ public class ShopUI : MonoBehaviour
     public void UpdateGem()
     {
         if (!transform.gameObject.activeSelf) return;
-        textCoin.text = Collection_Controller.GetInstance().GetCollectionManager().GetCoinGem().GetCoin().ToString();
-        textCrystal.text = Collection_Controller.GetInstance().GetCollectionManager().GetCrystalGem().GetCrystal().ToString();
+        textCoin.text = GameController.GetInstance().gameManager.GetCoinUI().ToString();
+        textCrystal.text = GameController.GetInstance().gameManager.GetCrystalUI().ToString();
     }
 
     public void InitializeCard()
     {
+        bool BoughtFullInitializeCard = false;
         var horizontalGroupComponent = cardManager.GetComponentHorizontalGroup();
 
-        var cardsInfo = cardManager.GetCardsInfo();
         var cardsUI = cardManager.GetCardsUI();
 
-        foreach (var cardInfo in cardsInfo)
-        {
-            cardInfo._isBought = false;
-        }
-        horizontalGroupComponent.enabled = true;
-
+        var curCardsUI = DataManager.GetInstance().dataPlayerSO.curCardsUI;
         for (int i = 0; i < cardsUI.Count; i++)
         {
-            OnCheckValidCard(cardsInfo[i], cardsUI[i]);
-            cardsUI[i].SubEvent(cardsInfo[i]);
+            BoughtFullInitializeCard = false;
+
+            if (OnCheckValidCard(curCardsUI[i], cardsUI[i]))
+            {
+                cardsUI[i].SubEvent(curCardsUI[i]);
+            }
+            else
+            {
+                BoughtFullInitializeCard = true;
+                cardsUI[i].gameObject.SetActive(false);
+            }
+
         }
+
+        if (BoughtFullInitializeCard)
+        {
+            var curCardsInData = DataManager.GetInstance().dataPlayerSO.curCardsUI;
+
+            for (int i = 0; i < curCardsInData.Count; i++)
+            {
+                if (OnCheckValidCard(curCardsInData[i], cardsUI[i]))
+                {
+                    cardsUI[i].SubEvent(curCardsInData[i]);
+                }
+                else
+                {
+                    cardsUI[i].gameObject.SetActive(false);
+                }
+            }
+        }
+
+
         StartCoroutine(DisableHorizontal(horizontalGroupComponent));
 
         IEnumerator DisableHorizontal(HorizontalLayoutGroup horizontalGroup)
@@ -74,18 +98,29 @@ public class ShopUI : MonoBehaviour
     public void CheckStatusCardInfo(CardInfo cardInfo)
     {
         var cardsInfo = cardManager.GetCardsInfo();
+
         if (cardInfo._maxLevel && cardInfo._isBought)
         {
             string cardName = cardInfo.name;
+
             foreach (var ele in cardsInfo)
             {
                 if (ele.name == cardName)
                 {
+
+                    DataManager.GetInstance().dataPlayerSO.listCards.ForEach(cardDataSO =>
+                    {
+                        if (cardDataSO.name == ele.name)
+                        {
+                            cardDataSO._isBought = true;
+                        }
+                    });
+
                     ele._isBought = true;
                 }
             }
         }
-        
+
 
     }
 
@@ -108,9 +143,10 @@ public class ShopUI : MonoBehaviour
 
 
         var horizontalGroupComponent = cardManager.GetComponentHorizontalGroup();
-        horizontalGroupComponent.enabled = true;
+        //horizontalGroupComponent.enabled = true;
 
         listRandom.Clear();
+        DataManager.GetInstance().dataPlayerSO.curCardsUI.Clear();
 
         for (int i = 0; i < cardsUI.Count; i++)
         {
@@ -122,9 +158,12 @@ public class ShopUI : MonoBehaviour
                 {
                     listRandom.Add(random);
                     var cardInfo = cardsInfo[random];
-                    Debug.Log("Random : " + random);
+                    Debug.Log("Random : " + cardInfo.name);
                     if (OnCheckValidCard(cardInfo, cardsUI[i]))
                     {
+
+                        DataManager.GetInstance().dataPlayerSO.curCardsUI.Add(cardInfo);
+
                         cardsUI[i].SubEvent(cardInfo);
                         break;
                     }
@@ -147,11 +186,12 @@ public class ShopUI : MonoBehaviour
     {
         if (!cardInfo._isBought)
         {
+
             cardUI.gameObject.SetActive(true);
 
             cardUI.dataCard.Clear();
             cardUI.name = cardInfo.name;
-
+            Debug.Log("Random : " + cardUI.name);
             cardUI.price.text = cardInfo.price.ToString();
             cardUI.textDescription.text = cardInfo.description;
 

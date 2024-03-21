@@ -49,8 +49,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   damage: 5
-  timeDestroy: 1
+  timeDestroy: 10
   rgbody2D: {fileID: 0}
+  _interactWall: 1
+  _interactGrounded: 1
   anim: {fileID: 0}
 --- !u!95 &29954224537114280
 Animator:

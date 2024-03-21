@@ -13,6 +13,9 @@ public class Collection_Controller : MonoBehaviour
     [SerializeField] private float coinPercent;
     [SerializeField] private float crystalPercent;
 
+    public bool _coinCou;
+    public bool _crystalCou;
+
     public enum TypeCollection
     {
         Coin,
@@ -92,29 +95,37 @@ public class Collection_Controller : MonoBehaviour
         #endregion
     }
 
-    public void TakeCrystal(float price)
+    public IEnumerator TakeCrystal(float price)
     {
-        var crystal = collectionManager.GetCrystalGem().GetCrystal();
+        yield return new WaitUntil(() => !_crystalCou);
+
+        var crystal = GameController.GetInstance().gameManager.GetCrystalUI();
 
         var minuscrystal = crystal - (int)price;
-        StartCoroutine(Countdown(crystal, minuscrystal,"Crystal"));
+
+        StartCoroutine(Countdown(crystal, minuscrystal, "Crystal"));
 
 
 
     }
 
-    public void TakeCoin(float price)
+    public IEnumerator TakeCoin(float price)
     {
-        var coin = collectionManager.GetCoinGem().GetCoin();
+
+        yield return new WaitUntil(() => !_coinCou);
+
+        var coin = GameController.GetInstance().gameManager.GetCoinUI();
 
         var minusCoin = coin - (int)price;
-        
 
-        StartCoroutine(Countdown(coin, minusCoin,"Coin"));
+        Debug.Log(coin);
+
+
+        StartCoroutine(Countdown(coin, minusCoin, "Coin"));
 
     }
 
-    public IEnumerator Countdown(int curGem, int endGem,string nameGem)
+    public IEnumerator Countdown(int curGem, int endGem, string nameGem)
     {
         while (curGem != endGem)
         {
@@ -122,19 +133,42 @@ public class Collection_Controller : MonoBehaviour
             {
                 case "Coin":
                     {
-                        collectionManager.GetCoinGem().SetCoin(curGem);
+
+                        GameController.GetInstance().gameManager.SetCoinUI(--curGem);
+                        DataManager.GetInstance().dataPlayerSO.curCoin = curGem;
+
+                        _coinCou = true;
                         break;
                     }
                 case "Crystal":
                     {
-                        collectionManager.GetCrystalGem().SetCrystal(curGem);
+
+                        GameController.GetInstance().gameManager.SetCrystalUI(--curGem);
+                        DataManager.GetInstance().dataPlayerSO.curCrystal = curGem;
+
+                        _crystalCou = true;
                         break;
                     }
             }
-            
-            curGem--;
+
+            //curGem--;
             yield return null;
         }
-        
+        ResetCouroutine(nameGem);
+
+        void ResetCouroutine(string nameGem)
+        {
+            if (nameGem == "Coin")
+            {
+                _coinCou = false;
+            }
+            if (nameGem == "Crystal")
+            {
+                _crystalCou = false;
+            }
+        }
+
     }
+
+
 }

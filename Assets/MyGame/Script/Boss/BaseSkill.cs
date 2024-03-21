@@ -8,6 +8,7 @@ public abstract class BaseSkill : MonoBehaviour
 {
     [SerializeField] public string name;
     [SerializeField] public string typeSkill;
+    [SerializeField] public string sidePosition;
     [SerializeField] public int phase;
     [Header("Properties Skills")]
     [SerializeField] public float curTime;

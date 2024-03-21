@@ -1,0 +1,50 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9856ee8e1e72a2c439eb30accb034252, type: 3}
+  m_Name: DataPlayerSO
+  m_EditorClassIdentifier: 
+  curHealth: 100
+  curMana: 100
+  curDamage: 3
+  curCoin: 0
+  curCrystal: 0
+  percentRegenerationHealth: 0
+  timeRegenerationHealth: 0
+  statsRegenerationMana: 0
+  timeRegenerationMana: 0
+  statusFireballSkill: 0
+  statusEarthquakeSkill: 0
+  statusDefenseSkill: 0
+  curScene: Chap1
+  listCards:
+  - {fileID: 11400000, guid: 2c3856cd75d5a1e4cae60b3d4c26ad7d, type: 2}
+  - {fileID: 11400000, guid: 360d005a84c785145a0a4b184f29745b, type: 2}
+  - {fileID: 11400000, guid: f94c0957887fddc4292dca4d18e58f65, type: 2}
+  - {fileID: 11400000, guid: aa6e1fe3189ffe44e9289bcfef7d18b3, type: 2}
+  - {fileID: 11400000, guid: 0b8c196797cb78b45afb2f0258969986, type: 2}
+  - {fileID: 11400000, guid: 79016c0eb6517c142bdea91b06dc9568, type: 2}
+  - {fileID: 11400000, guid: 6b10cc105d252424782a1c7ba70d1aa1, type: 2}
+  - {fileID: 11400000, guid: b68915f568260214baa5467ced5f1203, type: 2}
+  - {fileID: 11400000, guid: 2c956bac3de96cb47b9461739bc54061, type: 2}
+  - {fileID: 11400000, guid: 9963c6ad7466e5e4e965037b32c8355f, type: 2}
+  - {fileID: 11400000, guid: ecd33b7929f0a0e49a98dd5e0836e291, type: 2}
+  - {fileID: 11400000, guid: 1699ccb4422ca9a47a350fb5a82b769e, type: 2}
+  - {fileID: 11400000, guid: bbbe60bb89cdd144c8cd101d0eff2f78, type: 2}
+  - {fileID: 11400000, guid: 1c0afbe5401387c4d8e0f35d2ef4a1f8, type: 2}
+  - {fileID: 11400000, guid: ccc58b5028dd3644295eb5717cebe198, type: 2}
+  - {fileID: 11400000, guid: 71cceca3898426f41827a35bce30d6ba, type: 2}
+  - {fileID: 11400000, guid: d80f5cbe545491d4ebcb7ba712a44dab, type: 2}
+  - {fileID: 11400000, guid: cee74d4aaadb6ee438cdde160fb70778, type: 2}
+  curCardsUI:
+  - {fileID: 11400000, guid: 2c3856cd75d5a1e4cae60b3d4c26ad7d, type: 2}
+  - {fileID: 11400000, guid: 79016c0eb6517c142bdea91b06dc9568, type: 2}
+  - {fileID: 11400000, guid: ecd33b7929f0a0e49a98dd5e0836e291, type: 2}

@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class CoinGem : MonoBehaviour
 {
-    [SerializeField] private static int coin;
+    //[SerializeField] private static int coin;
     [SerializeField] private Transform playerTf;
     
 
@@ -18,13 +18,14 @@ public class CoinGem : MonoBehaviour
     [SerializeField] private float curTime;
 
 
-    #region Get Function
-    public int GetCoin() => coin;
-    #endregion
+    //#region Get Function
+    //public int GetCoin() => coin;
+    //#endregion
 
-    #region Set Function
-    public void SetCoin(int _coin) => coin = _coin;
-    #endregion
+    //#region Set Function
+    //public void SetCoin(int _coin) => coin = _coin;
+    //#endregion
+
 
     private void Awake()
     {
@@ -56,7 +57,12 @@ public class CoinGem : MonoBehaviour
         if (collision.CompareTag("Player"))
         {
             Destroy(transform.gameObject);
-            ++coin;
+            var coin = GameController.GetInstance().gameManager.GetCoin();
+
+            GameController.GetInstance().gameManager.SetCoinUI(++coin);
+            GameController.GetInstance().gameManager.SetCoin(++coin);
+            DataManager.GetInstance().dataPlayerSO.curCoin = coin;
+            
             CollectionUI.GetInstance().ShowGroupCoinUI();
         }
     }

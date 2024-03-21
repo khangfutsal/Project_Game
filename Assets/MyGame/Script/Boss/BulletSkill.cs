@@ -8,6 +8,8 @@ public class BulletSkill : MonoBehaviour
     [SerializeField] public float damage;
     [SerializeField] public float timeDestroy;
     [SerializeField] public Rigidbody2D rgbody2D;
+    [SerializeField] public bool _interactWall;
+    [SerializeField] public bool _interactGrounded;
 
     [SerializeField] private Animator anim;
     
@@ -23,10 +25,10 @@ public class BulletSkill : MonoBehaviour
 
     private void OnTriggerEnter2D(Collider2D collision)
     {
-        if (collision.CompareTag("Player") || collision.CompareTag("Wall") || collision.CompareTag("Grounded"))
+        if (collision.CompareTag("Player") || (collision.CompareTag("Wall") && _interactWall) || (collision.CompareTag("Grounded") && _interactGrounded))
         {
             anim.SetBool("Explode", true);
-            Invoke("InActive", timeDestroy);
+            InActive();
             rgbody2D.bodyType = RigidbodyType2D.Static;
             IDmgable Idmg = collision.GetComponent<IDmgable>();
             if (Idmg != null)
@@ -41,6 +43,7 @@ public class BulletSkill : MonoBehaviour
     private void OnEnable()
     {
         rgbody2D.bodyType = RigidbodyType2D.Kinematic;
+        Invoke("InActive", timeDestroy);
     }
 
     private void OnDisable()

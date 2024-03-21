@@ -58,10 +58,6 @@ public class Player : MonoBehaviour
     [SerializeField] private int numberOfFlashes;
     public int facingDirection { get; private set; }
 
-    private int attackDmg;
-
-
-    private bool _isAttackEnemy;
     private bool _isHurt;
     private bool _isKnock;
     private bool _isInvulnerability;

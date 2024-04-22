@@ -25,15 +25,29 @@ public class GameManager : MonoBehaviour
     #endregion
 
 
+
+
     private void Start()
     {
+        Init();
+    }
 
-        
+    private void Init()
+    {
+        Time.timeScale = 1;
+
         curCoin = DataManager.GetInstance().dataPlayerSO.curCoin;
         curCrystal = DataManager.GetInstance().dataPlayerSO.curCrystal;
 
         curCoinUI = curCoin;
         curCrystalUI = curCrystal;
+
+        var curHealth = DataManager.GetInstance().dataPlayerSO.curHealth;
+        if(curHealth <= 0)
+        {
+            curHealth = 100;
+            DataManager.GetInstance().dataPlayerSO.curHealth = curHealth;
+        }
 
         DontDestroyOnLoad(this);
     }

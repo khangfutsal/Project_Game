@@ -9,7 +9,6 @@ public class VFX_Controller : MonoBehaviour
     [Header("Holder Transform")]
     [SerializeField] private Transform bloodVFXHolder;
     [SerializeField] private Transform hitVFXHolder;
-    [SerializeField] private Transform GroundVFXHolder;
 
     [Header("Reference Object")]
     [SerializeField] private VFX_Manager VFX_Manager;
@@ -55,7 +54,7 @@ public class VFX_Controller : MonoBehaviour
 
     }
 
-    public void SpawnVFX(GameObject vfxObj, Transform tf,string name)
+    public void SpawnVFX(GameObject vfxObj, Transform tf, string name)
     {
         GameObject obj = GameObject.Find(name);
         Transform holder = obj.transform.Find("Holder");
@@ -71,6 +70,22 @@ public class VFX_Controller : MonoBehaviour
         }
         else Instantiate(vfxObj, tf.position, Quaternion.identity, holder);
 
+    }
+
+    public IEnumerator SpawnFireWorkVFX(Transform tf = null)
+    {
+        var fireWorkVFX = VFX_Manager.GetFireWorkVFX();
+        GameObject objVFX;
+        if (tf != null)
+        {
+            objVFX  = Instantiate(fireWorkVFX,tf.position,Quaternion.identity);
+        }
+        else
+        {
+            objVFX = Instantiate(fireWorkVFX);
+        }
+        yield return new WaitForSeconds(3);
+        Destroy(objVFX);
     }
 
     #endregion

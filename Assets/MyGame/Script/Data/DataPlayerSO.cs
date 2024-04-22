@@ -62,20 +62,23 @@ public class DataPlayerSO : ScriptableObject
 
         void GetDataCards()
         {
-            ScriptableObject[] asset = Resources.LoadAll<ScriptableObject>("Cards");
+            CardInfo[] asset = Resources.LoadAll<CardInfo>("Cards");
             if (asset != null)
             {
                 foreach (var i in asset)
                 {
-                    listCards.Add((CardInfo)i);
+                    listCards.Add(i);
                 }
             }
+
+
         }
 
         void InitCardDefault()
         {
             foreach (var i in listCards)
             {
+                i._isBought = false;
                 if (i.ToString().Contains("LV1"))
                 {
                     curCardsUI.Add(i);
@@ -89,6 +92,7 @@ public class DataPlayerSO : ScriptableObject
 [Serializable]
 public class DataPlayerPattern
 {
+
     [Header("Properties Of Player")]
     public float curHealth;
     public float curMana;
@@ -111,9 +115,19 @@ public class DataPlayerPattern
     [Header("Check Points")]
     public string curScene;
     [Header("Card UI")]
-    public List<CardInfo> listCards;
-    public List<CardInfo> curCardsUI;
+    public List<DataCard> listCardsData;
+    public List<DataCard> curCardsData;
 
+}
 
-
+[Serializable]
+public class DataCard
+{
+    [SerializeField] public string id;
+    [SerializeField] public string name;
+    [SerializeField] public string description;
+    [SerializeField] public float price;
+    [SerializeField] public List<float> dataCard;
+    [SerializeField] public bool _maxLevel;
+    [SerializeField] public bool _isBought;
 }

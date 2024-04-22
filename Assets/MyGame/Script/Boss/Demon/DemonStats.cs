@@ -23,8 +23,6 @@ public class DemonStats : MonoBehaviour, IDmgable
 
     public void Die()
     {
-        Collection_Controller.GetInstance().SpawnGem(transform);
-
         transform.tag = "Untagged";
         demon.SetBool_IsDeath(true);
     }

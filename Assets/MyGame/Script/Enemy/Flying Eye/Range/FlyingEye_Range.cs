@@ -16,7 +16,7 @@ public class FlyingEye_Range : FlyingEye, IDmgable
 
     private FlyEyeRange_Bullet bullet;
 
-    private Object_Pool objPool;
+    [SerializeField] private Object_Pool objPool;
     #endregion
 
     #region Variable Component

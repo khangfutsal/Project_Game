@@ -83,6 +83,18 @@ public class Player : MonoBehaviour
     [SerializeField] private Material myMaterial;
     #endregion
 
+    #region Slope Variable 
+    [SerializeField] private float slopeDistance;
+    [SerializeField] private LayerMask WhatIsSlope;
+    [SerializeField] public Vector2 slopeNormalPerp;
+    [SerializeField] private float slopeDownAngle;
+    [SerializeField] private float slopeDownAngleOld;
+    [SerializeField] public bool onSlope;
+
+    #endregion
+
+    public float curTimeScale;
+
     #region Attack Variable
 
     #endregion
@@ -147,6 +159,10 @@ public class Player : MonoBehaviour
     public bool GetBool_IsKnock() => _isKnock;
     public bool GetBool_IsInvulnerability() => _isInvulnerability;
     public bool GetBool_Hurt() => _isHurt;
+    public float GetTimeScale()
+    {
+        return curTimeScale == 0 ? 1 : curTimeScale; 
+    }
 
     #endregion
 
@@ -265,14 +281,13 @@ public class Player : MonoBehaviour
     #region Attack State Functions
     public IEnumerator AttackTimeScale()
     {
-        float timeDelta = 0.1f;
+        curTimeScale = 0.1f;
 
-        while (timeDelta <= 1)
+        while (curTimeScale <= 1)
         {
 
-
-            Time.timeScale = timeDelta;
-            timeDelta += Time.deltaTime * 4f;
+            Time.timeScale = curTimeScale;
+            curTimeScale += Time.deltaTime * 4f;
 
             yield return null;
         }
@@ -304,5 +319,22 @@ public class Player : MonoBehaviour
     }
     #endregion
 
-    
+    public void CheckInSlope()
+    {
+        RaycastHit2D hit = Physics2D.Raycast(transform.position, Vector2.down, slopeDistance, WhatIsSlope);
+        if(hit != null)
+        {
+            slopeNormalPerp = Vector2.Perpendicular(hit.normal);
+            slopeDownAngle = Vector2.Angle(hit.normal, Vector2.up);
+            if(slopeDownAngle != slopeDownAngleOld)
+            {
+                onSlope = true;
+            }
+            slopeDownAngleOld = slopeDownAngle;
+
+            Debug.DrawRay(hit.point, slopeNormalPerp, Color.red);
+            Debug.DrawRay(hit.point, hit.normal, Color.green);
+        }
+    }
+
 }

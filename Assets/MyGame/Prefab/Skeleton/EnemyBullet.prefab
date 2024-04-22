@@ -108,6 +108,7 @@ MonoBehaviour:
   test_vfx: {fileID: 0}
   listPositionCheck: []
   skeleton_Range: {fileID: 0}
+  skeleton_RangeObj: {fileID: 8918332901153935925, guid: 2790b03d22ca01c43b40489d1e8220ae, type: 3}
 --- !u!50 &5142263607780300724
 Rigidbody2D:
   serializedVersion: 4

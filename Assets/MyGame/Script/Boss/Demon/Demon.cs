@@ -407,9 +407,7 @@ public class Demon : Boss
         sq.Append(spriteRenderer.DOFade(0, 3f));
         sq.AppendCallback(() => {
             Collection_Controller.GetInstance().SpawnGem(transform);
-
             transform.gameObject.SetActive(false);
-
             BossHealthBar.GetInstance().HideHealthBarUI();
         });
     }

@@ -48,6 +48,7 @@ public class FlyEyeRange_Bullet : MonoBehaviour
     {
         tween = transform.DOScale(new Vector2(1.5f, 1.5f), 5f).OnComplete(() =>
         {
+            Debug.Log("Fire");
             flyingEye_Range.SetBool_IsFired(true);
 
             StartCoroutine(FireBulletTarget(playerTf.position));
@@ -109,7 +110,6 @@ public class FlyEyeRange_Bullet : MonoBehaviour
             float dmg = flyingEye_Range.GetFloat_DmgAttack();
             if (damageable != null)
             {
-                HudUI.GetInstance().TakeSliderHealth(dmg);
                 damageable.TakeDamage(dmg, transform);
             }
         }

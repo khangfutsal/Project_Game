@@ -88,8 +88,6 @@ public class PlayerStats : MonoBehaviour, IDmgable
     {
 
         damageAttack = DataManager.GetInstance().dataPlayerSO.curDamage;
-        maxHealth = DataManager.GetInstance().dataPlayerSO.curHealth;
-        maxMana = DataManager.GetInstance().dataPlayerSO.curMana;
         percentRegenerationHealth = DataManager.GetInstance().dataPlayerSO.percentRegenerationHealth;
         timeRegenerationHealth = DataManager.GetInstance().dataPlayerSO.timeRegenerationHealth;
         statsRegenerationMana = DataManager.GetInstance().dataPlayerSO.statsRegenerationMana;
@@ -98,9 +96,8 @@ public class PlayerStats : MonoBehaviour, IDmgable
         statusEarthquakeSkill = DataManager.GetInstance().dataPlayerSO.statusEarthquakeSkill;
         statusFireballSkill = DataManager.GetInstance().dataPlayerSO.statusFireballSkill;
 
-
-        health = maxHealth;
-        mana = maxMana;
+        health = DataManager.GetInstance().dataPlayerSO.curHealth;
+        mana = DataManager.GetInstance().dataPlayerSO.curMana;
     }
 
     public void HitEffectIceSkill()
@@ -139,14 +136,18 @@ public class PlayerStats : MonoBehaviour, IDmgable
         if (mana < 100 && mana >= 0)
         {
             _isRegenerateMana = true;
-            if (CanRegeneration())
+            if (CanRegenerationMana())
             {
                 float currentMana = mana;
                 float minMana = 0;
 
-                float increaseMana = Mathf.Clamp(currentMana + statsRegenerationMana, minMana, maxMana);
+                float increaseMana = Mathf.Clamp((currentMana + statsRegenerationMana), minMana, maxMana);
+                Debug.Log("Mana : " + statsRegenerationMana + " " + currentMana);
+                Debug.Log("Mana : " + increaseMana);
                 HudUI.GetInstance().RegenSliderMana(increaseMana);
                 mana = increaseMana;
+
+                DataManager.GetInstance().dataPlayerSO.curMana = mana;
             }
 
         }
@@ -154,7 +155,7 @@ public class PlayerStats : MonoBehaviour, IDmgable
         {
             _isRegenerateMana = false;
         }
-        bool CanRegeneration()
+        bool CanRegenerationMana()
         {
             if (_isRegenerateMana)
             {
@@ -180,7 +181,7 @@ public class PlayerStats : MonoBehaviour, IDmgable
         if (health < 100 && health > 0)
         {
             _isHealthy = true;
-            if (CanRegeneration())
+            if (CanRegenerationHealth())
             {
                 float percentHealth = GetFloat_PercentRegenerationHealth();
                 float currentHealth = health;
@@ -189,6 +190,7 @@ public class PlayerStats : MonoBehaviour, IDmgable
                 float increaseHealth = Mathf.Clamp(currentHealth + (percentHealth / 100), minHealth, maxHealth);
                 HudUI.GetInstance().RegenSliderHealth(increaseHealth);
                 health = increaseHealth;
+                DataManager.GetInstance().dataPlayerSO.curHealth = health;
             }
 
         }
@@ -196,7 +198,7 @@ public class PlayerStats : MonoBehaviour, IDmgable
         {
             _isHealthy = false;
         }
-        bool CanRegeneration()
+        bool CanRegenerationHealth()
         {
             if (_isHealthy)
             {
@@ -224,7 +226,18 @@ public class PlayerStats : MonoBehaviour, IDmgable
         StartCoroutine(DelayEnd());
         IEnumerator DelayEnd()
         {
+            var pauseUI = UIController.GetInstance().uiManager.GetPauseUI();
+            var shopUI = UIController.GetInstance().uiManager.GetShopUI();
+            var endUI = UIController.GetInstance().uiManager.GetEndUI();
+            pauseUI.SetActive(false);
+            shopUI.SetActive(false);
+            endUI.SetActive(true);
+
+            endUI.transform.SetAsLastSibling();
             yield return new WaitForSeconds(2f);
+
+            
+
             Time.timeScale = 0;
         }
     }
@@ -233,12 +246,22 @@ public class PlayerStats : MonoBehaviour, IDmgable
     {
         if (tf == null)
         {
-            health -= dmg;
+            if(dmg >= health)
+            {
+                health = 0;
+            }
+            else
+            {
+                health -= dmg;
+            }
+            HudUI.GetInstance().TakeSliderHealth(health);
+
+
 
             DataManager.GetInstance().dataPlayerSO.curHealth = health;
 
             player.SetBool_IsHurt(true);
-            if (health <= 0) { Die(); health = 0; }
+            if (health == 0) { Die(); health = 0; }
             return;
         }
 
@@ -255,8 +278,15 @@ public class PlayerStats : MonoBehaviour, IDmgable
             {
                 totalDamage = dmg * .8f;
                 player.SetBool_IsHurt(true);
-                health -= totalDamage;
-
+                if (totalDamage >= health)
+                {
+                    health = 0;
+                }
+                else
+                {
+                    health -= totalDamage;
+                }
+                HudUI.GetInstance().TakeSliderHealth(health);
                 DataManager.GetInstance().dataPlayerSO.curHealth = health;
 
                 if (health <= 0) { Die(); health = 0; }
@@ -266,10 +296,16 @@ public class PlayerStats : MonoBehaviour, IDmgable
             {
                 totalDamage = dmg;
                 player.SetBool_IsHurt(true);
-                health -= totalDamage;
-
+                if (totalDamage >= health)
+                {
+                    health = 0;
+                }
+                else
+                {
+                    health -= totalDamage;
+                }
                 DataManager.GetInstance().dataPlayerSO.curHealth = health;
-
+                HudUI.GetInstance().TakeSliderHealth(health);
                 if (health <= 0) { Die(); health = 0; }
 
                 player.playerStateMachine.ChangeState(player.playerTakeDamageState);
@@ -278,8 +314,16 @@ public class PlayerStats : MonoBehaviour, IDmgable
         }
         totalDamage = dmg;
         player.SetBool_IsHurt(true);
-        health -= totalDamage;
 
+        if (totalDamage >= health)
+        {
+            health = 0;
+        }
+        else
+        {
+            health -= totalDamage;
+        }
+        HudUI.GetInstance().TakeSliderHealth(health);
         DataManager.GetInstance().dataPlayerSO.curHealth = health;
         if (health <= 0) { Die(); health = 0; }
     }

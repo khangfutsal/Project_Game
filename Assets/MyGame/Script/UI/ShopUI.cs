@@ -4,30 +4,28 @@ using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 using System.Linq;
+using UnityEngine.Events;
+
 public class ShopUI : MonoBehaviour
 {
     [SerializeField] private TextMeshProUGUI textCoin;
     [SerializeField] private TextMeshProUGUI textCrystal;
 
     [SerializeField] private Button btnRandomCard;
+    [SerializeField] private int gemRandom;
+
     [SerializeField] private CardManager cardManager;
 
     [SerializeField] private List<int> listRandom = new List<int>();
 
 
-    private static ShopUI _ins;
+    [SerializeField] public static UnityEvent OnShowSuccess = new UnityEvent();
 
-    public static ShopUI GetInstance() => _ins;
-
-    private void Awake()
-    {
-        _ins = this;
-    }
 
     private void Start()
     {
         InitializeCard();
-        btnRandomCard.onClick.AddListener(Random);
+        btnRandomCard.onClick.AddListener(ButtonRandom);
 
     }
 
@@ -45,15 +43,14 @@ public class ShopUI : MonoBehaviour
 
     public void InitializeCard()
     {
-        bool BoughtFullInitializeCard = false;
         var horizontalGroupComponent = cardManager.GetComponentHorizontalGroup();
 
         var cardsUI = cardManager.GetCardsUI();
 
         var curCardsUI = DataManager.GetInstance().dataPlayerSO.curCardsUI;
+        Debug.Log(curCardsUI.Count + " " + cardsUI.Count);
         for (int i = 0; i < cardsUI.Count; i++)
         {
-            BoughtFullInitializeCard = false;
 
             if (OnCheckValidCard(curCardsUI[i], cardsUI[i]))
             {
@@ -61,29 +58,11 @@ public class ShopUI : MonoBehaviour
             }
             else
             {
-                BoughtFullInitializeCard = true;
                 cardsUI[i].gameObject.SetActive(false);
             }
 
         }
 
-        if (BoughtFullInitializeCard)
-        {
-            var curCardsInData = DataManager.GetInstance().dataPlayerSO.curCardsUI;
-
-            for (int i = 0; i < curCardsInData.Count; i++)
-            {
-                if (OnCheckValidCard(curCardsInData[i], cardsUI[i]))
-                {
-                    cardsUI[i].SubEvent(curCardsInData[i]);
-                }
-                else
-                {
-                    cardsUI[i].gameObject.SetActive(false);
-                }
-            }
-        }
-
 
         StartCoroutine(DisableHorizontal(horizontalGroupComponent));
 
@@ -95,91 +74,103 @@ public class ShopUI : MonoBehaviour
         }
     }
 
-    public void CheckStatusCardInfo(CardInfo cardInfo)
+    public void CheckBoughtMaxLevel(CardInfo cardInfo)
     {
         var cardsInfo = cardManager.GetCardsInfo();
 
-        if (cardInfo._maxLevel && cardInfo._isBought)
+        if (cardInfo._isBought && cardInfo._maxLevel)
         {
-            string cardName = cardInfo.name;
-
-            foreach (var ele in cardsInfo)
+            foreach (var card in cardsInfo)
             {
-                if (ele.name == cardName)
+                if (card.name == cardInfo.name)
                 {
+                    card._isBought = true;
+                }
+            }
+        }
 
-                    DataManager.GetInstance().dataPlayerSO.listCards.ForEach(cardDataSO =>
+    }
+
+    public void ButtonRandom()
+    {
+        RandomCards();
+
+
+        void RandomCards()
+        {
+            bool boughtAllCards = false;
+
+            var cardsInfo = cardManager.GetCardsInfo();
+            var cardsUI = cardManager.GetCardsUI();
+
+            if (cardsInfo.FindAll(obj => obj._maxLevel).All
+                  (obj => obj._isBought))
+            {
+                boughtAllCards = true;
+
+                foreach (var card in cardsUI)
+                {
+                    Debug.Log(card.name);
+                    card.gameObject.SetActive(false);
+                }
+                return;
+            }
+            var curGem = DataManager.GetInstance().dataPlayerSO.curCoin;
+            if (curGem >= gemRandom)
+            {
+                curGem -= gemRandom;
+                GameController.GetInstance().gameManager.SetCoin(curGem);
+                DataManager.GetInstance().dataPlayerSO.curCoin = curGem;
+
+                var collection_Ins = Collection_Controller.GetInstance();
+                collection_Ins.StartCoroutine(collection_Ins.TakeCoin(gemRandom));
+
+                var horizontalGroupComponent = cardManager.GetComponentHorizontalGroup();
+                //horizontalGroupComponent.enabled = true;
+
+                listRandom.Clear();
+                DataManager.GetInstance().dataPlayerSO.curCardsUI.Clear();
+
+                for (int i = 0; i < cardsUI.Count; i++)
+                {
+                    while (!boughtAllCards)
                     {
-                        if (cardDataSO.name == ele.name)
+                        int random = UnityEngine.Random.Range(0, cardsInfo.Count);
+                        if (!listRandom.Contains(random))
                         {
-                            cardDataSO._isBought = true;
+                            listRandom.Add(random);
+                            var cardInfo = cardsInfo[random];
+                            if (OnCheckValidCard(cardInfo, cardsUI[i]))
+                            {
+
+                                DataManager.GetInstance().dataPlayerSO.curCardsUI.Add(cardInfo);
+
+                                cardsUI[i].SubEvent(cardInfo);
+                                break;
+
+                            }
                         }
-                    });
-
-                    ele._isBought = true;
-                }
-            }
-        }
-
-
-    }
-
-    public void Random()
-    {
-
-        var cardsInfo = cardManager.GetCardsInfo();
-        var cardsUI = cardManager.GetCardsUI();
-
-        if (cardsInfo.FindAll(obj => obj._maxLevel).
-              All(obj => obj._isBought))
-        {
-            foreach (var card in cardsUI)
-            {
-                Debug.Log(card.name);
-                card.gameObject.SetActive(false);
-            }
-            return;
-        }
-
-
-        var horizontalGroupComponent = cardManager.GetComponentHorizontalGroup();
-        //horizontalGroupComponent.enabled = true;
-
-        listRandom.Clear();
-        DataManager.GetInstance().dataPlayerSO.curCardsUI.Clear();
-
-        for (int i = 0; i < cardsUI.Count; i++)
-        {
-            while (true)
-            {
-                int random = UnityEngine.Random.Range(0, cardsInfo.Count);
-
-                if (!listRandom.Contains(random))
-                {
-                    listRandom.Add(random);
-                    var cardInfo = cardsInfo[random];
-                    Debug.Log("Random : " + cardInfo.name);
-                    if (OnCheckValidCard(cardInfo, cardsUI[i]))
-                    {
-
-                        DataManager.GetInstance().dataPlayerSO.curCardsUI.Add(cardInfo);
-
-                        cardsUI[i].SubEvent(cardInfo);
-                        break;
                     }
+
+
                 }
 
+                StartCoroutine(DisableHorizontal(horizontalGroupComponent));
+
+                IEnumerator DisableHorizontal(HorizontalLayoutGroup horizontalGroup)
+                {
+                    yield return new WaitForEndOfFrame();
+
+                    horizontalGroup.enabled = false;
+                }
             }
+            else return;
+
         }
 
-        StartCoroutine(DisableHorizontal(horizontalGroupComponent));
 
-        IEnumerator DisableHorizontal(HorizontalLayoutGroup horizontalGroup)
-        {
-            yield return new WaitForEndOfFrame();
 
-            horizontalGroup.enabled = false;
-        }
+
     }
 
     public bool OnCheckValidCard(CardInfo cardInfo, CardUI cardUI)
@@ -224,5 +215,9 @@ public class ShopUI : MonoBehaviour
         }
         return false;
     }
+
+
+
+
 
 }

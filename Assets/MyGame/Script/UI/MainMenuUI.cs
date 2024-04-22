@@ -8,10 +8,22 @@ using TMPro;
 
 public class MainMenuUI : MonoBehaviour
 {
+    [SerializeField] private GameObject mainMenuUI;
+
+    [Space(5)]
     [SerializeField] private Button btnContinue;
     [SerializeField] private Image imgBtnContinue;
     [SerializeField] private TextMeshProUGUI textBtnContinue;
+
+    [Space(5)]
     [SerializeField] private Button btnNewGame;
+
+    [Space(5)]
+    [SerializeField] private Button btnOptions;
+    [SerializeField] private GameObject optionsUI;
+
+    [Space(5)]
+    [SerializeField] private Button btnQuit;
     //[SerializeField] private bool isPlayed;
 
     private void Start()
@@ -28,24 +40,41 @@ public class MainMenuUI : MonoBehaviour
 
     private void Init()
     {
+        mainMenuUI.SetActive(true);
+        optionsUI.SetActive(false);
+
         btnContinue.onClick.AddListener(ButtonContinue);
         btnNewGame.onClick.AddListener(ButtonNewGame);
+        btnOptions.onClick.AddListener(ButtonOptions);
+        btnQuit.onClick.AddListener(ButtonQuit);
     }
 
     public void ButtonNewGame()
     {
+        SoundClick();
+
         DataManager.GetInstance().dataPlayerSO.Reset();
 
         var curScene = DataManager.GetInstance().dataPlayerSO.curScene;
-        LoadSceneManagement.LoadScene(curScene);
+
+        var aSrcBackground = AudioController.GetInstance().manager.GetAudioSourceBackground();
+        var aClipGame = AudioController.GetInstance().manager.GetAudioBGame();
+
+        LoadSceneManagement.LoadScene(curScene, aClipGame, aSrcBackground);
     }
 
     public void ButtonContinue()
     {
+        SoundClick();
+
         DataManager.GetInstance().LoadData();
 
         var curScene = DataManager.GetInstance().dataPlayerSO.curScene;
-        LoadSceneManagement.LoadScene(curScene);
+
+        var aSrcBackground = AudioController.GetInstance().manager.GetAudioSourceBackground();
+        var aClipGame = AudioController.GetInstance().manager.GetAudioBGame();
+
+        LoadSceneManagement.LoadScene("Chap2", aClipGame, aSrcBackground);
     }
 
     public void CheckStatusButtonContinue()
@@ -65,15 +94,31 @@ public class MainMenuUI : MonoBehaviour
         }
     }
 
-    public void mouseon()
+    public void ButtonQuit()
     {
-        Debug.Log("on");
+        SoundClick();
+
+        Application.Quit();
     }
 
-    public void mouseoff()
+    private static void SoundClick()
     {
-        Debug.Log("off");
+        var aSrc = AudioController.GetInstance().manager.GetAudioSource();
+        var aClipClick = AudioController.GetInstance().manager.GetAudioClick();
+
+        AudioController.GetInstance().StartMusic(aClipClick, aSrc);
     }
+
+    public void ButtonOptions()
+    {
+        SoundClick();
+
+        optionsUI.SetActive(true);
+        mainMenuUI.SetActive(false);
+
+        transform.SetAsLastSibling();
+    }
+    
 
 
 }

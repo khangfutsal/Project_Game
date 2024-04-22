@@ -26,6 +26,7 @@ public class SkeletonRange_TakeDamageState : EnemyState
     public override void Enter()
     {
         base.Enter();
+        Debug.Log("Enter takedamage");
         skeletonRange.SetBool_IsTakeDamage(false);
         skeletonRange.SetBool_IsKnock(true);
     }

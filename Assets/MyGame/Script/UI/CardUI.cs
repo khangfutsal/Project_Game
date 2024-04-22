@@ -18,7 +18,6 @@ public class CardUI : MonoBehaviour
 
     [SerializeField] private PlayerStats playerStats;
 
-
     public void SubEvent(CardInfo cardInfo)
     {
         btnBuy.onClick.RemoveAllListeners();
@@ -27,15 +26,10 @@ public class CardUI : MonoBehaviour
 
     private void ButtonBuy(CardInfo cardInfo)
     {
-        
-        ShopUI.GetInstance().CheckStatusCardInfo(cardInfo);
-
-        UpdateDataForPlayer();
-        UpdateCollectionGem();
-
-
+        UpdateCollectionGem(cardInfo);
 
         void UpdateDataForPlayer()
+
         {
             switch (name)
             {
@@ -53,8 +47,8 @@ public class CardUI : MonoBehaviour
                         playerStats.SetFloat_PercentRegenerationHealth(dataCard[0]);
                         playerStats.timeRegenerationHealth = dataCard[1];
 
-                        DataManager.GetInstance().dataPlayerSO.curDamage = (int)dataCard[0];
-                        DataManager.GetInstance().dataPlayerSO.curDamage = (int)dataCard[1];
+                        DataManager.GetInstance().dataPlayerSO.percentRegenerationHealth = (int)dataCard[0];
+                        DataManager.GetInstance().dataPlayerSO.timeRegenerationHealth = (int)dataCard[1];
                         break;
                     }
                 case "Mana":
@@ -68,6 +62,7 @@ public class CardUI : MonoBehaviour
                     }
                 case "SkillDefense":
                     {
+
                         float curSkillStatus = dataCard[0];
                         playerStats.SetFloat_StatusDefense(curSkillStatus);
 
@@ -92,9 +87,11 @@ public class CardUI : MonoBehaviour
                     }
                 default: break;
             }
+
+
         }
 
-        void UpdateCollectionGem()
+        void UpdateCollectionGem(CardInfo card)
         {
 
 
@@ -106,18 +103,25 @@ public class CardUI : MonoBehaviour
                 case "Coin":
                     {
                         var curCoin = GameController.GetInstance().gameManager.GetCoin();
+                        
 
                         if ((float)curCoin >= priceValue)
                         {
                             var remainCoin = curCoin - (int)priceValue;
+                            Debug.Log(remainCoin);
                             GameController.GetInstance().gameManager.SetCoin(remainCoin);
+                            DataManager.GetInstance().dataPlayerSO.curCoin = remainCoin;
 
                             var collection_Ins = Collection_Controller.GetInstance();
                             collection_Ins.StartCoroutine(collection_Ins.TakeCoin(priceValue));
-                            
-                            transform.gameObject.SetActive(false);
 
-                            cardInfo._isBought = true;
+                            card._isBought = true;
+
+                            UIController.GetInstance().uiManager.GetShopUI().GetComponent<ShopUI>().CheckBoughtMaxLevel(card);
+
+                            UpdateDataForPlayer();
+
+                            transform.gameObject.SetActive(false);
                         }
                         else
                         {
@@ -132,9 +136,21 @@ public class CardUI : MonoBehaviour
                         if ((float)curCrystal >= priceValue)
                         {
                             var remainCrystal = curCrystal - (int)priceValue;
-                            GameController.GetInstance().gameManager.SetCrystalUI(remainCrystal);
+                            GameController.GetInstance().gameManager.SetCrystal(remainCrystal);
+                            DataManager.GetInstance().dataPlayerSO.curCrystal = remainCrystal;
 
-                            Collection_Controller.GetInstance().TakeCrystal(priceValue);
+                            var collection_Ins = Collection_Controller.GetInstance();
+                            collection_Ins.StartCoroutine(collection_Ins.TakeCrystal(priceValue));
+
+                            var guideSkillUI = UIController.GetInstance().uiManager.GetGuideSKillUI().GetComponent<GuideSkillUI>();
+                            guideSkillUI.gameObject.SetActive(true);
+                            guideSkillUI.StartCoroutine(guideSkillUI.ShowGuideUI(name));
+
+                            UIController.GetInstance().uiManager.GetShopUI().GetComponent<ShopUI>().CheckBoughtMaxLevel(card);
+
+                            UpdateDataForPlayer();
+                            card._isBought = true;
+
                             transform.gameObject.SetActive(false);
                         }
                         else
@@ -146,8 +162,10 @@ public class CardUI : MonoBehaviour
                     }
             }
         }
-
-
     }
+
+
+
+
 
 }

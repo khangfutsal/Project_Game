@@ -9,6 +9,7 @@ public class TransitionDemon : MonoBehaviour
 {
     private static TransitionDemon _ins;
 
+    [SerializeField] private GameObject door;
 
     public bool isDone;
     [SerializeField] private List<TransitionPhase> transitionPhases;
@@ -21,6 +22,11 @@ public class TransitionDemon : MonoBehaviour
     {
         _ins = this;
         demon = GetComponent<Demon>();
+    }
+
+    private void Start()
+    {
+        Debug.Log("Scene 3");
     }
 
     public IEnumerator ModifyPhase(Phase curPhase)
@@ -60,7 +66,7 @@ public class TransitionDemon : MonoBehaviour
                 }
             case Phase.Phase3:
                 {
-                    Player.GetInstance().playerInputHandler.DisableInput();
+                    
 
                     var skills = demon.skillsList;
                     foreach(var skill in skills)
@@ -105,14 +111,12 @@ public class TransitionDemon : MonoBehaviour
                             sq.Append(imageUI.DOFade(1, 2f));
                             sq.AppendCallback(() =>
                             {
+                                door.SetActive(false);
+
                                 CameraController.GetInstance().ShowCamera("CameraBossFinal");
-
-                                UIController.GetInstance().uiManager.GetDoor().SetActive(false);
-
+                                Player.GetInstance().playerInputHandler.DisableInput();
                                 Player.GetInstance().transform.position = finalPosSpawnPlayer.position;
-
                                 TilemapController.GetInstance().manager.ShowFinalMap();
-
                                 MaterialPhase.GetInstance().SetShaderPhase(i + 1);
                             });
                             sq.AppendInterval(2f);

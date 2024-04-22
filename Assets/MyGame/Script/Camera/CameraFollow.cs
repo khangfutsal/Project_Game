@@ -1,25 +1,63 @@
+using Cinemachine;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
 public class CameraFollow : MonoBehaviour
 {
-    [SerializeField] private Transform playerTf;
+    private static CameraFollow _ins;
+    [SerializeField] private CinemachineBrain cinemachineBrain;
+    [SerializeField] private CinemachineVirtualCamera currentVirtualCamera;
 
-    private Vector3 velocity;
+    public static CameraFollow GetInstance() => _ins;
 
-    [SerializeField] private Vector3 posOffset;
-    [Range(0, 1)]
-    [SerializeField] float smoothTime;
-    private void Start()
+    private void Awake()
     {
-        velocity = Vector3.zero;
+        _ins = this;
+
+
     }
 
-    private void LateUpdate()
+    private void Update()
     {
-        Vector3 playerPos = new Vector3(playerTf.transform.position.x + posOffset.x, playerTf.transform.position.y + posOffset.y, -10);
-        transform.position = Vector3.SmoothDamp(transform.position, playerPos, ref velocity, smoothTime);
+        if (Input.GetKeyDown(KeyCode.Alpha1))
+        {
+            cinemachineBrain = GetComponent<CinemachineBrain>();
+            if (cinemachineBrain != null)
+            {
+                currentVirtualCamera = cinemachineBrain.ActiveVirtualCamera as CinemachineVirtualCamera;
+
+                if (currentVirtualCamera != null)
+                {
+                    Debug.Log("Current virtual camera: " + currentVirtualCamera.Name);
+                }
+                else
+                {
+                    Debug.LogWarning("No virtual camera is currently active.");
+                }
+            }
+        }
     }
 
+    public CinemachineVirtualCamera GetCameraVirtual()
+    {
+        cinemachineBrain = GetComponent<CinemachineBrain>();
+        if (cinemachineBrain != null)
+        {
+            currentVirtualCamera = cinemachineBrain.ActiveVirtualCamera as CinemachineVirtualCamera;
+
+            if (currentVirtualCamera != null)
+            {
+                Debug.Log("Virtual ");
+                return currentVirtualCamera;
+            }
+            else
+            {
+                Debug.LogWarning("No virtual camera is currently active.");
+                return null;
+            }
+        }
+        return null;
+
+    }
 }

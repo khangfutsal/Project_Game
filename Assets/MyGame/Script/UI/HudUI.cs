@@ -32,9 +32,9 @@ public class HudUI : MonoBehaviour
         sliderMana.value = mana;
     }
 
-    public void TakeSliderHealth(float dmg)
+    public void TakeSliderHealth(float curHealth)
     {
-        sliderHealth.value -= dmg;
+        sliderHealth.value = curHealth;
     }
     public void TakeSliderMana(float mana)
     {

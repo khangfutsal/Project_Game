@@ -5,7 +5,6 @@ using UnityEngine;
 public class SkeletonRange_IdleState : SkeletonRange_AbilityState
 {
     private bool isBound;
-    private float timeDelay = 1f;
     public SkeletonRange_IdleState(Enemy enemy, EnemyStateMachine stateMachine, EnemyData enemyData, string animName) : base(enemy, stateMachine, enemyData, animName)
     {
     }

@@ -12,6 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ca601e0d1192acc4d9458329c31cc5ef, type: 3}
   m_Name: DamageInfo_LV2
   m_EditorClassIdentifier: 
+  id: 2
   name: Damage
   imgCollection: {fileID: 692917766455180279, guid: 3605262d242fafd47805702c21c49770, type: 3}
   imgStamina: {fileID: 6300979273209018561, guid: 26feba3a2d812284fb41eda113234075, type: 3}
@@ -19,3 +20,5 @@ MonoBehaviour:
   price: 150
   dataCard:
   - 4
+  _maxLevel: 0
+  _isBought: 0

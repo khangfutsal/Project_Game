@@ -1,3 +1,4 @@
+using Cinemachine;
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -11,13 +12,14 @@ public class PlayerInputHandler : MonoBehaviour
     [SerializeField]
     private float inputHoldtime = 0.2f;
     private float jumpInputStartTime;
-
+    CinemachineBrain a;
 
     public bool meditateInput;
     public bool attackInput;
     public bool defenseInput;
     public bool earthquakeInput;
     public bool fireBallInput;
+
     public bool _allowInput;
 
     [SerializeField] private float skillFireballMana;
@@ -34,11 +36,12 @@ public class PlayerInputHandler : MonoBehaviour
     private void Start()
     {
         _allowInput = true;
+
     }
 
     private void Update()
     {
-        if (_allowInput)
+        if (_allowInput && !UIController.GetInstance().uiManager.GetGameUI()._isShowTabUI)
         {
             OnMoveInput();
             OnJumpInput();
@@ -146,7 +149,7 @@ public class PlayerInputHandler : MonoBehaviour
     #region Jump Function
     public void OnJumpInput()
     {
-        if (Input.GetKeyDown(KeyCode.Space))
+        if (Input.GetKeyDown(KeyCode.UpArrow))
         {
             jumpInput = true;
             jumpInputStartTime = Time.time;

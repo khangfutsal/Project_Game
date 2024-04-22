@@ -25,6 +25,7 @@ public class GameController : MonoBehaviour
     private void Init()
     {
         string currentSceneName = SceneManager.GetActiveScene().name;
+        Debug.Log(currentSceneName);
         DataManager.GetInstance().dataPlayerSO.curScene = currentSceneName;
     }
 

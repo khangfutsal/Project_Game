@@ -19,7 +19,7 @@ public static class LoadSceneManagement
     private static Action OnLoad;
     public static AsyncOperation loadAsyncOperation;
 
-    public static void LoadScene(string scene)
+    public static void LoadScene(string scene,AudioClip aClipBackground,AudioSource aSrc)
     {
         OnLoad = () =>
         {
@@ -27,6 +27,8 @@ public static class LoadSceneManagement
             loadObj.AddComponent<LoadMonoBehaviour>().StartCoroutine(LoadSceneAsync(scene));
 
             SceneManager.LoadScene(scene.ToString());
+
+            AudioController.GetInstance().StartMusicBackground(aClipBackground,aSrc);
         };
 
         SceneManager.LoadScene(Scene.LoadingScene.ToString());

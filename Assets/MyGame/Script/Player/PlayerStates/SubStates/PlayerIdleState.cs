@@ -4,6 +4,8 @@ using UnityEngine;
 
 public class PlayerIdleState : PlayerGroundedState
 {
+    private bool onSlope;
+    private Vector2 slopePerp;
     public PlayerIdleState(Player player, PlayerStateMachine stateMachine, PlayerData playerData, string animBoolName) : base(player, stateMachine, playerData, animBoolName)
     {
 
@@ -12,6 +14,7 @@ public class PlayerIdleState : PlayerGroundedState
     public override void DoChecks()
     {
         base.DoChecks();
+        onSlope = player.onSlope;
     }
 
     public override void Enter()
@@ -32,6 +35,12 @@ public class PlayerIdleState : PlayerGroundedState
         if(input.x != 0f)
         {
             stateMachine.ChangeState(player.playerMoveState);
+        }
+        else if (onSlope && !jumpInput)
+        {
+            slopePerp = player.slopeNormalPerp;
+            player.SetVelocityX(playerData.movementVelocity * slopePerp.x * -input.x);
+            player.SetVelocityY(playerData.movementVelocity * slopePerp.y * -input.y);
         }
     }
 

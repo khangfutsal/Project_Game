@@ -6,7 +6,7 @@ public class PlayerGroundedState : PlayerState
 {
     protected Vector2 input;
 
-    private bool jumpInput;
+    protected bool jumpInput;
     private bool meditateInput;
     private bool attackInput;
     private bool defenseInput;
@@ -27,6 +27,9 @@ public class PlayerGroundedState : PlayerState
     {
         base.DoChecks();
         _isHurt = player.GetBool_Hurt();
+
+        player.CheckInSlope();
+
     }
 
     public override void Enter()

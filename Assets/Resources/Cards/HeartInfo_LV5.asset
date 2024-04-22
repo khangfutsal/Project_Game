@@ -12,6 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c004e419c219f824abd11de8494c6987, type: 3}
   m_Name: HeartInfo_LV5
   m_EditorClassIdentifier: 
+  id: 10
   name: Heart
   imgCollection: {fileID: 692917766455180279, guid: 3605262d242fafd47805702c21c49770, type: 3}
   imgStamina: {fileID: 5335694422596211878, guid: 45ed0128cc539f64aa74a244d4665371, type: 3}

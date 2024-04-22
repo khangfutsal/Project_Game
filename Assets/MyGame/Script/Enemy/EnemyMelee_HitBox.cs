@@ -30,7 +30,6 @@ public class EnemyMelee_HitBox : MonoBehaviour
             
             if (damageable != null)
             {
-                HudUI.GetInstance().TakeSliderHealth(dmg);
                 damageable.TakeDamage(dmg, transform);
             }
         }

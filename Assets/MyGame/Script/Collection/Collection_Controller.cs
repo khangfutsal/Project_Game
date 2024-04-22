@@ -32,13 +32,6 @@ public class Collection_Controller : MonoBehaviour
         _ins = this;
     }
 
-    private void Update()
-    {
-        if (Input.GetKeyDown(KeyCode.P))
-        {
-            SpawnGem(transform);
-        }
-    }
 
     public void SpawnGem(Transform tf)
     {
@@ -118,8 +111,6 @@ public class Collection_Controller : MonoBehaviour
 
         var minusCoin = coin - (int)price;
 
-        Debug.Log(coin);
-
 
         StartCoroutine(Countdown(coin, minusCoin, "Coin"));
 
@@ -133,19 +124,13 @@ public class Collection_Controller : MonoBehaviour
             {
                 case "Coin":
                     {
-
                         GameController.GetInstance().gameManager.SetCoinUI(--curGem);
-                        DataManager.GetInstance().dataPlayerSO.curCoin = curGem;
-
                         _coinCou = true;
                         break;
                     }
                 case "Crystal":
                     {
-
                         GameController.GetInstance().gameManager.SetCrystalUI(--curGem);
-                        DataManager.GetInstance().dataPlayerSO.curCrystal = curGem;
-
                         _crystalCou = true;
                         break;
                     }

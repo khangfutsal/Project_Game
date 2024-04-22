@@ -77,6 +77,7 @@ MonoBehaviour:
   times: 1
   test_vfx: {fileID: 0}
   flyingEye_Range: {fileID: 0}
+  flyingEye_RangeObj: {fileID: 7059878366942639784, guid: 183fac5bf098f4444b1af51833c35e4f, type: 3}
   _canAttack: 0
 --- !u!212 &151368553775567625
 SpriteRenderer:

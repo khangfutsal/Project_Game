@@ -28,7 +28,7 @@ public class EventButton : MonoBehaviour, IPointerEnterHandler, IPointerExitHand
 
     public void OnPointerClick(PointerEventData eventData)
     {
-        image.sprite = sprites[2];
+        image.sprite = sprites[0];
         Debug.Log("click");
     }
 }

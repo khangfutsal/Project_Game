@@ -21,9 +21,10 @@ public class SkeletonRange_DeathState : EnemyState
     {
         base.Enter();
         skeleton_Range.colliderEnvironment.GetComponent<BoxCollider2D>().isTrigger = true;
+        Debug.Log("Death");
 
         skeleton_Range.rgBody2D.constraints &= ~RigidbodyConstraints2D.FreezePositionX;
-        
+
         skeleton_Range.KnockBack(25, 10);
 
 

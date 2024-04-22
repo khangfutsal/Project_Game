@@ -12,19 +12,19 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9856ee8e1e72a2c439eb30accb034252, type: 3}
   m_Name: DataPlayerSO
   m_EditorClassIdentifier: 
-  curHealth: 100
+  curHealth: 52.219868
   curMana: 100
-  curDamage: 3
-  curCoin: 0
-  curCrystal: 0
-  percentRegenerationHealth: 0
-  timeRegenerationHealth: 0
-  statsRegenerationMana: 0
-  timeRegenerationMana: 0
-  statusFireballSkill: 0
-  statusEarthquakeSkill: 0
-  statusDefenseSkill: 0
-  curScene: Chap1
+  curDamage: 10
+  curCoin: 7448
+  curCrystal: 10072
+  percentRegenerationHealth: 2
+  timeRegenerationHealth: 1
+  statsRegenerationMana: 2.5
+  timeRegenerationMana: 0.5
+  statusFireballSkill: 1
+  statusEarthquakeSkill: 1
+  statusDefenseSkill: 1
+  curScene: Chap3
   listCards:
   - {fileID: 11400000, guid: 2c3856cd75d5a1e4cae60b3d4c26ad7d, type: 2}
   - {fileID: 11400000, guid: 360d005a84c785145a0a4b184f29745b, type: 2}
@@ -45,6 +45,6 @@ MonoBehaviour:
   - {fileID: 11400000, guid: d80f5cbe545491d4ebcb7ba712a44dab, type: 2}
   - {fileID: 11400000, guid: cee74d4aaadb6ee438cdde160fb70778, type: 2}
   curCardsUI:
-  - {fileID: 11400000, guid: 2c3856cd75d5a1e4cae60b3d4c26ad7d, type: 2}
-  - {fileID: 11400000, guid: 79016c0eb6517c142bdea91b06dc9568, type: 2}
-  - {fileID: 11400000, guid: ecd33b7929f0a0e49a98dd5e0836e291, type: 2}
+  - {fileID: 11400000, guid: 360d005a84c785145a0a4b184f29745b, type: 2}
+  - {fileID: 11400000, guid: 0b8c196797cb78b45afb2f0258969986, type: 2}
+  - {fileID: 11400000, guid: aa6e1fe3189ffe44e9289bcfef7d18b3, type: 2}

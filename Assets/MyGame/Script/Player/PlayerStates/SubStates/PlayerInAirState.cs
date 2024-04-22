@@ -47,7 +47,7 @@ public class PlayerInAirState : PlayerState
 
         if (isGrounded && player.currentVelocity.y < 0.01f)
         {
-            //VFX_Controller.GetInstance().SpawnVFX(vfxGrounded, player.groundCheck, "GroundedVFX");
+            VFX_Controller.GetInstance().SpawnVFX(vfxGrounded, player.groundCheck, "GroundedVFX");
             stateMachine.ChangeState(player.playerIdleState);
         }
         else if (jumpInput && player.playerJumpState.canJump())

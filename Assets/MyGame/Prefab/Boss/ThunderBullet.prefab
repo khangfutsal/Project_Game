@@ -78,7 +78,7 @@ SpriteRenderer:
   m_SortingLayer: 4
   m_SortingOrder: 0
   m_Sprite: {fileID: 50575549, guid: fa7d8f744e26f1c439dc0a8224115562, type: 3}
-  m_Color: {r: 1, g: 0.5192218, b: 0, a: 1}
+  m_Color: {r: 1, g: 0.62412876, b: 0.22075468, a: 1}
   m_FlipX: 0
   m_FlipY: 0
   m_DrawMode: 0
@@ -148,9 +148,14 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   damage: 0
-  timeDestroy: 15
+  timeDestroy: 2
   rgbody2D: {fileID: 0}
+  _interactWall: 0
+  _interactGrounded: 0
+  isExplode: 0
+  time: 0
   anim: {fileID: 0}
+  boxCollider2D: {fileID: 0}
 --- !u!95 &2937384988822831456
 Animator:
   serializedVersion: 5

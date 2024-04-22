@@ -7,19 +7,6 @@ public class MultiShootSkill : BaseSkill
     [SerializeField] private GameObject bulletObj;
     [SerializeField] private GameObject pointAttack;
 
-
-    private void Start()
-    {
-    }
-
-    private void Update()
-    {
-        if (Input.GetKeyDown(KeyCode.M))
-        {
-            UseSkill();
-
-        }
-    }
     public override bool CanUseSkill()
     {
         throw new System.NotImplementedException();

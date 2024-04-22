@@ -125,7 +125,7 @@ public class Skeleton_Melee : Skeleton, IDmgable
 
         float dotProduct = Vector3.Dot(transform.right, directionToTarget);
 
-        Debug.Log("dot : " + dotProduct);
+        //Debug.Log("dot : " + dotProduct);
         if (_isDefense)
         {
             if (dotProduct > .4f)

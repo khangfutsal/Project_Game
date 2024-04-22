@@ -18,6 +18,7 @@ public class PlayerHitBox : MonoBehaviour
             float dmg = player.playerStats.GetInt_AttackDmg();
             if (damageable != null)
             {
+                CameraShake.GetInstance().ShakeCamera(3, .5f,.1f);
                 damageable.TakeDamage(dmg, transform);
             }
 

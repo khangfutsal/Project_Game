@@ -26,7 +26,7 @@ public class Skeleton_Range : Skeleton, IDmgable
     [Space()]
 
     public GameObject colliderEnvironment;
-    private Object_Pool objPool;
+    public Object_Pool objPool;
 
     #region Transform Object
     [Space(5)]
@@ -60,7 +60,7 @@ public class Skeleton_Range : Skeleton, IDmgable
         rgBody2D = transform.parent.GetComponentInChildren<Rigidbody2D>();
         anim = gameObject.GetComponent<Animator>();
         playerTf = GameObject.Find("BonzePlayer").transform;
-        objPool = transform.GetComponent<Object_Pool>();
+        objPool = GameObject.Find("BulletSkeleton").GetComponentInChildren<Object_Pool>();
         enemyStateMachine = new EnemyStateMachine();
 
         skeletonRange_Revive = new SkeletonRange_ReviveState(this, enemyStateMachine, skeletonRange_Data, "revive");
@@ -228,6 +228,7 @@ public class Skeleton_Range : Skeleton, IDmgable
     public IEnumerator DestroyObject()
     {
         if (!_isDeath) yield break;
+        Debug.Log("Destroy");
         _isDeath = false;
 
         yield return new WaitForSeconds(2);

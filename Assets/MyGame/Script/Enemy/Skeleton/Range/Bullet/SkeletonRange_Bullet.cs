@@ -18,13 +18,14 @@ public class SkeletonRange_Bullet : MonoBehaviour
     [SerializeField] private List<Vector3> listPositionCheck;
 
     [SerializeField] private Skeleton_Range skeleton_Range;
+    [SerializeField] private GameObject skeleton_RangeObj;
 
     private void Awake()
     {
         animator = GetComponent<Animator>();
         rgbody2D = GetComponent<Rigidbody2D>();
         boxCollider2D = GetComponent<BoxCollider2D>();
-        skeleton_Range = transform.parent.parent.GetComponentInChildren<Skeleton_Range>();
+        skeleton_Range = skeleton_RangeObj.GetComponentInChildren<Skeleton_Range>();
     }
 
 
@@ -33,65 +34,9 @@ public class SkeletonRange_Bullet : MonoBehaviour
     public void FireBullet(Transform hitboxTf)
     {
         //AimToPlayer();
-        a();
+        AimPlayer();
 
-
-
-        void AimToPlayer()
-        {
-            float rotation = -35;
-            bool check = false;
-
-            transform.position = hitboxTf.position;
-
-            do
-            {
-                Debug.Log("rotation : " + rotation);
-                Debug.Log("transform 1 : " + transform.rotation);
-                //Quaternion quaternion = Quaternion.Euler(0, 0, rotation);
-
-
-                hitboxTf.localEulerAngles = new Vector3(0, 0, rotation);
-                Debug.Log("transform 2 : " + transform.rotation);
-                //foreach (var i in listPositionCheck)
-                //{
-                //    Destroy(i.transform.gameObject);
-                //}
-                listPositionCheck.Clear();
-
-                bool validPositionFound = false;
-
-                //while (true)
-                for (int i = 0; i < 30; i++)
-                {
-                    Vector2 newVector = PointPosition((listPositionCheck.Count) * 0.1f);
-                    bool checkValidPosition = CheckPosition(newVector);
-
-                    //                          Debug
-                    //GameObject tracjectionCircleObj = Instantiate(trajectionCircle, PointPosition((listPositionCheck.Count) * 0.1f), Quaternion.identity);
-                    //bool checkValidPosition = tracjectionCircleObj.GetComponent<TracjectionCircle>().CheckPosition();
-
-                    if (!checkValidPosition)
-                    {
-                        listPositionCheck.Add(newVector);
-                        validPositionFound = true;
-                    }
-                    else
-                    {
-                        Debug.Log("true");
-                        Shoot();
-                        check = true;
-                        break;
-                    }
-                }
-                rotation++;
-
-
-
-            } while (!check);
-        }
-
-        void a()
+        void AimPlayer()
         {
             float rotation = -50;
             bool check = false;
@@ -187,6 +132,7 @@ public class SkeletonRange_Bullet : MonoBehaviour
 
 
             float dmg = skeleton_Range.GetFloat_DmgAttack();
+
             if (damageable != null)
             {
                 damageable.TakeDamage(dmg, transform);

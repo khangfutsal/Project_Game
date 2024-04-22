@@ -77,12 +77,11 @@ public class ThunderSkill : MonoBehaviour
 
             stepAngle += angle;
         }
-        stepAngle = 90;
-
     }
 
     public void InActive()
     {
+        VFX_Controller.GetInstance().SpawnFireWorkVFX(transform);
         SpawnBullet();
         Destroy(gameObject);
         

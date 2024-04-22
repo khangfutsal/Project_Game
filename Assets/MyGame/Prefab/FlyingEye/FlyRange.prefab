@@ -89,7 +89,7 @@ BoxCollider2D:
   serializedVersion: 2
   m_Size: {x: 0.66188335, y: 0.4899161}
   m_EdgeRadius: 0
---- !u!1 &7059878366135178870
+--- !u!1 &4017193661042694688
 GameObject:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -97,7 +97,7 @@ GameObject:
   m_PrefabAsset: {fileID: 0}
   serializedVersion: 6
   m_Component:
-  - component: {fileID: 7059878366135178871}
+  - component: {fileID: 7405767262986926602}
   m_Layer: 8
   m_Name: Holder
   m_TagString: Untagged
@@ -105,20 +105,20 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!4 &7059878366135178871
+--- !u!4 &7405767262986926602
 Transform:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 7059878366135178870}
-  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 11.85, y: 0.41999996, z: 0}
+  m_GameObject: {fileID: 4017193661042694688}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 7059878366942639785}
-  m_RootOrder: 0
+  m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &7059878366258871207
 GameObject:
@@ -303,8 +303,8 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
-  - {fileID: 7059878366135178871}
   - {fileID: 7059878367595993200}
+  - {fileID: 7405767262986926602}
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -319,11 +319,11 @@ GameObject:
   - component: {fileID: 7059878367595993200}
   - component: {fileID: 7059878367595993212}
   - component: {fileID: 7059878367595993214}
-  - component: {fileID: 7059878367595993215}
   - component: {fileID: 7059878367595993203}
   - component: {fileID: 7059878367595993202}
   - component: {fileID: 7059878367595993201}
   - component: {fileID: 7059878367595993213}
+  - component: {fileID: 6961159941141099636}
   m_Layer: 8
   m_Name: FlyEyeRange
   m_TagString: Enemy
@@ -348,7 +348,7 @@ Transform:
   - {fileID: 449249046}
   - {fileID: 1960033809}
   m_Father: {fileID: 7059878366942639785}
-  m_RootOrder: 1
+  m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!212 &7059878367595993212
 SpriteRenderer:
@@ -438,6 +438,7 @@ MonoBehaviour:
     whatIsGround:
       serializedVersion: 2
       m_Bits: 8
+  objPool: {fileID: 0}
   colliderEnvironment: {fileID: 1960033808}
   groundCheckTf: {fileID: 449249046}
   hitboxTf: {fileID: 7059878366342089858}
@@ -445,21 +446,6 @@ MonoBehaviour:
   <maxHealth>k__BackingField: 100
   <health>k__BackingField: 0
   test: 0
---- !u!114 &7059878367595993215
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 7059878367595993207}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: e8801ea0a552511499198837a2fec888, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  listPoolTf: []
-  obj: {fileID: 151368553775567626, guid: a58826ac83d7268459b394a91a49e34a, type: 3}
-  holderTf: {fileID: 0}
 --- !u!50 &7059878367595993203
 Rigidbody2D:
   serializedVersion: 4
@@ -564,3 +550,18 @@ Animator:
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorStateOnDisable: 0
   m_WriteDefaultValuesOnDisable: 0
+--- !u!114 &6961159941141099636
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7059878367595993207}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e8801ea0a552511499198837a2fec888, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  listPoolTf: []
+  obj: {fileID: 151368553775567626, guid: a58826ac83d7268459b394a91a49e34a, type: 3}
+  holderTf: {fileID: 0}

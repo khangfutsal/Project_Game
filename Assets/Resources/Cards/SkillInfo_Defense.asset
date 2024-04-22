@@ -12,6 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 632be6de936b2a645a94161aa132c7d2, type: 3}
   m_Name: SkillInfo_Defense
   m_EditorClassIdentifier: 
+  id: 16
   name: SkillDefense
   imgCollection: {fileID: 8129536280940236186, guid: 657f9a43e856b254cb7ed373947035ac, type: 3}
   imgStamina: {fileID: 3926399107168815722, guid: 5af449555b798a746ad8cb736ad69157, type: 3}

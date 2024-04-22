@@ -149,11 +149,9 @@ namespace SlimUI.ModernMenu{
 			// check vsync
 			if(QualitySettings.vSyncCount == 0){
 				vsynctext.GetComponent<TMP_Text>().text = "off";
-				Debug.Log("vsync off");
 			}
 			else if(QualitySettings.vSyncCount == 1){
 				vsynctext.GetComponent<TMP_Text>().text = "on";
-				Debug.Log("vsync on");
 			}
 
 			// check mouse inverse

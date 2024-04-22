@@ -17,7 +17,6 @@ public class WaveController : MonoBehaviour
 
     [SerializeField] private List<Transform> traps;
     [SerializeField] private Transform enemiesHolder;
-    [SerializeField] private BoxCollider2D boxCollider2D;
 
     public UnityEvent a;
 
@@ -27,7 +26,6 @@ public class WaveController : MonoBehaviour
 
     private void Awake()
     {
-        boxCollider2D = GetComponent<BoxCollider2D>();
     }
 
     private void Start()
@@ -38,11 +36,11 @@ public class WaveController : MonoBehaviour
     public void SetupScene()
     {
         Scene currentScene = SceneManager.GetActiveScene();
-        if (currentScene.name == "Chap 1")
+        if (currentScene.name == "Chap1")
         {
             Initialize();
         }
-        if (currentScene.name == "Chap 2")
+        if (currentScene.name == "Chap2")
         {
             PlayWave();
         }

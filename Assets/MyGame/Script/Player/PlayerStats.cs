@@ -219,6 +219,11 @@ public class PlayerStats : MonoBehaviour, IDmgable
 
     public void Die()
     {
+        var aSrc = AudioController.GetInstance().manager.GetAudioSource();
+        var aEnd = AudioController.GetInstance().manager.GetAudioEndGame();
+        AudioController.GetInstance().StopMusicBackground();
+        AudioController.GetInstance().StartMusic(aEnd, aSrc);
+
         player.SetBool_IsDeath(true);
 
         player.SetVelocityX(0);
@@ -236,14 +241,19 @@ public class PlayerStats : MonoBehaviour, IDmgable
             endUI.transform.SetAsLastSibling();
             yield return new WaitForSeconds(2f);
 
-            
-
             Time.timeScale = 0;
         }
     }
 
     public void TakeDamage(float dmg, Transform tf = null)
     {
+
+        var aSrc = AudioController.GetInstance().manager.GetAudioSource();
+        var aClipHit = AudioController.GetInstance().manager.GetAudioHit();
+
+        AudioController.GetInstance().StartMusic(aClipHit, aSrc);
+
+        CameraShake.GetInstance().ShakeCamera(3, .5f, .1f);
         if (tf == null)
         {
             if(dmg >= health)
@@ -330,10 +340,9 @@ public class PlayerStats : MonoBehaviour, IDmgable
 
     private void OnTriggerEnter2D(Collider2D collision)
     {
-        if (collision.CompareTag("interact") && Input.GetKey(KeyCode.A))
+        if (collision.CompareTag("interact"))
         {
             Iinteraction Iinteract = collision.GetComponent<Iinteraction>();
-            Debug.Log(Iinteract);
             if (Iinteract != null)
             {
                 Iinteract.interact();
@@ -343,7 +352,7 @@ public class PlayerStats : MonoBehaviour, IDmgable
 
     private void OnTriggerStay2D(Collider2D collision)
     {
-        if (collision.CompareTag("interact") && Input.GetKey(KeyCode.A))
+        if (collision.CompareTag("interact"))
         {
             Iinteraction Iinteract = collision.GetComponent<Iinteraction>();
             Debug.Log(Iinteract);

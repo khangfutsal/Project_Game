@@ -91,7 +91,6 @@ public class ToxicTrap : Trap
             while (true)
             {
                 int randomAngle = UnityEngine.Random.Range(280, 355);
-                Debug.Log("angle : " + randomAngle);
                 if (!bulletSideLeft.Contains(randomAngle))
                 {
                     float rad = randomAngle * Mathf.Deg2Rad;

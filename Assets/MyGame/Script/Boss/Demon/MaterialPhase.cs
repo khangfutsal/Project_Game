@@ -17,9 +17,12 @@ public class MaterialPhase : MonoBehaviour
     public static UnityEvent OnAppear = new UnityEvent();
     public static UnityEvent OnDisappear = new UnityEvent();
 
+    private Demon demon;
+
     private void Awake()
     {
         _ins = this;
+        demon = GetComponent<Demon>();
     }
 
     public static MaterialPhase GetInstance() => _ins;
@@ -67,6 +70,7 @@ public class MaterialPhase : MonoBehaviour
     public IEnumerator CouroutineAppearDissolve()
     {
         float elapsedTime = 0f;
+        demon.boxCollider2D.enabled = true;
         while (elapsedTime < _dissolveTime)
         {
             elapsedTime += Time.deltaTime * .4f;
@@ -81,6 +85,7 @@ public class MaterialPhase : MonoBehaviour
     public IEnumerator CouroutineDisappearDissolve()
     {
         float elapsedTime = 0f;
+        demon.boxCollider2D.enabled = false;
         while (elapsedTime < _dissolveTime)
         {
             elapsedTime += Time.deltaTime * .4f;

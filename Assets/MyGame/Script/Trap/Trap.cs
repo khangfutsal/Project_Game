@@ -5,7 +5,6 @@ using UnityEngine;
 [Serializable]
 public class Trap : MonoBehaviour
 {
-    [ColorUsage(true, true)] public Color color;
     [SerializeField] public TrapPatern data;
 
     [SerializeField] public Animator anim;

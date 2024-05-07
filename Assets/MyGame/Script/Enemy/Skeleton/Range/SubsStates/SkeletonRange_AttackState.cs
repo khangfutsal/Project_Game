@@ -17,6 +17,7 @@ public class SkeletonRange_AttackState : SkeletonRange_AbilityState
     public override void Enter()
     {
         base.Enter();
+        skeleton_Range.skeletonRange_Data.curTimeAttack = Time.time;
     }
 
     public override void Exit()

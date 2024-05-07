@@ -27,6 +27,9 @@ public class CardUI : MonoBehaviour
     private void ButtonBuy(CardInfo cardInfo)
     {
         UpdateCollectionGem(cardInfo);
+        var aSrc = AudioController.GetInstance().manager.GetAudioSource();
+        var aClipBuy = AudioController.GetInstance().manager.GetAudioBuy();
+        AudioController.GetInstance().StartMusic(aClipBuy, aSrc);
 
         void UpdateDataForPlayer()
 

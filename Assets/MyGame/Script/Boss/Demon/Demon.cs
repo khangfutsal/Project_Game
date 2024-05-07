@@ -391,6 +391,7 @@ public class Demon : Boss
         }
         StartCoroutine(DurationSkill());
         curSkill.UseSkill();
+        Debug.Log("Useskill test");
 
         IEnumerator DurationSkill()
         {
@@ -429,7 +430,7 @@ public class Demon : Boss
     private void OnDisable()
     {
         MaterialPhase.OnAppear.RemoveListener(UseSkill);
-        MaterialPhase.OnDisappear.AddListener(DecisionNextSkill);
+        MaterialPhase.OnDisappear.RemoveListener(DecisionNextSkill);
     }
 
 }

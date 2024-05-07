@@ -50,4 +50,16 @@ public class AudioController : MonoBehaviour
         aSrc.Play();
 
     }
+
+    public void StopMusic()
+    {
+        var aSrc = manager.GetAudioSource();
+        aSrc.Stop();
+    }
+
+    public void StopMusicBackground()
+    {
+        var aSrcBackground = manager.GetAudioSourceBackground();
+        aSrcBackground.Stop();
+    }
 }

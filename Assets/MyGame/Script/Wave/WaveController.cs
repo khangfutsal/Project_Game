@@ -18,7 +18,6 @@ public class WaveController : MonoBehaviour
     [SerializeField] private List<Transform> traps;
     [SerializeField] private Transform enemiesHolder;
 
-    public UnityEvent a;
 
 
     public UnityEvent onSuccessChapter1 = new UnityEvent();

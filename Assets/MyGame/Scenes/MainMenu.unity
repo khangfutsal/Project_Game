@@ -2970,9 +2970,10 @@ MonoBehaviour:
   aClick: {fileID: 8300000, guid: 7fb330d1aab83f148b0a5a2da5435c05, type: 3}
   aBMenu: {fileID: 8300000, guid: 285f4e7c2dc9be649bf7fc9456de674f, type: 3}
   aBGame: {fileID: 8300000, guid: 296497918c219dc4690538c2eadb1687, type: 3}
-  aAttack: {fileID: 0}
-  aHit: {fileID: 0}
-  aEndGame: {fileID: 0}
+  aAttack: {fileID: 8300000, guid: db559ea1f291ce3468b050ac0da0677e, type: 3}
+  aBuy: {fileID: 8300000, guid: fb9ac21b004bb3c4aac37a819624dff2, type: 3}
+  aHit: {fileID: 8300000, guid: 2495125e5a8f02e4da9ad236b67b9e31, type: 3}
+  aEndGame: {fileID: 8300000, guid: ec27017312a624b47b6e2af1f0a7b360, type: 3}
 --- !u!82 &1041609818
 AudioSource:
   m_ObjectHideFlags: 0
@@ -3498,6 +3499,7 @@ GameObject:
   - component: {fileID: 1240417573}
   - component: {fileID: 1240417575}
   - component: {fileID: 1240417574}
+  - component: {fileID: 1240417576}
   m_Layer: 5
   m_Name: Handle
   m_TagString: Untagged
@@ -3563,6 +3565,18 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1240417572}
   m_CullTransparentMesh: 0
+--- !u!114 &1240417576
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1240417572}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 568f70627ed1d8744bd4e55946db6934, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &1251069513
 GameObject:
   m_ObjectHideFlags: 0

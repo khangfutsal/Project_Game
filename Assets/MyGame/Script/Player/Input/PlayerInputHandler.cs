@@ -98,7 +98,7 @@ public class PlayerInputHandler : MonoBehaviour
     public void OnSkillFireBallInput()
     {
 
-        if (Input.GetKeyDown(KeyCode.Z) && playerStats.mana >= skillFireballMana && playerStats.GetFloat_StatusFireBall() == 1)
+        if (Input.GetKeyDown(KeyCode.R) && playerStats.mana >= skillFireballMana && playerStats.GetFloat_StatusFireBall() == 1)
         {
             HudUI.GetInstance().TakeSliderMana(skillFireballMana);
             fireBallInput = true;
@@ -149,7 +149,7 @@ public class PlayerInputHandler : MonoBehaviour
     #region Jump Function
     public void OnJumpInput()
     {
-        if (Input.GetKeyDown(KeyCode.UpArrow))
+        if (Input.GetKeyDown(KeyCode.W))
         {
             jumpInput = true;
             jumpInputStartTime = Time.time;

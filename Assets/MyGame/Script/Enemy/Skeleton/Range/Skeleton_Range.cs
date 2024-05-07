@@ -32,6 +32,8 @@ public class Skeleton_Range : Skeleton, IDmgable
     [Space(5)]
     [SerializeField] private Transform groundCheckTf;
     [SerializeField] private Transform hitboxTf;
+
+    [SerializeField] private BoxCollider2D boxCollider2D;
     #endregion
 
     #endregion
@@ -58,9 +60,12 @@ public class Skeleton_Range : Skeleton, IDmgable
     protected override void Awake()
     {
         rgBody2D = transform.parent.GetComponentInChildren<Rigidbody2D>();
+        boxCollider2D = GetComponent<BoxCollider2D>();
+
         anim = gameObject.GetComponent<Animator>();
         playerTf = GameObject.Find("BonzePlayer").transform;
         objPool = GameObject.Find("BulletSkeleton").GetComponentInChildren<Object_Pool>();
+
         enemyStateMachine = new EnemyStateMachine();
 
         skeletonRange_Revive = new SkeletonRange_ReviveState(this, enemyStateMachine, skeletonRange_Data, "revive");
@@ -87,7 +92,6 @@ public class Skeleton_Range : Skeleton, IDmgable
 
     private void Update()
     {
-        float timeElapsed = anim.GetCurrentAnimatorStateInfo(0).length;
         enemyStateMachine.currentState.LogicUpdate();
     }
 
@@ -163,6 +167,7 @@ public class Skeleton_Range : Skeleton, IDmgable
 
     public override void Chase()
     {
+        if (CanAttack()) return;
         CheckFlip(transform.parent.position, playerTf.position);
         // ------- Case1
         //float distance = Vector3.Distance(transform.position, playerTf.position);
@@ -203,6 +208,7 @@ public class Skeleton_Range : Skeleton, IDmgable
     {
         yield return new WaitForSeconds(1);
         enemyStateMachine.ChangeState(skeletonRange_Idle);
+        boxCollider2D.enabled = true;
     }
 
     public void IgnoreLayerCollider()

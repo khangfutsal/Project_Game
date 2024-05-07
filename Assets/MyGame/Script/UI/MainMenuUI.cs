@@ -74,7 +74,7 @@ public class MainMenuUI : MonoBehaviour
         var aSrcBackground = AudioController.GetInstance().manager.GetAudioSourceBackground();
         var aClipGame = AudioController.GetInstance().manager.GetAudioBGame();
 
-        LoadSceneManagement.LoadScene("Chap2", aClipGame, aSrcBackground);
+        LoadSceneManagement.LoadScene("Chap3", aClipGame, aSrcBackground);
     }
 
     public void CheckStatusButtonContinue()

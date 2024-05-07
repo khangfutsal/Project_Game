@@ -180,11 +180,15 @@ MonoBehaviour:
       m_Bits: 64
     moveSpeed: 0.5
     knockDuration: 0.3
+    timeAttack: 1.5
+    curTimeAttack: 0
   colliderEnvironment: {fileID: 1005505130}
+  objPool: {fileID: 0}
   groundCheckTf: {fileID: 8918332900708411855}
   hitboxTf: {fileID: 8918332902024284626}
-  dmgAttack: 0
-  <maxHealth>k__BackingField: 1
+  boxCollider2D: {fileID: 0}
+  dmgAttack: 10
+  <maxHealth>k__BackingField: 30
   <health>k__BackingField: 0
 --- !u!61 &8918332900530695690
 BoxCollider2D:
@@ -193,7 +197,7 @@ BoxCollider2D:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 8918332900530695697}
-  m_Enabled: 1
+  m_Enabled: 0
   m_Density: 1
   m_Material: {fileID: 0}
   m_IsTrigger: 1
@@ -313,7 +317,7 @@ CircleCollider2D:
   m_UsedByComposite: 0
   m_Offset: {x: 0, y: 0}
   serializedVersion: 2
-  m_Radius: 25
+  m_Radius: 5
 --- !u!50 &8918332900960328414
 Rigidbody2D:
   serializedVersion: 4
@@ -402,7 +406,7 @@ Rigidbody2D:
   m_Interpolate: 0
   m_SleepingMode: 1
   m_CollisionDetection: 0
-  m_Constraints: 5
+  m_Constraints: 4
 --- !u!1 &8918332902024284627
 GameObject:
   m_ObjectHideFlags: 0

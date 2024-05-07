@@ -14,10 +14,26 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   enemies:
   - enemyObj: {fileID: 9073250768796106972, guid: 2956ac21c51a9bc49a81f9bdc6572cc1, type: 3}
+    spawnObj: {fileID: 8941837841547188747, guid: 2e256f96795d55f4196d8867285310f5, type: 3}
+  - enemyObj: {fileID: 9073250768796106972, guid: 2956ac21c51a9bc49a81f9bdc6572cc1, type: 3}
     spawnObj: {fileID: 5502378998974602001, guid: 6e367abe7fd45da4cb9fa695cf781bc7, type: 3}
+  - enemyObj: {fileID: 4175442336984547584, guid: d24ecf847a9fdd741be0631c0a23aa52, type: 3}
+    spawnObj: {fileID: 3823486664518317676, guid: c076f6617f92c0b4cae2e0ac477b6212, type: 3}
+  - enemyObj: {fileID: 4175442336984547584, guid: ec6cc53332ab86842a3012579ef9466c, type: 3}
+    spawnObj: {fileID: 6557019590897881235, guid: 4c0ce98db2468994a83206bc765048c1, type: 3}
   traps:
   - trapObj: {fileID: 7301929905562214354, guid: 47744378a9d17ac4185c9fcc37712188, type: 3}
     spawnPos: {fileID: 3031391278326848259, guid: b8159789918f8464ca8a5b91275aa8d9, type: 3}
     timeDelay: 3
     curTime: 0
-    dmg: 5
+    dmg: 10
+  - trapObj: {fileID: 7049892963341407440, guid: 23e3e0d83df77fb45bc73642583e5083, type: 3}
+    spawnPos: {fileID: 2848914099997148051, guid: 2d2ab82ba9e302b409e0fbf02e0d17f6, type: 3}
+    timeDelay: 3
+    curTime: 0
+    dmg: 10
+  - trapObj: {fileID: 7301929905562214354, guid: 47744378a9d17ac4185c9fcc37712188, type: 3}
+    spawnPos: {fileID: 6748175419131107955, guid: ebef2fb1b176d7844b7d56e3f16ed561, type: 3}
+    timeDelay: 3
+    curTime: 0
+    dmg: 10

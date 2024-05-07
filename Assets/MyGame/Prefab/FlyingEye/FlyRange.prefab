@@ -169,7 +169,7 @@ CircleCollider2D:
   m_UsedByComposite: 0
   m_Offset: {x: 0, y: 0}
   serializedVersion: 2
-  m_Radius: 25
+  m_Radius: 5
 --- !u!50 &7059878366258871202
 Rigidbody2D:
   serializedVersion: 4
@@ -443,9 +443,8 @@ MonoBehaviour:
   groundCheckTf: {fileID: 449249046}
   hitboxTf: {fileID: 7059878366342089858}
   dmgAttack: 5
-  <maxHealth>k__BackingField: 100
+  <maxHealth>k__BackingField: 20
   <health>k__BackingField: 0
-  test: 0
 --- !u!50 &7059878367595993203
 Rigidbody2D:
   serializedVersion: 4

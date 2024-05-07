@@ -110,6 +110,7 @@ public class GameUI : MonoBehaviour
         var aClipGame = AudioController.GetInstance().manager.GetAudioBGame();
 
         LoadSceneManagement.LoadScene(curScene, aClipGame, aSrcBackground);
+        SoundClick();
     }
     public void ButtonQuit()
     {
@@ -119,6 +120,7 @@ public class GameUI : MonoBehaviour
         var aClipMenu = AudioController.GetInstance().manager.GetAudioBMenu();
 
         LoadSceneManagement.LoadScene("MainMenu", aClipMenu, aSrcBackground);
+        SoundClick();
     }
 
 
@@ -129,19 +131,27 @@ public class GameUI : MonoBehaviour
         _isShowTabUI = false;
 
         pauseUI.SetActive(false);
-        Debug.Log(curTimeDelta);
         Time.timeScale = curTimeDelta;
+        SoundClick();
     }
 
     public void ButtonReturnMenu()
     {
         DataManager.GetInstance().SaveGame();
 
-
         var aSrcBackground = AudioController.GetInstance().manager.GetAudioSourceBackground();
         var aClipMenu = AudioController.GetInstance().manager.GetAudioBMenu();
 
         LoadSceneManagement.LoadScene("MainMenu", aClipMenu, aSrcBackground);
+        SoundClick();
 
+    }
+
+    private static void SoundClick()
+    {
+        var aSrc = AudioController.GetInstance().manager.GetAudioSource();
+        var aClipClick = AudioController.GetInstance().manager.GetAudioClick();
+
+        AudioController.GetInstance().StartMusic(aClipClick, aSrc);
     }
 }

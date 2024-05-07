@@ -321,7 +321,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: fireball
+  m_text: Use Z to release a fireball
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 4a2d83f054266a74a9ea00f1a8cfbfe0, type: 2}
   m_sharedMaterial: {fileID: 890231018543346898, guid: 4a2d83f054266a74a9ea00f1a8cfbfe0, type: 2}
@@ -456,7 +456,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: earthquake
+  m_text: 'Use F make an earthquake cause damage enemy '
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 4a2d83f054266a74a9ea00f1a8cfbfe0, type: 2}
   m_sharedMaterial: {fileID: 890231018543346898, guid: 4a2d83f054266a74a9ea00f1a8cfbfe0, type: 2}
@@ -789,7 +789,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: defense
+  m_text: Use Right-Click to defense hit from enemy
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 4a2d83f054266a74a9ea00f1a8cfbfe0, type: 2}
   m_sharedMaterial: {fileID: 890231018543346898, guid: 4a2d83f054266a74a9ea00f1a8cfbfe0, type: 2}

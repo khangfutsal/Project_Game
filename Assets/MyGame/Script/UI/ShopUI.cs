@@ -93,6 +93,10 @@ public class ShopUI : MonoBehaviour
 
     public void ButtonRandom()
     {
+        var aSrc = AudioController.GetInstance().manager.GetAudioSource();
+        var aClipClick = AudioController.GetInstance().manager.GetAudioClick();
+        AudioController.GetInstance().StartMusic(aClipClick, aSrc);
+
         RandomCards();
 
 

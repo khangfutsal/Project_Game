@@ -11,6 +11,7 @@ public class AudioManager : MonoBehaviour
     [SerializeField] private AudioClip aBMenu;
     [SerializeField] private AudioClip aBGame;
     [SerializeField] private AudioClip aAttack;
+    [SerializeField] private AudioClip aBuy;
     [SerializeField] private AudioClip aHit;
     [SerializeField] private AudioClip aEndGame;
 
@@ -20,6 +21,8 @@ public class AudioManager : MonoBehaviour
     public AudioClip GetAudioAttack() => aAttack;
     public AudioClip GetAudioHit() => aHit;
     public AudioClip GetAudioEndGame() => aEndGame;
+    public AudioClip GetAudioBuy() => aBuy;
+
     public AudioSource GetAudioSource() => aSrc;
     public AudioSource GetAudioSourceBackground() => aSrcBackground;
 

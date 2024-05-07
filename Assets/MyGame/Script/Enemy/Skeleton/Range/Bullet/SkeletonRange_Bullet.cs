@@ -45,14 +45,12 @@ public class SkeletonRange_Bullet : MonoBehaviour
 
             do
             {
-                bool validPositionFound;
                 while (rotation < 120)
                 {
                     hitboxTf.localEulerAngles = new Vector3(0, 0, rotation);
 
                     listPositionCheck.Clear();
 
-                    validPositionFound = false;
                     for (int i = 0; i < 50; i++)
                     {
                         Vector2 newVector = PointPosition((listPositionCheck.Count) * 0.1f);
@@ -61,7 +59,6 @@ public class SkeletonRange_Bullet : MonoBehaviour
                         if (!checkValidPosition)
                         {
                             listPositionCheck.Add(newVector);
-                            validPositionFound = true;
                         }
                         else
                         {

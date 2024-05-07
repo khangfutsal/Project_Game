@@ -29,6 +29,8 @@ public class Demon_DeathState : EnemyState
         demon.TransitionDeath();
 
 
+
+
     }
 
     public override void Exit()

@@ -14,5 +14,7 @@ public class SkeletonRange_Data : Skeleton_Data
     public float moveSpeed;
     [Header("Attack State")]
     public float knockDuration;
+    public float timeAttack;
+    public float curTimeAttack;
 
 }

@@ -7,6 +7,7 @@ public class FireBallBullet : MonoBehaviour
     [SerializeField] private float speed;
     [SerializeField] private Rigidbody2D rgBody2D;
     [SerializeField] private float timeDestroy;
+    [SerializeField] private float dmg;
 
     private void Awake()
     {
@@ -20,7 +21,6 @@ public class FireBallBullet : MonoBehaviour
 
     public void SetDirection(Transform tf)
     {
-        Debug.Log(tf.rotation);
         transform.position = tf.position;
         transform.rotation = tf.rotation;
     }
@@ -33,9 +33,15 @@ public class FireBallBullet : MonoBehaviour
             IDmgable Idmg = collision.GetComponent<IDmgable>();
             if(Idmg != null)
             {
-                Idmg.TakeDamage(5,transform);
+                var aSrc = AudioController.GetInstance().manager.GetAudioSource();
+                var aClipAttack = AudioController.GetInstance().manager.GetAudioAttack();
+                AudioController.GetInstance().StartMusic(aClipAttack, aSrc);
+
+                CameraShake.GetInstance().ShakeCamera(3, .5f, .1f);
+                Idmg.TakeDamage(dmg, transform);
             }
         }
+
     }
 
     private void OnEnable()

@@ -88,10 +88,12 @@ public class PlayerGroundedState : PlayerState
         else if (earthquakeInput & statusEarthquake == 1)
         {
             player.SetVelocityX(0);
+            player.StopInvulnerability();
             stateMachine.ChangeState(player.playerSkillEarthQuake);
         }
         else if (fireballInput && statusFireball == 1)
         {
+            player.StopInvulnerability();
             stateMachine.ChangeState(player.playerSkillFireBall);
         }
 

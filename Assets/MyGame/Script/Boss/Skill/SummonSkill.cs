@@ -5,6 +5,8 @@ using UnityEngine;
 public class SummonSkill : BaseSkill
 {
     [SerializeField] private List<EnemyPattern> enemies;
+    [SerializeField] private float xMinBound;
+    [SerializeField] private float xMaxBound;
 
     private void Update()
     {
@@ -19,7 +21,7 @@ public class SummonSkill : BaseSkill
 
         foreach (var enemy in enemies)
         {
-            float xPos = UnityEngine.Random.Range(13.5f, 28.32f);
+            float xPos = UnityEngine.Random.Range(xMinBound, xMaxBound);
             Vector3 pos = new Vector3(xPos, 0, 0);
             GameObject enemyObj = Instantiate(enemy.enemyObj, pos, Quaternion.identity);
         }

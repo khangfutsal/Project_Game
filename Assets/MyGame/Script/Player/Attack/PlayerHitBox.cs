@@ -18,12 +18,13 @@ public class PlayerHitBox : MonoBehaviour
             float dmg = player.playerStats.GetInt_AttackDmg();
             if (damageable != null)
             {
+                var aSrc = AudioController.GetInstance().manager.GetAudioSource();
+                var aClipAttack = AudioController.GetInstance().manager.GetAudioAttack();
+                AudioController.GetInstance().StartMusic(aClipAttack, aSrc);
+
                 CameraShake.GetInstance().ShakeCamera(3, .5f,.1f);
                 damageable.TakeDamage(dmg, transform);
             }
-
-
-
         }
 
 

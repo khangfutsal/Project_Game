@@ -42,6 +42,7 @@ public class Skeleton_Melee : Skeleton, IDmgable
     [SerializeField] private Transform groundCheckTf;
 
     [SerializeField] public GameObject colliderEnvironment;
+    [SerializeField] private BoxCollider2D boxCollider2D;
 
     #endregion
 
@@ -51,6 +52,7 @@ public class Skeleton_Melee : Skeleton, IDmgable
     private void Awake()
     {
         rgBody2D = transform.parent.GetComponentInChildren<Rigidbody2D>();
+        boxCollider2D = GetComponent<BoxCollider2D>();
         anim = transform.GetComponentInChildren<Animator>();
         playerTf = GameObject.Find("BonzePlayer").transform;
 
@@ -234,6 +236,7 @@ public class Skeleton_Melee : Skeleton, IDmgable
     public IEnumerator DelayToIdleState()
     {
         yield return new WaitForSeconds(1);
+        boxCollider2D.enabled = true;
         enemyStateMachine.ChangeState(skeletonMelee_Idle);
     }
     #endregion

@@ -27,8 +27,7 @@ public class PlayerAttackInAirState : PlayerAbilityState
     public override void Enter()
     {
         base.Enter();
-        //int dmg = UnityEngine.Random.Range(3, 5);
-        //player.SetInt_AttackDmg(dmg);
+        player.StopInvulnerability();
         isAbilityDone = true;
     }
 

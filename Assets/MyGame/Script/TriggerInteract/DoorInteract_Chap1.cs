@@ -14,7 +14,6 @@ public class DoorInteract_Chap1 : MonoBehaviour, Iinteraction
         {
             var aSrcBackground = AudioController.GetInstance().manager.GetAudioSourceBackground();
             var aClipGame = AudioController.GetInstance().manager.GetAudioBGame();
-
             LoadSceneManagement.LoadScene(sceneName, aClipGame, aSrcBackground);
         }
     }

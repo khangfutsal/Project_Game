@@ -303,9 +303,8 @@ MonoBehaviour:
   colliderEnvironment: {fileID: 2117152903}
   groundCheckTf: {fileID: 9073250770530516306}
   dmgAttack: 5
-  <maxHealth>k__BackingField: 100
+  <maxHealth>k__BackingField: 40
   <health>k__BackingField: 0
-  test: 0
 --- !u!61 &9073250769105632182
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -476,7 +475,7 @@ CircleCollider2D:
   m_UsedByComposite: 0
   m_Offset: {x: 0, y: 0}
   serializedVersion: 2
-  m_Radius: 25
+  m_Radius: 5
 --- !u!50 &9073250770436338394
 Rigidbody2D:
   serializedVersion: 4

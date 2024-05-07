@@ -37,7 +37,6 @@ public class FlyingEye_Melee : FlyingEye, IDmgable
     private bool _isDeath;
     [field: SerializeField] public float maxHealth { get; set; }
     [field: SerializeField] public float health { get; set; }
-    public float test;
     #endregion
 
     #region Unity Method
@@ -71,11 +70,6 @@ public class FlyingEye_Melee : FlyingEye, IDmgable
 
     private void Update()
     {
-        if (Input.GetKeyDown(KeyCode.O))
-        {
-            anim.speed = test;
-        }
-        float timeElapsed = anim.GetCurrentAnimatorStateInfo(0).length;
         enemyStateMachine.currentState.LogicUpdate();
     }
 

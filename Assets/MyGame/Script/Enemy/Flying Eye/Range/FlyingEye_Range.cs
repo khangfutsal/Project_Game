@@ -46,7 +46,6 @@ public class FlyingEye_Range : FlyingEye, IDmgable
     [field: SerializeField] public float maxHealth { get; set; }
     [field: SerializeField] public float health { get; set; }
 
-    public float test;
     #endregion
 
     #region Unity Method
@@ -81,10 +80,7 @@ public class FlyingEye_Range : FlyingEye, IDmgable
 
     private void Update()
     {
-        if (Input.GetKeyDown(KeyCode.O))
-        {
-            anim.speed = test;
-        }
+
         enemyStateMachine.currentState.LogicUpdate();
     }
 

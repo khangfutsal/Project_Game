@@ -24,14 +24,14 @@ MonoBehaviour:
     spawnPos: {fileID: 6748175419131107955, guid: ebef2fb1b176d7844b7d56e3f16ed561, type: 3}
     timeDelay: 2
     curTime: 0
-    dmg: 5
+    dmg: 10
   - trapObj: {fileID: 7301929905562214354, guid: 47744378a9d17ac4185c9fcc37712188, type: 3}
     spawnPos: {fileID: 3031391278326848259, guid: b8159789918f8464ca8a5b91275aa8d9, type: 3}
     timeDelay: 4
     curTime: 0
-    dmg: 5
+    dmg: 10
   - trapObj: {fileID: 7301929905562214354, guid: 47744378a9d17ac4185c9fcc37712188, type: 3}
     spawnPos: {fileID: 4763896323918387875, guid: d11e239ba84015347a10a666794a7587, type: 3}
     timeDelay: 6
     curTime: 0
-    dmg: 5
+    dmg: 10

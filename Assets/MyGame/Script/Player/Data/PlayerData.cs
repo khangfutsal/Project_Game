@@ -21,7 +21,7 @@ public class PlayerData : ScriptableObject
 
 
     [Header("Check Variables")]
-    public float groundCheckRadius = .3f;
+    public float groundCheckOffset = .3f;
     public LayerMask whatIsGround;
 
     [Header("LayerMask Player")]

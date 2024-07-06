@@ -4,6 +4,7 @@ using UnityEngine;
 
 public class PlayerGroundedState : PlayerState
 {
+    private bool isGrounded;
     protected Vector2 input;
 
     protected bool jumpInput;
@@ -29,6 +30,7 @@ public class PlayerGroundedState : PlayerState
         _isHurt = player.GetBool_Hurt();
 
         player.CheckInSlope();
+        isGrounded = player.CheckIfGrounded();
 
     }
 
@@ -60,6 +62,10 @@ public class PlayerGroundedState : PlayerState
         earthquakeInput = player.playerInputHandler.earthquakeInput;
         fireballInput = player.playerInputHandler.fireBallInput;
 
+        if (!isGrounded)
+        {
+            stateMachine.ChangeState(player.playerInAirState);
+        }
         if (jumpInput && player.playerJumpState.canJump() && !attackInput)
         {
             player.playerInputHandler.UseJumpInput();

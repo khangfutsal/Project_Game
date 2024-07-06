@@ -43,20 +43,10 @@ public class MaterialPhase : MonoBehaviour
     {
         curShaderPhase = materials[_numMat];
         transform.GetComponent<SpriteRenderer>().material = curShaderPhase;
-        curShaderPhase.SetFloat(_fade, 1.2f);
+
     }
 
-    private void Update()
-    {
-        if (Input.GetKey(KeyCode.Alpha1))
-        {
-            StartCoroutine(CouroutineAppearDissolve());
-        }
-        if (Input.GetKey(KeyCode.Alpha2))
-        {
-            StartCoroutine(CouroutineDisappearDissolve());
-        }
-    }
+
 
     public void AppearDissolve()
     {
@@ -70,20 +60,23 @@ public class MaterialPhase : MonoBehaviour
     public IEnumerator CouroutineAppearDissolve()
     {
         float elapsedTime = 0f;
-        demon.boxCollider2D.enabled = true;
+        
         while (elapsedTime < _dissolveTime)
         {
+            Debug.Log("Test");
             elapsedTime += Time.deltaTime * .4f;
 
             float lerpedDissolve = Mathf.Lerp(-1, 1.2f, (elapsedTime / _dissolveTime));
-            curShaderPhase.SetFloat(_fade, lerpedDissolve);
+            curShaderPhase.SetFloat(Shader.PropertyToID("_Fade"), lerpedDissolve);
             yield return null;
         }
+        demon.boxCollider2D.enabled = true;
         OnAppear?.Invoke();
     }
 
     public IEnumerator CouroutineDisappearDissolve()
     {
+        Debug.Log(curShaderPhase.name);
         float elapsedTime = 0f;
         demon.boxCollider2D.enabled = false;
         while (elapsedTime < _dissolveTime)
@@ -91,10 +84,11 @@ public class MaterialPhase : MonoBehaviour
             elapsedTime += Time.deltaTime * .4f;
 
             float lerpedDissolve = Mathf.Lerp(1.2f, -1, (elapsedTime / _dissolveTime));
-            curShaderPhase.SetFloat(_fade, lerpedDissolve);
+            curShaderPhase.SetFloat(Shader.PropertyToID("_Fade"), lerpedDissolve);
             yield return null;
         }
         OnDisappear?.Invoke();
+        yield return null;
     }
 
 

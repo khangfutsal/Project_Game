@@ -266,8 +266,6 @@ public class Skeleton_Melee : Skeleton, IDmgable
     public void IgnoreLayerCollider()
     {
         Physics2D.IgnoreLayerCollision(6, 9, true);
-        Physics2D.IgnoreLayerCollision(9, 9, true);
-
     }
 
     #endregion

@@ -16,10 +16,10 @@ MonoBehaviour:
   name: Heart
   imgCollection: {fileID: 692917766455180279, guid: 3605262d242fafd47805702c21c49770, type: 3}
   imgStamina: {fileID: 5335694422596211878, guid: 45ed0128cc539f64aa74a244d4665371, type: 3}
-  description: Increase 2,5% health per one second
+  description: Increase 20% health per 0.1 second
   price: 300
   dataCard:
-  - 2.5
-  - 1
+  - 20
+  - 0.1
   _maxLevel: 1
-  _isBought: 0
+  _isBought: 1

@@ -19,6 +19,8 @@ public class DemonStats : MonoBehaviour, IDmgable
         health = maxHealth;
 
         BossHealthBar.GetInstance().maxValue = maxHealth;
+        BossHealthBar.GetInstance().ChangeValueHealth(maxHealth);
+
     }
 
     public void Die()

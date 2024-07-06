@@ -91,6 +91,16 @@ public class ShopUI : MonoBehaviour
 
     }
 
+    public bool IsBoughtMaxLevel()
+    {
+        var cardsInfo = cardManager.GetCardsInfo();
+        if (cardsInfo.FindAll(obj => obj._maxLevel).All
+                  (obj => obj._isBought))
+        {
+            return true;
+        }
+        return false;
+    }
     public void ButtonRandom()
     {
         var aSrc = AudioController.GetInstance().manager.GetAudioSource();
@@ -102,16 +112,12 @@ public class ShopUI : MonoBehaviour
 
         void RandomCards()
         {
-            bool boughtAllCards = false;
-
+            bool chooseCardInRandom = false;
             var cardsInfo = cardManager.GetCardsInfo();
             var cardsUI = cardManager.GetCardsUI();
 
-            if (cardsInfo.FindAll(obj => obj._maxLevel).All
-                  (obj => obj._isBought))
+            if (IsBoughtMaxLevel())
             {
-                boughtAllCards = true;
-
                 foreach (var card in cardsUI)
                 {
                     Debug.Log(card.name);
@@ -137,7 +143,8 @@ public class ShopUI : MonoBehaviour
 
                 for (int i = 0; i < cardsUI.Count; i++)
                 {
-                    while (!boughtAllCards)
+                    chooseCardInRandom = false;
+                    while (!chooseCardInRandom)
                     {
                         int random = UnityEngine.Random.Range(0, cardsInfo.Count);
                         if (!listRandom.Contains(random))
@@ -146,12 +153,14 @@ public class ShopUI : MonoBehaviour
                             var cardInfo = cardsInfo[random];
                             if (OnCheckValidCard(cardInfo, cardsUI[i]))
                             {
-
+                                chooseCardInRandom = true;
                                 DataManager.GetInstance().dataPlayerSO.curCardsUI.Add(cardInfo);
 
                                 cardsUI[i].SubEvent(cardInfo);
+                            }
+                            if (chooseCardInRandom)
+                            {
                                 break;
-
                             }
                         }
                     }

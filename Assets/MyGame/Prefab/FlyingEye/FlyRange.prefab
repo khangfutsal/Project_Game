@@ -429,7 +429,7 @@ MonoBehaviour:
     radAttack: 0
     moveSpeed: 0.5
     knockDuration: 0.3
-    attackRadius: 4
+    attackRadius: 1.64
     whatIsPlayer:
       serializedVersion: 2
       m_Bits: 64

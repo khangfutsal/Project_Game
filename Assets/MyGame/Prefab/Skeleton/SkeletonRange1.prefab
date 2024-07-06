@@ -174,7 +174,7 @@ MonoBehaviour:
     whatIsGround:
       serializedVersion: 2
       m_Bits: 8
-    attackRadius: 5.8
+    attackRadius: 2.54
     whatIsPlayer:
       serializedVersion: 2
       m_Bits: 64

@@ -161,7 +161,7 @@ public class Player : MonoBehaviour
     public bool GetBool_Hurt() => _isHurt;
     public float GetTimeScale()
     {
-        return curTimeScale == 0 ? 1 : curTimeScale; 
+        return curTimeScale == 0 ? 1 : curTimeScale;
     }
 
     #endregion
@@ -181,7 +181,7 @@ public class Player : MonoBehaviour
         currentVelocity = workspace;
     }
 
-   
+
 
     public void SetVelocityY(float velocity)
     {
@@ -195,7 +195,7 @@ public class Player : MonoBehaviour
     #region Check Functions
     public bool CheckIfGrounded()
     {
-        return Physics2D.OverlapCircle(groundCheck.position, playerData.groundCheckRadius, playerData.whatIsGround);
+        return Physics2D.Raycast(groundCheck.position, Vector2.down, playerData.groundCheckOffset, playerData.whatIsGround);
     }
 
     public void CheckIfShouldFlip(int xInput)
@@ -256,7 +256,7 @@ public class Player : MonoBehaviour
         Physics2D.IgnoreLayerCollision(6, 11, false);
     }
 
-    
+
     #endregion
 
     #region Hurt State Functions
@@ -322,11 +322,11 @@ public class Player : MonoBehaviour
     public void CheckInSlope()
     {
         RaycastHit2D hit = Physics2D.Raycast(transform.position, Vector2.down, slopeDistance, WhatIsSlope);
-        if(hit != null)
+        if (hit != null)
         {
             slopeNormalPerp = Vector2.Perpendicular(hit.normal);
             slopeDownAngle = Vector2.Angle(hit.normal, Vector2.up);
-            if(slopeDownAngle != slopeDownAngleOld)
+            if (slopeDownAngle != slopeDownAngleOld)
             {
                 onSlope = true;
             }

@@ -128,7 +128,8 @@ public class GameUI : MonoBehaviour
     {
         var pauseUI = UIController.GetInstance().uiManager.GetPauseUI();
         var curTimeDelta = Player.GetInstance().GetTimeScale();
-        _isShowTabUI = false;
+        _isOpenPauseUI = false;
+        _isShowTabUI = _isOpenPauseUI;
 
         pauseUI.SetActive(false);
         Time.timeScale = curTimeDelta;

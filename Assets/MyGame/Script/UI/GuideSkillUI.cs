@@ -24,13 +24,6 @@ public class GuideSkillUI : MonoBehaviour
         }
     }
 
-    private void Update()
-    {
-        if (guideSkillsObj[0].activeSelf)
-        {
-            Debug.Log(guideSkillsObj[0].GetComponent<Animator>().GetCurrentAnimatorStateInfo(0).normalizedTime);
-        }
-    }
 
     public IEnumerator ShowGuideUI(string name)
     {
@@ -43,12 +36,14 @@ public class GuideSkillUI : MonoBehaviour
         {
             if (i.name.Contains(name))
             {
+                Debug.Log(name);
                 i.SetActive(true);
 
                 while (i.GetComponent<Animator>().GetCurrentAnimatorStateInfo(0).normalizedTime < 1f)
                 {
                     yield return null;
                 }
+                i.SetActive(false);
                 _isShowGuide = false;
                 countRoutoutine--;
                 break;

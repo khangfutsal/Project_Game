@@ -28,7 +28,7 @@ public class Demon : Boss
 
     [SerializeField] public Phase _curPhase;
 
-    [SerializeField] private float startTimeDelayToAttack;
+    [SerializeField] private float timeDelayAttack;
     [SerializeField] private float endTimeDelayToAttack;
     [SerializeField] public bool _canAttack;
     [SerializeField] public bool _endSkill;
@@ -415,9 +415,7 @@ public class Demon : Boss
 
     public IEnumerator TimeToAttack()
     {
-        float random = UnityEngine.Random.Range(startTimeDelayToAttack, endTimeDelayToAttack);
-        float curTime = random;
-        yield return new WaitForSeconds(curTime);
+        yield return new WaitForSeconds(timeDelayAttack);
         _canAttack = true;
     }
 

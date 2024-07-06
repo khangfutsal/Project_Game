@@ -41,7 +41,7 @@ public class PlayerInputHandler : MonoBehaviour
 
     private void Update()
     {
-        if (_allowInput && !UIController.GetInstance().uiManager.GetGameUI()._isShowTabUI)
+        if (_allowInput && (!UIController.GetInstance().uiManager.GetGameUI()._isShowTabUI ||!UIController.GetInstance().uiManager.GetGameUI()._isShowTabUI))
         {
             OnMoveInput();
             OnJumpInput();
@@ -98,7 +98,7 @@ public class PlayerInputHandler : MonoBehaviour
     public void OnSkillFireBallInput()
     {
 
-        if (Input.GetKeyDown(KeyCode.R) && playerStats.mana >= skillFireballMana && playerStats.GetFloat_StatusFireBall() == 1)
+        if (Input.GetKeyDown(KeyCode.Z) && playerStats.mana >= skillFireballMana && playerStats.GetFloat_StatusFireBall() == 1)
         {
             HudUI.GetInstance().TakeSliderMana(skillFireballMana);
             fireBallInput = true;
